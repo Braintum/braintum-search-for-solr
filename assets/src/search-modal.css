@@ -5,7 +5,8 @@
  * ships, because a popup is a surface of its own and has no theme styling to
  * inherit from. It still takes the theme's font, and every colour, radius and
  * size a theme is likely to want to change is a custom property on
- * .braintum-search-modal, so a theme can restyle it without fighting specificity:
+ * .braintum-search-modal, so a theme can restyle it without fighting
+ * specificity:
  *
  *     .braintum-search-modal { --braintum-search-modal-accent: #b4232a; }
  *
@@ -13,10 +14,11 @@
  * style bare `button`, `input[type="search"]`, `a` and `mark` freely, and the
  * popup is rendered inside the theme's page.
  *
- * Width: --braintum-search-modal-width when a theme sets it; otherwise the site's
- * content width, which the plugin prints as --braintum-search-content-width from
- * theme.json or $content_width; otherwise 75rem. Never narrower than 44rem
- * unless a theme says so, and never wider than the window.
+ * Width: --braintum-search-modal-width when a theme sets it; otherwise the
+ * site's content width, which the plugin prints as
+ * --braintum-search-content-width from theme.json or $content_width; otherwise
+ * 75rem. Never narrower than 44rem unless a theme says so, and never wider than
+ * the window.
  */
 
 .braintum-search-modal {
@@ -471,8 +473,9 @@ html.braintum-search-modal-is-open {
 	display: none;
 }
 
-/* The grid: as many columns of at least --braintum-search-modal-card-min as fit,
-   but never more than --braintum-search-modal-columns, and two on a phone. */
+/* The grid: as many columns of at least --braintum-search-modal-card-min as
+   fit, but never more than --braintum-search-modal-columns, and two on a
+   phone. */
 .braintum-search-modal .braintum-search-section__results {
 
 	/* A column is at least the card minimum (or half the row, on a phone),
