@@ -2,10 +2,10 @@
 /**
  * The materialised taxonomy path format.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Documents;
+namespace BraintumSearch\Documents;
 
 use WP_Term;
 

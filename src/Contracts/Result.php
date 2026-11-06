@@ -2,15 +2,15 @@
 /**
  * Operation outcome.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * The outcome of an operation that can fail.
  *
- * SolrEngine does not throw across the integration boundary. A backend that is
+ * Braintum Search does not throw across the integration boundary. A backend that is
  * unreachable, misconfigured or slow is an expected condition, not an
  * exceptional one, and WordPress must keep rendering either way (plan
  * Principle 1). Every backend call therefore returns one of these.

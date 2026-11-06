@@ -2,13 +2,13 @@
 /**
  * Validation for the relevance tuning screen.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
 
 /**
  * Turns what an administrator typed into a relevance profile, or says why not.
@@ -128,7 +128,7 @@ final class RelevanceSettings {
 			if ( ! is_numeric( $raw ) ) {
 				$problems[] = sprintf(
 					/* translators: %s: field label. */
-					__( 'The boost for "%s" was not a number and has been left unchanged.', 'solrengine' ),
+					__( 'The boost for "%s" was not a number and has been left unchanged.', 'braintum-search-for-solr' ),
 					$allowed[ $field ]
 				);
 
@@ -140,7 +140,7 @@ final class RelevanceSettings {
 			if ( $value < 0 ) {
 				$problems[] = sprintf(
 					/* translators: %s: field label. */
-					__( 'The boost for "%s" cannot be negative. Use 0 to stop searching that field.', 'solrengine' ),
+					__( 'The boost for "%s" cannot be negative. Use 0 to stop searching that field.', 'braintum-search-for-solr' ),
 					$allowed[ $field ]
 				);
 
@@ -150,7 +150,7 @@ final class RelevanceSettings {
 			if ( $value > self::MAX_BOOST ) {
 				$problems[] = sprintf(
 					/* translators: 1: field label, 2: largest accepted boost. */
-					__( 'The boost for "%1$s" was reduced to %2$s, which is already far higher than every other field.', 'solrengine' ),
+					__( 'The boost for "%1$s" was reduced to %2$s, which is already far higher than every other field.', 'braintum-search-for-solr' ),
 					$allowed[ $field ],
 					self::MAX_BOOST
 				);
@@ -170,7 +170,7 @@ final class RelevanceSettings {
 			// Every field set to zero searches nothing and returns nothing for
 			// every visitor. Refused rather than saved, because the screen that
 			// would let you undo it is not the one visitors are using.
-			$problems[] = __( 'At least one field must be searchable. The previous field weights have been kept.', 'solrengine' );
+			$problems[] = __( 'At least one field must be searchable. The previous field weights have been kept.', 'braintum-search-for-solr' );
 		}
 
 		$mm = trim( (string) ( $input['minimum_match'] ?? '' ) );
@@ -178,7 +178,7 @@ final class RelevanceSettings {
 		if ( '' !== $mm && ! self::is_valid_minimum_match( $mm ) ) {
 			$problems[] = sprintf(
 				/* translators: %s: the value that was rejected. */
-				__( '"%s" is not a valid minimum-match expression, so the default has been kept. Use a number, a percentage, or pairs like "2<75%%".', 'solrengine' ),
+				__( '"%s" is not a valid minimum-match expression, so the default has been kept. Use a number, a percentage, or pairs like "2<75%%".', 'braintum-search-for-solr' ),
 				$mm
 			);
 
@@ -188,13 +188,13 @@ final class RelevanceSettings {
 		$tie = $input['tie'] ?? null;
 
 		if ( null !== $tie && '' !== $tie && ! is_numeric( $tie ) ) {
-			$problems[] = __( 'The tie breaker was not a number and has been left unchanged.', 'solrengine' );
+			$problems[] = __( 'The tie breaker was not a number and has been left unchanged.', 'braintum-search-for-solr' );
 
 			$tie = null;
 		}
 
 		if ( is_numeric( $tie ) && ( (float) $tie < 0 || (float) $tie > 1 ) ) {
-			$problems[] = __( 'The tie breaker must be between 0 and 1. The default has been kept.', 'solrengine' );
+			$problems[] = __( 'The tie breaker must be between 0 and 1. The default has been kept.', 'braintum-search-for-solr' );
 
 			$tie = null;
 		}
@@ -228,15 +228,15 @@ final class RelevanceSettings {
 	 */
 	public static function tunable_fields( bool $with_products = true ): array {
 		$fields = array(
-			DocumentFields::TITLE   => __( 'Title', 'solrengine' ),
-			DocumentFields::EXCERPT => __( 'Excerpt', 'solrengine' ),
-			DocumentFields::CONTENT => __( 'Content', 'solrengine' ),
-			'se_taxterms'           => __( 'Categories and tags', 'solrengine' ),
+			DocumentFields::TITLE   => __( 'Title', 'braintum-search-for-solr' ),
+			DocumentFields::EXCERPT => __( 'Excerpt', 'braintum-search-for-solr' ),
+			DocumentFields::CONTENT => __( 'Content', 'braintum-search-for-solr' ),
+			'se_taxterms'           => __( 'Categories and tags', 'braintum-search-for-solr' ),
 		);
 
 		if ( $with_products ) {
-			$fields[ ProductFields::SKU_TEXT ]       = __( 'Product SKU', 'solrengine' );
-			$fields[ ProductFields::ATTRIBUTE_TEXT ] = __( 'Product attributes', 'solrengine' );
+			$fields[ ProductFields::SKU_TEXT ]       = __( 'Product SKU', 'braintum-search-for-solr' );
+			$fields[ ProductFields::ATTRIBUTE_TEXT ] = __( 'Product attributes', 'braintum-search-for-solr' );
 		}
 
 		return $fields;

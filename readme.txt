@@ -1,7 +1,7 @@
-=== SolrEngine ===
+=== Braintum Search for Apache Solr ===
 Contributors: braintum
 Tags: search, solr, relevance, faceted search, woocommerce
-Requires at least: 6.5
+Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
@@ -12,14 +12,14 @@ Apache Solr powered search for WordPress. Faster, more relevant results, with Wo
 
 == Description ==
 
-SolrEngine replaces the built-in WordPress search with Apache Solr, so visitors
+Braintum Search replaces the built-in WordPress search with Apache Solr, so visitors
 get results that are fast and actually relevant, on sites where the default
 search has stopped coping.
 
 It connects to a Solr server that you run and control. Your content is indexed
 into that server, and search queries are answered from it.
 
-**SolrEngine never becomes a single point of failure.** If your Solr server is
+**Braintum Search never becomes a single point of failure.** If your Solr server is
 unreachable, slow, or misconfigured, WordPress quietly falls back to its own
 search and the site keeps working. Nothing white-screens, and no visitor sees an
 error.
@@ -34,7 +34,7 @@ filesystem.
 = Requirements =
 
 * PHP 7.4 or newer
-* WordPress 6.5 or newer
+* WordPress 6.9 or newer
 * An Apache Solr server you can reach from your WordPress host, version 9.10 or
   newer. Solr 10 is recommended.
 
@@ -43,12 +43,12 @@ container, or a managed Solr service.
 
 == External services ==
 
-SolrEngine contacts **one** external service, and only the one you configure.
+Braintum Search contacts **one** external service, and only the one you configure.
 
 **Your Apache Solr server**
 
 * **What it is:** the Solr server whose address you enter on the plugin's
-  connection screen. SolrEngine does not choose, suggest or default to any
+  connection screen. Braintum Search does not choose, suggest or default to any
   particular server, and it contacts nothing until you enter an address.
 * **What is sent:** the content you choose to index (such as post titles, post
   content, excerpts, URLs, publication dates, taxonomy terms, and any post meta
@@ -57,30 +57,34 @@ SolrEngine contacts **one** external service, and only the one you configure.
 * **When:** when you run an index, when indexed content changes, and when a
   search is performed.
 * **Who runs it:** you do, or whoever you obtained it from. It is not operated
-  by SolrEngine.
+  by Braintum Search.
 * **Terms and privacy:** because this server is yours, its terms and privacy
   policy are yours. Apache Solr itself is documented at
   https://solr.apache.org/ and licensed under the Apache License 2.0.
 
-SolrEngine sends **no** analytics, telemetry, usage statistics, licence checks
-or error reports anywhere. It does not contact solrengine.com or any other
+Braintum Search sends **no** analytics, telemetry, usage statistics, licence checks
+or error reports anywhere. It does not contact braintum.com or any other
 server operated by us.
 
 == Bundled libraries ==
 
-SolrEngine bundles Action Scheduler (https://actionscheduler.org/), which runs
-indexing in the background. It is licensed GPL-3.0-or-later. SolrEngine's own
+Braintum Search bundles Action Scheduler (https://actionscheduler.org/), which runs
+indexing in the background. It is licensed GPL-3.0-or-later. Braintum Search's own
 code is GPLv2 or later, and because the two are distributed together the
 combined package is effectively GPLv3. Both licences are GPL-compatible.
 
-By default SolrEngine indexes only content that is already publicly visible.
+By default Braintum Search indexes only content that is already publicly visible.
 Drafts, private posts, trashed content, and the contents of password-protected
 posts are not indexed. Post meta is never indexed unless you add the specific
 key to an allowlist.
 
+Apache Solr and Solr are trademarks of the Apache Software Foundation. Braintum
+Search is an independent project by Braintum and is not affiliated with or
+endorsed by the Apache Software Foundation.
+
 == Source code ==
 
-SolrEngine is developed in the open at https://github.com/Braintum/solrengine,
+Braintum Search is developed in the open at https://github.com/Braintum/braintum-search-for-solr,
 including the uncompiled JavaScript and CSS in `assets/src` that the files in
 `assets/build` are built from. To rebuild them:
 
@@ -91,10 +95,10 @@ security — is in the repository's `docs` folder.
 
 == Installation ==
 
-1. Upload the plugin to `/wp-content/plugins/solrengine`, or install it through
+1. Upload the plugin to `/wp-content/plugins/braintum-search-for-solr`, or install it through
    the Plugins screen.
 2. Activate it through the Plugins screen.
-3. Go to SolrEngine and enter the address of your Solr server.
+3. Go to Braintum Search and enter the address of your Solr server.
 4. Run the connection test.
 5. Choose which content to index, then run the initial index.
 6. Enable search replacement once indexing has finished.
@@ -107,10 +111,10 @@ until you turn it on, so an empty index can never produce an empty site.
 If your Solr server requires a username and password, the most secure place for
 them is `wp-config.php`:
 
-`define( 'SOLRENGINE_SOLR_USER', 'your-username' );`
-`define( 'SOLRENGINE_SOLR_PASSWORD', 'your-password' );`
+`define( 'BRAINTUM_SEARCH_SOLR_USER', 'your-username' );`
+`define( 'BRAINTUM_SEARCH_SOLR_PASSWORD', 'your-password' );`
 
-SolrEngine detects these automatically. Credentials stored this way are never
+Braintum Search detects these automatically. Credentials stored this way are never
 written to the database.
 
 If you enter credentials in the admin screen instead, they are encrypted before
@@ -122,7 +126,7 @@ server itself is compromised, because the encryption key lives in
 
 = Do I need my own Solr server? =
 
-Yes. SolrEngine connects to a Solr server that you provide. It does not include
+Yes. Braintum Search connects to a Solr server that you provide. It does not include
 one, and it does not send your content to us.
 
 = What happens if Solr goes down? =
@@ -132,7 +136,7 @@ results, just the ordinary WordPress ones. Your site does not break.
 
 = Will this work with my theme? =
 
-It should. SolrEngine replaces the search results inside WordPress's own query
+It should. Braintum Search replaces the search results inside WordPress's own query
 rather than taking over your templates, so classic themes, block themes and page
 builders keep rendering search exactly as they do now.
 
@@ -149,19 +153,19 @@ in a search index.
 
 = What happens if a search finds nothing? =
 
-SolrEngine retries with typo tolerance, then with looser matching, before
+Braintum Search retries with typo tolerance, then with looser matching, before
 reporting no results. The response says which of those produced the results, so
 a theme can tell visitors when it is showing approximate matches.
 
 = Does autocomplete work with my theme's search box? =
 
 It attaches to the search field your theme already renders, so in most cases
-yes, with no changes. Themes with unusual markup can point SolrEngine at their
+yes, with no changes. Themes with unusual markup can point Braintum Search at their
 own selector with a filter.
 
 = What is the search popup? =
 
-One of two ways instant search can appear, chosen under SolrEngine → Settings.
+One of two ways instant search can appear, chosen under Braintum Search → Settings.
 Clicking your theme's search field, typing into it or pressing its search button
 opens a popup, as wide as your site, that shows results as visitors type, with
 pictures, product prices and a tab for each kind of content — posts, pages,
@@ -179,7 +183,7 @@ works with screen readers. It is checked against WCAG 2.2 AA.
 
 Yes. Its colours, corner radius and width are CSS custom properties your theme
 can set. To change the markup, copy a file from the plugin's `templates` folder
-into a `solrengine` folder in your theme and edit the copy — the same way
+into a `braintum-search` folder in your theme and edit the copy — the same way
 WooCommerce templates are overridden. A child theme's copy wins over its parent's.
 
 Product prices in the popup are formatted in your store's currency format from
@@ -188,9 +192,9 @@ product page for customers in another tax region or with special pricing. If tha
 matters for your store, remove the price from your copy of
 `search-modal/result-product.php`.
 
-= Does the search popup show "Powered by SolrEngine"? =
+= Does the search popup show "Powered by Braintum Search"? =
 
-No, not unless you turn it on with the `solrengine_search_modal_args` filter.
+No, not unless you turn it on with the `braintum_search_modal_args` filter.
 
 = Autocomplete feels slow. What should I check? =
 
@@ -215,14 +219,14 @@ often type the same few prefixes.
 
 = Can I use the search API from my own front end? =
 
-Yes. There is a REST endpoint at `/wp-json/solrengine/v1/search`. It accepts
+Yes. There is a REST endpoint at `/wp-json/braintum-search/v1/search`. It accepts
 search text, pagination, a sort key from a fixed list, and named filters. It
 does not accept raw query syntax, deliberately.
 
 = How do I add filters to my search results page? =
 
 Add the "Search filters" block to your search results template, or put the
-`[solrengine_filters]` shortcode in a classic theme's search template or widget
+`[braintum_search_filters]` shortcode in a classic theme's search template or widget
 area. Both show the same panel. By default it offers every filter your site
 registers; you can name the ones you want instead.
 
@@ -241,7 +245,7 @@ Solr once you switch that on from the settings screen.
 Prices are indexed as base prices and used for filtering and sorting; the price
 a customer sees is still rendered by WooCommerce.
 
-= What happens to a shop filter SolrEngine does not understand? =
+= What happens to a shop filter Braintum Search does not understand? =
 
 The query goes back to WooCommerce and the database answers it. That is slower
 and correct. A shop page that looks filtered and is not costs money.
@@ -249,59 +253,63 @@ and correct. A shop page that looks filtered and is not costs money.
 = Does it work on multisite? =
 
 Yes. A network administrator sets the Solr connection once under Network Admin →
-Settings → SolrEngine, can lock any of it so sites cannot change it, and switches
+Settings → Braintum Search, can lock any of it so sites cannot change it, and switches
 each site on individually. Each site can have its own collection, or the network
 can share one; on a shared collection every query is filtered to the site asking.
 
 = Can I reindex without search going wrong while it runs? =
 
-Yes. From SolrEngine → Tools you can build a replacement index alongside the one
+Yes. From Braintum Search → Tools you can build a replacement index alongside the one
 that is answering searches, check it against what WordPress holds, and switch
-over only then. Your previous index is kept afterwards, and SolrEngine never
+over only then. Your previous index is kept afterwards, and Braintum Search never
 deletes it for you — it is the way back if something turns out to be wrong.
 
 = Can I move to a different search backend without breaking search? =
 
-Yes. SolrEngine indexes into the new backend while the old one keeps answering
+Yes. Braintum Search indexes into the new backend while the old one keeps answering
 visitors, and moves searches over only once the new index is full. Run
-`wp solrengine backends start --to=<backend>`, then a full index, then
-`wp solrengine backends finish`.
+`wp braintum-search backends start --to=<backend>`, then a full index, then
+`wp braintum-search backends finish`.
 
-= What does SolrEngine send, and where? =
+= What does Braintum Search send, and where? =
 
 To your Solr server: your indexed content, and what visitors search for. Nowhere
 else — no analytics, no telemetry, no licence checks. Search queries are not
 logged, not even in the debug log. The full list, including what is never
 indexed, is in the privacy document:
-https://github.com/Braintum/solrengine/blob/master/docs/privacy.md
+https://github.com/Braintum/braintum-search-for-solr/blob/master/docs/privacy.md
 
 = How do I report a security issue? =
 
 Privately, please, through GitHub's private vulnerability reporting:
-https://github.com/Braintum/solrengine/security/advisories/new. Not in the
+https://github.com/Braintum/braintum-search-for-solr/security/advisories/new. Not in the
 support forum or a public issue.
 
 = Something is missing from search. How do I find out why? =
 
-SolrEngine → Tools keeps the last fifty indexing runs and the posts that failed
-inside each one, with a link to each. `wp solrengine history --failures` shows
+Braintum Search → Tools keeps the last fifty indexing runs and the posts that failed
+inside each one, with a link to each. `wp braintum-search history --failures` shows
 the same list.
 
 == Changelog ==
 
 = 1.0.0 =
 * First release in the WordPress.org plugin directory.
+* Renamed from SolrEngine to Braintum Search for Apache Solr. Hooks, options,
+  constants, CSS classes, the REST namespace and the WP-CLI command now use the
+  `braintum_search` / `braintum-search` prefix.
+* Requires WordPress 6.9, the minimum of the bundled Action Scheduler 4.2.
 * New: a search popup. Clicking the theme's search field or button opens a panel
   that shows results as visitors type, with thumbnails, product prices, the
   matched words highlighted, and a tab for each content type with its count.
   Choose it, or the suggestion list, under Settings → Instant search.
 * The popup's markup is three templates a theme can override by copying them
-  into a `solrengine` folder, and its colours and sizes are CSS custom
-  properties. New REST route `/solrengine/v1/instant` answers it.
+  into a `braintum-search` folder, and its colours and sizes are CSS custom
+  properties. New REST route `/braintum-search/v1/instant` answers it.
 * Search matches the word being typed as a prefix: "hoo" finds "Hoodie", in the
   popup, on the results page, in the filter counts and in product search alike.
-* New hooks: `solrengine_template`, `solrengine_search_modal_args`,
-  `solrengine_search_modal_triggers` and `solrengine_search_modal_width`.
+* New hooks: `braintum_search_template`, `braintum_search_modal_args`,
+  `braintum_search_modal_triggers` and `braintum_search_modal_width`.
 * Privacy: the debug log records which Solr handler and parameters a request
   used, never their values, so search text no longer reaches it.
 * Fixed: the bundled Action Scheduler is now used on sites where no other plugin
@@ -319,6 +327,6 @@ The history of the development releases before 1.0.0 is in changelog.txt.
 == Upgrade Notice ==
 
 = 1.0.0 =
-First WordPress.org release. Coming from a development build: autocomplete and
-the search popup now use the REST API, and the solrengine_instant_fast_path
-filter no longer exists.
+First WordPress.org release. Coming from a SolrEngine development build: settings
+are not carried over, so reconnect and run a full index. Autocomplete and the
+search popup now use the REST API.

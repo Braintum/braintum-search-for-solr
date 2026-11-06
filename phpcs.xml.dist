@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<ruleset name="SolrEngine">
-	<description>Coding standards for the SolrEngine plugin.</description>
+<ruleset name="Braintum Search">
+	<description>Coding standards for the Braintum Search plugin.</description>
 
 	<!-- Everything the project owns is checked. There are no exempt files. -->
-	<file>solrengine.php</file>
+	<file>braintum-search-for-solr.php</file>
 	<file>uninstall.php</file>
 	<file>src</file>
 	<file>templates</file>
@@ -35,7 +35,7 @@
 			satisfies the sniff while being actively wrong: it applies an HTML
 			escaping function to a string that is logged, never rendered, and
 			it mangles the message for whoever has to read it. The 0.1.0
-			prototype did exactly that. SolrEngine instead guarantees that no
+			prototype did exactly that. Braintum Search instead guarantees that no
 			internal detail reaches a visitor, by returning Result objects with
 			stable machine codes across the integration boundary rather than
 			throwing (see src/Contracts/Result.php).
@@ -78,9 +78,9 @@
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
-				<element value="solrengine"/>
-				<element value="SOLRENGINE"/>
-				<element value="SolrEngine"/>
+				<element value="braintum_search"/>
+				<element value="BRAINTUM_SEARCH"/>
+				<element value="BraintumSearch"/>
 			</property>
 		</properties>
 	</rule>
@@ -88,13 +88,13 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="solrengine"/>
+				<element value="braintum-search-for-solr"/>
 			</property>
 		</properties>
 	</rule>
 
 	<!-- Minimum supported versions. See ADR-011. -->
-	<config name="minimum_wp_version" value="6.5"/>
+	<config name="minimum_wp_version" value="6.9"/>
 	<config name="testVersion" value="7.4-"/>
 	<rule ref="PHPCompatibilityWP"/>
 

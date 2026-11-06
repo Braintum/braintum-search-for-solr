@@ -2,81 +2,81 @@
 /**
  * Composition root.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine;
+namespace BraintumSearch;
 
-use SolrEngine\Admin\ConnectionScreen;
-use SolrEngine\Admin\ContentScreen;
-use SolrEngine\Admin\DashboardScreen;
-use SolrEngine\Admin\NetworkScreen;
-use SolrEngine\Admin\SearchScreen;
-use SolrEngine\Admin\ToolsScreen;
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Backend\Solr\EndpointValidator;
-use SolrEngine\Backend\Solr\HttpTransport;
-use SolrEngine\Backend\Memory\MemoryBackend;
-use SolrEngine\Backend\Solr\SolrBackend;
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Cli\Commands;
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Diagnostics\ConnectionDiagnostic;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Documents\MetaAllowlist;
-use SolrEngine\Documents\PostDocumentBuilder;
-use SolrEngine\Indexing\DirtySet;
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Indexing\HookListeners;
-use SolrEngine\Indexing\Indexer;
-use SolrEngine\Indexing\Queue\ActionSchedulerQueue;
-use SolrEngine\Indexing\Queue\CronQueue;
-use SolrEngine\Indexing\QueueWorker;
-use SolrEngine\Indexing\Rebuild;
-use SolrEngine\Indexing\Reconciler;
-use SolrEngine\Indexing\ReindexNotice;
-use SolrEngine\Indexing\RunHistory;
-use SolrEngine\Integration\WordPress\InstantSearch;
-use SolrEngine\Integration\WordPress\QueryIntegration;
-use SolrEngine\Integration\WordPress\SearchFilters;
-use SolrEngine\Integration\WordPress\SearchModal;
-use SolrEngine\Integration\Multilingual\CoreProvider;
-use SolrEngine\Integration\Multilingual\PolylangProvider;
-use SolrEngine\Integration\Multilingual\WpmlProvider;
-use SolrEngine\Integration\WooCommerce\WooCommerce;
-use SolrEngine\Language\Languages;
-use SolrEngine\Multisite\NetworkConfig;
-use SolrEngine\Multisite\SiteScope;
-use SolrEngine\Rest\InstantResultsController;
-use SolrEngine\Rest\RateLimiter;
-use SolrEngine\Rest\SearchController;
-use SolrEngine\Rest\StatusController;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\InstantResults;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
-use SolrEngine\Search\ResponseParser;
-use SolrEngine\Contracts\Breaker;
-use SolrEngine\Contracts\Cache;
-use SolrEngine\Contracts\Viewer;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Schema\AppliedSchema;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaExporter;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\Container;
-use SolrEngine\Support\ObjectCache;
-use SolrEngine\Support\OptionBreaker;
-use SolrEngine\Support\Upgrade;
-use SolrEngine\Support\WpViewer;
-use SolrEngine\Support\Credentials;
-use SolrEngine\Support\DebugLogger;
-use SolrEngine\Support\Encryption;
-use SolrEngine\Support\NullLogger;
+use BraintumSearch\Admin\ConnectionScreen;
+use BraintumSearch\Admin\ContentScreen;
+use BraintumSearch\Admin\DashboardScreen;
+use BraintumSearch\Admin\NetworkScreen;
+use BraintumSearch\Admin\SearchScreen;
+use BraintumSearch\Admin\ToolsScreen;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Backend\Solr\EndpointValidator;
+use BraintumSearch\Backend\Solr\HttpTransport;
+use BraintumSearch\Backend\Memory\MemoryBackend;
+use BraintumSearch\Backend\Solr\SolrBackend;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Cli\Commands;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Diagnostics\ConnectionDiagnostic;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Documents\MetaAllowlist;
+use BraintumSearch\Documents\PostDocumentBuilder;
+use BraintumSearch\Indexing\DirtySet;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Indexing\HookListeners;
+use BraintumSearch\Indexing\Indexer;
+use BraintumSearch\Indexing\Queue\ActionSchedulerQueue;
+use BraintumSearch\Indexing\Queue\CronQueue;
+use BraintumSearch\Indexing\QueueWorker;
+use BraintumSearch\Indexing\Rebuild;
+use BraintumSearch\Indexing\Reconciler;
+use BraintumSearch\Indexing\ReindexNotice;
+use BraintumSearch\Indexing\RunHistory;
+use BraintumSearch\Integration\WordPress\InstantSearch;
+use BraintumSearch\Integration\WordPress\QueryIntegration;
+use BraintumSearch\Integration\WordPress\SearchFilters;
+use BraintumSearch\Integration\WordPress\SearchModal;
+use BraintumSearch\Integration\Multilingual\CoreProvider;
+use BraintumSearch\Integration\Multilingual\PolylangProvider;
+use BraintumSearch\Integration\Multilingual\WpmlProvider;
+use BraintumSearch\Integration\WooCommerce\WooCommerce;
+use BraintumSearch\Language\Languages;
+use BraintumSearch\Multisite\NetworkConfig;
+use BraintumSearch\Multisite\SiteScope;
+use BraintumSearch\Rest\InstantResultsController;
+use BraintumSearch\Rest\RateLimiter;
+use BraintumSearch\Rest\SearchController;
+use BraintumSearch\Rest\StatusController;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\InstantResults;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
+use BraintumSearch\Search\ResponseParser;
+use BraintumSearch\Contracts\Breaker;
+use BraintumSearch\Contracts\Cache;
+use BraintumSearch\Contracts\Viewer;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Schema\AppliedSchema;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaExporter;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\Container;
+use BraintumSearch\Support\ObjectCache;
+use BraintumSearch\Support\OptionBreaker;
+use BraintumSearch\Support\Upgrade;
+use BraintumSearch\Support\WpViewer;
+use BraintumSearch\Support\Credentials;
+use BraintumSearch\Support\DebugLogger;
+use BraintumSearch\Support\Encryption;
+use BraintumSearch\Support\NullLogger;
 
 /**
  * Wires the plugin together.
@@ -86,7 +86,7 @@ use SolrEngine\Support\NullLogger;
  * fires is what causes anything to be built. A page load that never runs a
  * search or saves a post should cost the price of this file and nothing more.
  *
- * Replaces the 0.1.0 prototype's SolrEngine\Plugin, which constructed its
+ * Replaces the 0.1.0 prototype's BraintumSearch\Plugin, which constructed its
  * settings page, search controller and widget on every request whether or not
  * they were needed, and which registered activation hooks from inside
  * plugins_loaded where they can never fire.
@@ -179,7 +179,7 @@ final class Bootstrap {
 		add_action( 'init', array( $this, 'register_backends' ), 0 );
 
 		/**
-		 * Fires once SolrEngine has registered its services.
+		 * Fires once Braintum Search has registered its services.
 		 *
 		 * The place for an add-on to register a backend, a facet or an admin
 		 * screen. Nothing has been constructed yet, so registering here costs
@@ -187,9 +187,9 @@ final class Bootstrap {
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param Container $container SolrEngine's service container.
+		 * @param Container $container Braintum Search's service container.
 		 */
-		do_action( 'solrengine_booted', $this->container );
+		do_action( 'braintum_search_booted', $this->container );
 	}
 
 	/**
@@ -375,7 +375,7 @@ final class Bootstrap {
 				$config = $c->get( 'config' );
 
 				/**
-				 * Ports SolrEngine will connect to.
+				 * Ports Braintum Search will connect to.
 				 *
 				 * Widening this widens the surface an administrator could use
 				 * to probe internal infrastructure, so it is a filter rather
@@ -386,7 +386,7 @@ final class Bootstrap {
 				 * @param int[] $ports Permitted ports.
 				 */
 				$ports = apply_filters(
-					'solrengine_allowed_ports',
+					'braintum_search_allowed_ports',
 					$config->get_array( 'connection.allowed_ports', EndpointValidator::DEFAULT_PORTS )
 				);
 
@@ -748,7 +748,7 @@ final class Bootstrap {
 	 * and nothing here opens a connection.
 	 *
 	 * Public because it runs on init rather than inline during boot. An add-on
-	 * registering its own backend on `solrengine_booted` still works: the
+	 * registering its own backend on `braintum_search_booted` still works: the
 	 * registry is one shared object, and registration order does not matter as
 	 * long as every backend is registered before the first search.
 	 *
@@ -770,7 +770,7 @@ final class Bootstrap {
 			// Deferred: this runs on every request, and instant-search registers
 			// backends in a process with no translation stack loaded.
 			static function (): string {
-				return __( 'Apache Solr (self-hosted)', 'solrengine' );
+				return __( 'Apache Solr (self-hosted)', 'braintum-search-for-solr' );
 			},
 			$factory,
 			$factory
@@ -785,7 +785,7 @@ final class Bootstrap {
 		 * find nothing on the next page load. Registered only where somebody has
 		 * asked for it in wp-config.php, which nobody does by accident.
 		 */
-		if ( defined( 'SOLRENGINE_MEMORY_BACKEND' ) && SOLRENGINE_MEMORY_BACKEND ) {
+		if ( defined( 'BRAINTUM_SEARCH_MEMORY_BACKEND' ) && BRAINTUM_SEARCH_MEMORY_BACKEND ) {
 			$memory = static function () use ( $container ): MemoryBackend {
 				return $container->get( 'backend.memory' );
 			};
@@ -793,7 +793,7 @@ final class Bootstrap {
 			$registry->register(
 				MemoryBackend::ID,
 				static function (): string {
-					return __( 'In-memory (development only)', 'solrengine' );
+					return __( 'In-memory (development only)', 'braintum-search-for-solr' );
 				},
 				$memory,
 				$memory
@@ -894,19 +894,19 @@ final class Bootstrap {
 
 		// No load_plugin_textdomain() call. WordPress has loaded a plugin's
 		// translations on demand since 4.6, reading the Domain Path header for
-		// where to look, and the floor here is 6.5. Calling it is discouraged,
+		// where to look, and the floor here is 6.9. Calling it is discouraged,
 		// Plugin Check says so, and on a directory-hosted plugin it does nothing
 		// that would not have happened anyway.
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			// Before the opt-in gate, deliberately. "wp solrengine network enable"
+			// Before the opt-in gate, deliberately. "wp braintum-search network enable"
 			// has to work from a site that is switched off, which is every site
 			// the first time somebody runs it.
 			$this->register_cli();
 		}
 
 		if ( ! $container->get( 'site_scope' )->is_enabled() ) {
-			// A site in a network where SolrEngine is activated network-wide and
+			// A site in a network where Braintum Search is activated network-wide and
 			// this site has not been switched on. Nothing is indexed, nothing is
 			// searched, and WordPress behaves exactly as it did before.
 			//
@@ -1005,7 +1005,7 @@ final class Bootstrap {
 		);
 
 		add_action(
-			'admin_post_solrengine_save_connection',
+			'admin_post_braintum_search_save_connection',
 			static function () use ( $connection ): void {
 				$connection()->handle_save();
 			}
@@ -1062,10 +1062,12 @@ final class Bootstrap {
 	}
 
 	/**
-	 * Tell an administrator why SolrEngine is doing nothing here.
+	 * Tell an administrator why Braintum Search is doing nothing here.
 	 *
 	 * An inert plugin with a full settings screen looks broken. This says which
-	 * it is, and who can change it.
+	 * it is, and who can change it. Shown on the Plugins screen only, where an
+	 * administrator looks for the plugin: a site administrator cannot act on it,
+	 * so repeating it on every admin page would be noise (Guideline 11).
 	 *
 	 * @since 0.9.0
 	 *
@@ -1076,8 +1078,13 @@ final class Bootstrap {
 			return;
 		}
 
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( null === $screen || 'plugins' !== $screen->id ) {
+			return;
+		}
+
 		echo '<div class="notice notice-info"><p>'
-			. esc_html__( 'SolrEngine is not switched on for this site. Searches are answered by WordPress and nothing is being indexed. A network administrator can switch it on under Network Admin, Settings, SolrEngine.', 'solrengine' )
+			. esc_html__( 'Braintum Search is not switched on for this site. Searches are answered by WordPress and nothing is being indexed. A network administrator can switch it on under Network Admin, Settings, Braintum Search.', 'braintum-search-for-solr' )
 			. '</p></div>';
 	}
 
@@ -1135,16 +1142,16 @@ final class Bootstrap {
 			$container
 		);
 
-		\WP_CLI::add_command( 'solrengine test', array( $commands, 'test' ) );
-		\WP_CLI::add_command( 'solrengine status', array( $commands, 'status' ) );
-		\WP_CLI::add_command( 'solrengine schema', array( $commands, 'schema' ) );
-		\WP_CLI::add_command( 'solrengine index', array( $commands, 'index' ) );
-		\WP_CLI::add_command( 'solrengine rebuild', array( $commands, 'rebuild' ) );
-		\WP_CLI::add_command( 'solrengine history', array( $commands, 'history' ) );
-		\WP_CLI::add_command( 'solrengine backends', array( $commands, 'backends' ) );
+		\WP_CLI::add_command( 'braintum-search test', array( $commands, 'test' ) );
+		\WP_CLI::add_command( 'braintum-search status', array( $commands, 'status' ) );
+		\WP_CLI::add_command( 'braintum-search schema', array( $commands, 'schema' ) );
+		\WP_CLI::add_command( 'braintum-search index', array( $commands, 'index' ) );
+		\WP_CLI::add_command( 'braintum-search rebuild', array( $commands, 'rebuild' ) );
+		\WP_CLI::add_command( 'braintum-search history', array( $commands, 'history' ) );
+		\WP_CLI::add_command( 'braintum-search backends', array( $commands, 'backends' ) );
 
 		if ( is_multisite() ) {
-			\WP_CLI::add_command( 'solrengine network', array( $commands, 'network' ) );
+			\WP_CLI::add_command( 'braintum-search network', array( $commands, 'network' ) );
 		}
 	}
 
@@ -1264,7 +1271,7 @@ final class Bootstrap {
 		);
 
 		add_action(
-			'solrengine_full_sync_complete',
+			'braintum_search_full_sync_complete',
 			static function ( $run ) use ( $container ): void {
 				if ( is_array( $run ) && '' !== (string) ( $run['target'] ?? '' ) ) {
 					// A rebuild finished building. Nothing is serving from it
@@ -1308,7 +1315,7 @@ final class Bootstrap {
 			$container->get( 'indexing.queue' ),
 			$indexer,
 			$container->get( 'logger' ),
-			defined( 'SOLRENGINE_SYNC_INDEXING' ) && SOLRENGINE_SYNC_INDEXING
+			defined( 'BRAINTUM_SEARCH_SYNC_INDEXING' ) && BRAINTUM_SEARCH_SYNC_INDEXING
 		);
 	}
 
@@ -1490,7 +1497,7 @@ final class Bootstrap {
 				);
 
 				register_block_type(
-					SOLRENGINE_PLUGIN_DIR . 'blocks/search-filters',
+					BRAINTUM_SEARCH_PLUGIN_DIR . 'blocks/search-filters',
 					array(
 						'render_callback' => static function ( $attributes ) use ( $ui ): string {
 							$panel = $ui();

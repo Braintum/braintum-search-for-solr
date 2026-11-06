@@ -2,17 +2,17 @@
 /**
  * Renders suggestions as the response body autocomplete reads.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\Suggestions;
+use BraintumSearch\Contracts\Suggestions;
 
 /**
  * The wire format of an autocomplete response.
  *
- * Rendered by {@see \SolrEngine\Rest\SearchController::handle_suggest()}. Its
+ * Rendered by {@see \BraintumSearch\Rest\SearchController::handle_suggest()}. Its
  * own class so that the shape `instant-search.js` reads lives in one place, and
  * any future surface answering autocomplete renders it here rather than writing
  * a second copy to compare by hand.

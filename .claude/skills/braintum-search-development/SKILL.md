@@ -1,11 +1,11 @@
 ---
-name: solrengine-development
-description: Checklist for changing the SolrEngine WordPress plugin — PHP, templates, front-end assets, hooks, REST routes, docs — to WordPress.org directory standards. Use before and while editing anything under wp-content/plugins/solrengine, before calling a change done, and when preparing a release package.
+name: braintum-search-development
+description: Checklist for changing the Braintum Search WordPress plugin — PHP, templates, front-end assets, hooks, REST routes, docs — to WordPress.org directory standards. Use before and while editing anything under wp-content/plugins/braintum-search-for-solr, before calling a change done, and when preparing a release package.
 ---
 
-# Working on SolrEngine
+# Working on Braintum Search
 
-SolrEngine is headed for the WordPress.org plugin directory. Treat every change
+Braintum Search is headed for the WordPress.org plugin directory. Treat every change
 as something a plugin reviewer will read. The project rules are in `AGENTS.md`
 and win over anything here; this skill is the working checklist that goes with
 them.
@@ -20,7 +20,7 @@ them.
    add a seam (an interface, a container override) instead.
 3. Decide which layer the change belongs to: WordPress surface → integration →
    domain → backend adapter. Domain code must unit-test with no WordPress loaded.
-4. `solrengine.php` is the only entry point. Do not add a file that is
+4. `braintum-search-for-solr.php` is the only entry point. Do not add a file that is
    requested directly over HTTP or loads `wp-load.php`; the directory rejects
    it, which is why `instant.php` was removed. Bringing a lighter path back is
    the owner's decision, after the first release is approved.
@@ -39,9 +39,9 @@ Reviewers reject plugins for these. Check each one that the change touches.
   written in the handler itself (not inherited), plus `current_user_can()`.
   REST routes need a real `permission_callback`; `__return_true` only for public
   reads, and say so in a comment.
-- **Prefix everything global** with `solrengine` / `SOLRENGINE` / `SolrEngine`:
+- **Prefix everything global** with `braintum_search` / `BRAINTUM_SEARCH` / `BraintumSearch`:
   options, hooks, handles, CSS classes, JS globals, transients, cron events.
-- **i18n.** Text domain `solrengine`, literal strings only (no variables in
+- **i18n.** Text domain `braintum-search-for-solr`, literal strings only (no variables in
   `__()`), `/* translators: */` comments before any placeholder. In JS, import
   from `@wordpress/i18n` and call `wp_set_script_translations()`.
 - **Enqueue, never inline tags.** `wp_enqueue_script` / `_style` with the
@@ -67,13 +67,13 @@ Reviewers reject plugins for these. Check each one that the change touches.
 - **GPL-compatible** everything, including fonts, icons and npm packages that
   end up in `assets/build`.
 - **PHP 7.4.** No `match`, no constructor promotion, no union types, no `?->`,
-  no `str_contains` without a polyfill. `solrengine.php` must parse on older
+  no `str_contains` without a polyfill. `braintum-search-for-solr.php` must parse on older
   PHP still: no type declarations, short closures or namespaces there.
 
 ## Public API
 
 A hook, a contract method, a REST parameter, a template, a template slot
-(`data-solrengine-*`) and a JS event are all public API. Each one needs:
+(`data-braintum-search-*`) and a JS event are all public API. Each one needs:
 
 - [ ] `@since x.y.z` in its docblock (the unreleased version is in `readme.txt`'s changelog)
 - [ ] a test
@@ -87,17 +87,17 @@ treat it as a breaking change and say so in the changelog.
 ## Templates
 
 Templates in `templates/` are located theme-first through
-`Integration\WordPress\Templates`: `yourtheme/solrengine/<name>.php`, then the
-plugin's copy, then the `solrengine_template` filter.
+`Integration\WordPress\Templates`: `yourtheme/braintum-search/<name>.php`, then the
+plugin's copy, then the `braintum_search_template` filter.
 
-- The script finds parts by `data-solrengine-*` attributes, never by class.
+- The script finds parts by `data-braintum-search-*` attributes, never by class.
   Classes and structure are free to change; attributes are the contract.
 - Card templates have exactly one root element, carrying `role="option"`.
 - Values are inserted as text and URLs are restricted to http(s) in
   `assets/src/search-modal.js`. Do not add a slot that inserts markup.
 - Templates are rendered once per page, with the theme loaded, into
   `<template>` elements, and the JSON carries data, never markup. Anything per-result that a template cannot express
-  belongs in the `solrengine:result` event, not in a new endpoint.
+  belongs in the `braintum-search:result` event, not in a new endpoint.
 
 ## Front-end assets
 
@@ -117,7 +117,7 @@ plugin's copy, then the `solrengine_template` filter.
 The PostToolUse hook in `.claude/settings.json` runs the relevant part of these
 after every edit: php -l, phpcs, phpstan, the unit suite, the hook-reference and
 direct-access checks, and eslint or stylelint. When it reports a failure, fix it
-before the next edit. Set `SOLRENGINE_HOOK_SKIP=1` to disable it for a session.
+before the next edit. Set `BRAINTUM_SEARCH_HOOK_SKIP=1` to disable it for a session.
 
 Before calling a change done, run the full set:
 
@@ -132,11 +132,11 @@ Integration tests need the WordPress test library and a MySQL database:
 
 ```bash
 bash bin/install-wp-tests.sh <db> <user> <pass> 127.0.0.1 latest
-SOLRENGINE_TEST_SUITE=integration composer test:integration
+BRAINTUM_SEARCH_TEST_SUITE=integration composer test:integration
 ```
 
 Skips are not passes. Read the count. The WooCommerce tests skip when WooCommerce
-is not loaded; the backend suite skips entirely without `SOLRENGINE_TEST_SOLR_URL`.
+is not loaded; the backend suite skips entirely without `BRAINTUM_SEARCH_TEST_SOLR_URL`.
 
 Read the diff after `composer lint:fix`. `phpcbf` rewrites string literals.
 
@@ -147,8 +147,8 @@ From a clean checkout of the commit being released:
 ```bash
 npm ci && npm run build                          # assets/build must match assets/src
 bash bin/build-release.sh                        # package, zip, sha256, manifest
-unzip -q build/solrengine-<version>.zip -d "$SCRATCH"
-wp plugin check "$SCRATCH/solrengine"            # no ignore-codes; expect 0 and 0
+unzip -q build/braintum-search-for-solr-<version>.zip -d "$SCRATCH"
+wp plugin check "$SCRATCH/braintum-search-for-solr"   # no ignore-codes; expect 0 and 0
 ```
 
 `bin/build-release.sh` checks the versions, copies what `.distignore` allows,
@@ -160,7 +160,7 @@ checksum. It warns when the tree has uncommitted changes: do not release that
 zip. Entries in `.distignore` meant for the root only need a leading `/` —
 unanchored, `build` also dropped `assets/build`.
 
-The version number lives in the `solrengine.php` header, `SOLRENGINE_VERSION`
+The version number lives in the `braintum-search-for-solr.php` header, `BRAINTUM_SEARCH_VERSION`
 in `constants.php`, the `readme.txt` Stable tag and `package.json`, and
 `bin/check-version.php` holds them together and requires a changelog entry for
 it. Bump the version only when the owner asks — that is a release

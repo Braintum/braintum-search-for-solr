@@ -2,15 +2,15 @@
 /**
  * Adds WooCommerce data to a product's document.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Documents\DocumentFields;
 use WC_Product;
 use WC_Product_Attribute;
 use WC_Product_Variable;
@@ -19,7 +19,7 @@ use WP_Post;
 /**
  * Turns a product into the fields a shop needs to search and filter by.
  *
- * Attached to `solrengine_document`, the extension point the core builder
+ * Attached to `braintum_search_document`, the extension point the core builder
  * documents as the primary customisation seam. Nothing in core has to know
  * what a variation is, and a site not running WooCommerce pays nothing.
  *
@@ -90,8 +90,8 @@ final class ProductDocument {
 	 * @return void
 	 */
 	public function register(): void {
-		add_filter( 'solrengine_should_index_object', array( $this, 'assess' ), 10, 2 );
-		add_filter( 'solrengine_document', array( $this, 'enrich' ), 10, 2 );
+		add_filter( 'braintum_search_should_index_object', array( $this, 'assess' ), 10, 2 );
+		add_filter( 'braintum_search_document', array( $this, 'enrich' ), 10, 2 );
 	}
 
 	/**

@@ -2,15 +2,15 @@
 /**
  * Works out what a schema is missing.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Schema;
+namespace BraintumSearch\Schema;
 
-use SolrEngine\Contracts\SchemaContract;
-use SolrEngine\Contracts\SchemaOperation;
-use SolrEngine\Contracts\SchemaPlan;
-use SolrEngine\Contracts\SchemaState;
+use BraintumSearch\Contracts\SchemaContract;
+use BraintumSearch\Contracts\SchemaOperation;
+use BraintumSearch\Contracts\SchemaPlan;
+use BraintumSearch\Contracts\SchemaState;
 
 /**
  * Compares a required contract against a live schema.
@@ -22,7 +22,7 @@ use SolrEngine\Contracts\SchemaState;
  * Three rules govern everything here, all from ADR-003:
  *
  * 1. **Additive only.** The planner emits add-field, add-dynamic-field and
- *    add-copy-field. Never replace, never delete — not even for SolrEngine's
+ *    add-copy-field. Never replace, never delete — not even for Braintum Search's
  *    own fields. A field that already exists and is wrong is reported as a
  *    blocker for a human to resolve, because silently replacing it would
  *    discard whatever the customer changed it to.
@@ -60,14 +60,14 @@ final class SchemaPlanner {
 			if ( ! $state->has_field_type( (string) $type ) ) {
 				$blockers[] = sprintf(
 					/* translators: %s: Solr field type name. */
-					__( 'The field type "%s" is not defined in this schema. SolrEngine will not create field types, because an analyser is a larger commitment than a field. Apply the shipped configset, or add the type yourself.', 'solrengine' ),
+					__( 'The field type "%s" is not defined in this schema. Braintum Search will not create field types, because an analyser is a larger commitment than a field. Apply the shipped configset, or add the type yourself.', 'braintum-search-for-solr' ),
 					$type
 				);
 			}
 		}
 
 		if ( ! $state->is_mutable() ) {
-			$blockers[] = __( 'This schema cannot be changed through the Schema API. It is either not a managed schema, or the credentials lack permission. Use the exported configuration instead.', 'solrengine' );
+			$blockers[] = __( 'This schema cannot be changed through the Schema API. It is either not a managed schema, or the credentials lack permission. Use the exported configuration instead.', 'braintum-search-for-solr' );
 		}
 
 		foreach ( $contract->fields() as $field ) {
@@ -79,7 +79,7 @@ final class SchemaPlanner {
 				// after half the plan has been sent.
 				$blockers[] = sprintf(
 					/* translators: 1: field name, 2: Solr field type name. */
-					__( '"%1$s" needs the field type "%2$s", which this schema does not define. SolrEngine will not create field types. Apply the shipped configset, which defines the language analysers, or add the type yourself.', 'solrengine' ),
+					__( '"%1$s" needs the field type "%2$s", which this schema does not define. Braintum Search will not create field types. Apply the shipped configset, which defines the language analysers, or add the type yourself.', 'braintum-search-for-solr' ),
 					$field->name(),
 					$field->type()
 				);
@@ -97,7 +97,7 @@ final class SchemaPlanner {
 					$field->to_payload(),
 					sprintf(
 						/* translators: 1: field name, 2: field type, 3: why it exists. */
-						__( 'Add %1$s (%2$s) — %3$s', 'solrengine' ),
+						__( 'Add %1$s (%2$s) — %3$s', 'braintum-search-for-solr' ),
 						$field->name(),
 						$field->type(),
 						$field->purpose()
@@ -114,7 +114,7 @@ final class SchemaPlanner {
 			if ( ! $field->is_satisfied_by( $live ) ) {
 				$blockers[] = sprintf(
 					/* translators: 1: field name, 2: required type. */
-					__( '"%1$s" already exists but does not match what SolrEngine needs (type %2$s). SolrEngine will not replace a field it did not create. Adjust it yourself, or use a separate collection.', 'solrengine' ),
+					__( '"%1$s" already exists but does not match what Braintum Search needs (type %2$s). Braintum Search will not replace a field it did not create. Adjust it yourself, or use a separate collection.', 'braintum-search-for-solr' ),
 					$field->name(),
 					$field->type()
 				);
@@ -131,7 +131,7 @@ final class SchemaPlanner {
 				$rule->to_payload(),
 				sprintf(
 					/* translators: 1: source field, 2: destination field, 3: why it exists. */
-					__( 'Copy %1$s into %2$s — %3$s', 'solrengine' ),
+					__( 'Copy %1$s into %2$s — %3$s', 'braintum-search-for-solr' ),
 					$rule->source(),
 					$rule->destination(),
 					$rule->purpose()
@@ -144,7 +144,7 @@ final class SchemaPlanner {
 	}
 
 	/**
-	 * A fingerprint of the fields SolrEngine owns in a live schema.
+	 * A fingerprint of the fields Braintum Search owns in a live schema.
 	 *
 	 * Stored alongside the applied contract version. If the fingerprint changes
 	 * without the version changing, somebody edited the schema underneath us,

@@ -2,10 +2,10 @@
 /**
  * The outcome of a search.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What a search found.

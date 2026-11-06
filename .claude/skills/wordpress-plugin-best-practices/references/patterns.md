@@ -1,8 +1,8 @@
 # Patterns
 
 Reference implementations for the rules in `SKILL.md`. `myplugin` / `MyPlugin`
-stand in for the project's prefix (in SolrEngine: `solrengine` /
-`SolrEngine`). Each snippet targets PHP 7.4 and WordPress 6.5 or later.
+stand in for the project's prefix (in Braintum Search: `braintum-search` /
+`Braintum Search`). Each snippet targets PHP 7.4 and WordPress 6.9 or later.
 
 ## Contents
 

@@ -1,5 +1,5 @@
 {
-  "name": "solrengine",
+  "name": "braintum-search-for-solr",
   "version": "1.0.0",
   "description": "Apache Solr powered search for WordPress.",
   "license": "GPL-2.0-or-later",

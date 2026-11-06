@@ -5,26 +5,26 @@ should not be done in a web request at all — indexing a large site, migrating 
 network — because there is no web-server timeout to fight here.
 
 ```
-wp solrengine test        is the connection usable, and if not, why
-wp solrengine status      what the index and queue currently hold
-wp solrengine schema      compare and apply the schema contract
-wp solrengine index       full and resumable indexing
-wp solrengine rebuild     build a replacement index, then switch to it
-wp solrengine history     what has been indexed, and what failed
-wp solrengine backends    move between search backends
-wp solrengine network     the same, across a multisite network
+wp braintum-search test        is the connection usable, and if not, why
+wp braintum-search status      what the index and queue currently hold
+wp braintum-search schema      compare and apply the schema contract
+wp braintum-search index       full and resumable indexing
+wp braintum-search rebuild     build a replacement index, then switch to it
+wp braintum-search history     what has been indexed, and what failed
+wp braintum-search backends    move between search backends
+wp braintum-search network     the same, across a multisite network
 ```
 
 Every command reports the same facts as the admin screen, because both read the
-same services. `wp help solrengine <command>` has the full argument list;
+same services. `wp help braintum-search <command>` has the full argument list;
 everything below is the shape of the work rather than a reprint of it.
 
 ## Getting connected
 
 ```bash
-wp solrengine test
-wp solrengine test --format=json
-wp solrengine status
+wp braintum-search test
+wp braintum-search test --format=json
+wp braintum-search status
 ```
 
 `test` runs the same multi-step diagnosis the connection screen shows: address
@@ -35,9 +35,9 @@ incomplete" is distinguishable from "cannot connect".
 ## Schema
 
 ```bash
-wp solrengine schema            # what is missing
-wp solrengine schema apply      # apply it, after a confirmation
-wp solrengine schema export     # print the XML and change nothing
+wp braintum-search schema            # what is missing
+wp braintum-search schema apply      # apply it, after a confirmation
+wp braintum-search schema export     # print the XML and change nothing
 ```
 
 `apply` only ever adds `se_`-prefixed fields, never replaces or deletes one, and
@@ -51,11 +51,11 @@ why. See [schema](schema.md).
 ## Indexing
 
 ```bash
-wp solrengine index
-wp solrengine index --post-type=post,page
-wp solrengine index progress
-wp solrengine index resume
-wp solrengine index cancel
+wp braintum-search index
+wp braintum-search index --post-type=post,page
+wp braintum-search index progress
+wp braintum-search index resume
+wp braintum-search index cancel
 ```
 
 Resumable by design: progress is a stored cursor, so an interrupted run continues
@@ -68,12 +68,12 @@ a replacement instead.
 ## Building a replacement index
 
 ```bash
-wp solrengine rebuild start
-wp solrengine rebuild start --target=wordpress_v2
-wp solrengine rebuild verify
-wp solrengine rebuild switch
-wp solrengine rebuild discard
-wp solrengine rebuild drop-previous
+wp braintum-search rebuild start
+wp braintum-search rebuild start --target=wordpress_v2
+wp braintum-search rebuild verify
+wp braintum-search rebuild switch
+wp braintum-search rebuild discard
+wp braintum-search rebuild drop-previous
 ```
 
 `start` runs to completion in this process and then verifies. `switch` refuses
@@ -86,9 +86,9 @@ longer need the way back. See [indexing](indexing.md#building-a-replacement-inde
 ## History
 
 ```bash
-wp solrengine history
-wp solrengine history --limit=50
-wp solrengine history --failures
+wp braintum-search history
+wp braintum-search history --limit=50
+wp braintum-search history --failures
 ```
 
 The last fifty runs, and the objects that failed inside them. This is the answer to
@@ -98,11 +98,11 @@ you to which.
 ## Changing backend
 
 ```bash
-wp solrengine backends status
-wp solrengine backends start --to=<backend>
-wp solrengine index
-wp solrengine backends finish
-wp solrengine backends abort
+wp braintum-search backends status
+wp braintum-search backends start --to=<backend>
+wp braintum-search index
+wp braintum-search backends finish
+wp braintum-search backends abort
 ```
 
 Between `start` and `finish`, indexing writes to the new backend while the old one
@@ -113,12 +113,12 @@ searches never left and deletes nothing.
 ## Networks
 
 ```bash
-wp solrengine network status
-wp solrengine network enable 2 3 4
-wp solrengine network enable --all
-wp solrengine network disable 7
-wp solrengine network index --pause=30
-wp solrengine network schema
+wp braintum-search network status
+wp braintum-search network enable 2 3 4
+wp braintum-search network enable --all
+wp braintum-search network disable 7
+wp braintum-search network index --pause=30
+wp braintum-search network schema
 ```
 
 `index` and `schema` walk the enabled sites one at a time, in a separate process
@@ -138,15 +138,15 @@ Two habits worth having on a large site:
 
 ```bash
 # Index every site in a network overnight, gently, with a log to read afterwards.
-wp solrengine network index --pause=60 2>&1 | tee solrengine-index.log
+wp braintum-search network index --pause=60 2>&1 | tee braintum-search-index.log
 
 # Find out what failed without reading the whole log.
-wp solrengine history --failures
+wp braintum-search history --failures
 ```
 
 ## Debugging
 
-Set `SOLRENGINE_DEBUG` in `wp-config.php` to record why individual documents
-failed. Set `SOLRENGINE_SYNC_INDEXING` to index synchronously instead of through
+Set `BRAINTUM_SEARCH_DEBUG` in `wp-config.php` to record why individual documents
+failed. Set `BRAINTUM_SEARCH_SYNC_INDEXING` to index synchronously instead of through
 the queue, which makes a failure happen in front of you rather than in a background
 job. Both are for diagnosis, not for production.

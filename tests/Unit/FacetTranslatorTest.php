@@ -8,27 +8,27 @@
  * halves of multi-select faceting — the tag on the filter and the exclusion in
  * the domain — actually match.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FacetTranslator;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FacetTranslator;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
 
 /**
- * @covers \SolrEngine\Search\FacetTranslator
- * @covers \SolrEngine\Search\FacetRegistry
- * @covers \SolrEngine\Contracts\FacetDefinition
+ * @covers \BraintumSearch\Search\FacetTranslator
+ * @covers \BraintumSearch\Search\FacetRegistry
+ * @covers \BraintumSearch\Contracts\FacetDefinition
  */
 final class FacetTranslatorTest extends TestCase {
 
@@ -213,7 +213,7 @@ final class FacetTranslatorTest extends TestCase {
 	public function test_an_unusable_definition_is_refused_at_registration(): void {
 		$registry = new FacetRegistry();
 
-		// A field outside SolrEngine's prefix would let a facet enumerate
+		// A field outside Braintum Search's prefix would let a facet enumerate
 		// another application's data in a shared collection.
 		$registry->register( FacetDefinition::terms( 'other', 'their_field_s', 'Theirs' ) );
 

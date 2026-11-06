@@ -63,7 +63,7 @@ routinely holds internal notes, API keys and personal data.
 
 ## Custom fields
 
-**SolrEngine → Content** lists the custom fields your site actually uses, most
+**Braintum Search → Content** lists the custom fields your site actually uses, most
 used first, so you can pick one rather than remembering what your events plugin
 calls its date. Private keys — the ones beginning with `_` — are hidden until
 you ask for them, because a field holding a licence key looks exactly like a
@@ -91,18 +91,18 @@ Two keys that would produce the same field name are refused when you add the
 second, rather than silently overwriting each other.
 
 Changing this list — or the indexed post types — changes what a document *should*
-contain and changes nothing about the documents already in the index. SolrEngine
+contain and changes nothing about the documents already in the index. Braintum Search
 records that a reindex is outstanding and says so on screen, rather than letting
 the setting look as though it took effect.
 
 ## Full synchronisation
 
 ```bash
-wp solrengine index
-wp solrengine index --post-type=post,page
-wp solrengine index progress
-wp solrengine index resume
-wp solrengine index cancel
+wp braintum-search index
+wp braintum-search index --post-type=post,page
+wp braintum-search index progress
+wp braintum-search index resume
+wp braintum-search index cancel
 ```
 
 Resumable by design. Progress is a stored cursor, so an interrupted run
@@ -128,25 +128,25 @@ The alternative builds a second index while the first keeps serving:
 build into a second index  →  check it against WordPress  →  switch  →  (later) delete the old one
 ```
 
-Start it from **SolrEngine → Tools**, or:
+Start it from **Braintum Search → Tools**, or:
 
 ```bash
-wp solrengine rebuild start
-wp solrengine rebuild start --target=wordpress_v2
-wp solrengine rebuild verify
-wp solrengine rebuild switch
-wp solrengine rebuild discard
-wp solrengine rebuild drop-previous
+wp braintum-search rebuild start
+wp braintum-search rebuild start --target=wordpress_v2
+wp braintum-search rebuild verify
+wp braintum-search rebuild switch
+wp braintum-search rebuild discard
+wp braintum-search rebuild drop-previous
 ```
 
-**How the switch happens depends on your Solr**, and SolrEngine reports which
+**How the switch happens depends on your Solr**, and Braintum Search reports which
 before it starts:
 
-- **SolrCloud, where your collection name is an alias.** SolrEngine creates a
+- **SolrCloud, where your collection name is an alias.** Braintum Search creates a
   collection using the same configset as the live one, indexes into it, then
   repoints the alias. The switch is atomic on the server: no request sees a
   half-switched index.
-- **Everything else.** SolrEngine switches the collection it is configured with.
+- **Everything else.** Braintum Search switches the collection it is configured with.
   One request may be answered by the old index while the next is answered by the
   new one — a far shorter window than reindexing in place, and reversible from
   WordPress.
@@ -154,9 +154,9 @@ before it starts:
 Solr refuses to create an alias whose name is already a real collection, so a
 site that has never set an alias up gets the second strategy. If you want the
 first, create an alias on your server pointing at your current collection and
-name the alias in SolrEngine's connection settings.
+name the alias in Braintum Search's connection settings.
 
-On a Solr that is not in SolrCloud mode, SolrEngine cannot create a core for you
+On a Solr that is not in SolrCloud mode, Braintum Search cannot create a core for you
 — that means writing a configuration directory on the server's filesystem, which
 is not something a WordPress plugin should reach through HTTP to do. Create an
 empty core with the same configuration as your current one and name it when you
@@ -170,17 +170,17 @@ makes writes visible on its own commit schedule.
 
 **The previous index is never deleted for you**, on any timer. It is the way back
 if something turns out to be wrong two days later. Delete it yourself when you
-are sure, from the Tools screen or with `wp solrengine rebuild drop-previous`.
+are sure, from the Tools screen or with `wp braintum-search rebuild drop-previous`.
 
 ## History
 
-The last fifty runs are kept in `{prefix}solrengine_index_runs`, and the objects
-that failed inside them in `{prefix}solrengine_failures`. Both are pruned
+The last fifty runs are kept in `{prefix}braintum_search_index_runs`, and the objects
+that failed inside them in `{prefix}braintum_search_failures`. Both are pruned
 automatically as new runs are recorded.
 
 ```bash
-wp solrengine history
-wp solrengine history --failures
+wp braintum-search history
+wp braintum-search history --failures
 ```
 
 The Tools screen shows the same thing, with a link to each post that failed.
@@ -202,7 +202,7 @@ administrator switches it on. See [multisite](multisite.md).
 ## The queue
 
 Action Scheduler is used when it is available, which is the case on every
-WooCommerce site and whenever SolrEngine's bundled copy wins the version
+WooCommerce site and whenever Braintum Search's bundled copy wins the version
 negotiation. Otherwise WP-Cron.
 
 The WP-Cron fallback is weaker and the dashboard says so. It has no claim
@@ -221,27 +221,27 @@ A reference whose post has since been deleted or unpublished is removed from the
 index rather than skipped. That makes the queue self-correcting: a job created
 while a post was public, and run after it was unpublished, does the right thing.
 
-Set `SOLRENGINE_DEBUG` in `wp-config.php` to see why individual documents
+Set `BRAINTUM_SEARCH_DEBUG` in `wp-config.php` to see why individual documents
 failed.
 
 ## Developer hooks
 
 | Hook | Type | Purpose |
 | --- | --- | --- |
-| `solrengine_indexable_post_types` | filter | Which post types are eligible |
-| `solrengine_should_index_object` | filter | Veto one object, with a reason |
-| `solrengine_document` | filter | The built document, before queueing |
-| `solrengine_indexed` | action | After a batch is written |
-| `solrengine_index_failed` | action | After one document fails |
-| `solrengine_full_sync_complete` | action | After a full run finishes |
+| `braintum_search_indexable_post_types` | filter | Which post types are eligible |
+| `braintum_search_should_index_object` | filter | Veto one object, with a reason |
+| `braintum_search_document` | filter | The built document, before queueing |
+| `braintum_search_indexed` | action | After a batch is written |
+| `braintum_search_index_failed` | action | After one document fails |
+| `braintum_search_full_sync_complete` | action | After a full run finishes |
 
-Field names added through `solrengine_document` must follow the `se_<type>_`
+Field names added through `braintum_search_document` must follow the `se_<type>_`
 convention. Anything else has no dynamic field to land in and Solr will reject
 the document.
 
 ## Synchronous mode
 
-`SOLRENGINE_SYNC_INDEXING` makes indexing happen inline. It exists for tests and
+`BRAINTUM_SEARCH_SYNC_INDEXING` makes indexing happen inline. It exists for tests and
 local debugging and is deliberately absent from the settings screen: it puts a
 network call with a multi-second timeout inside `wp_insert_post()`, so a slow
 Solr makes every editorial save slow and an unreachable one makes saves hang.

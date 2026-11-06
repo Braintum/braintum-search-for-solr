@@ -1,11 +1,11 @@
 # Security
 
-What SolrEngine defends against, how, and — as importantly — what each
+What Braintum Search defends against, how, and — as importantly — what each
 mitigation does **not** cover. A security document that lists only strengths
 misleads the person it is written for.
 
 **Found a vulnerability?** Report it privately through
-[GitHub's private vulnerability reporting](https://github.com/Braintum/solrengine/security/advisories/new),
+[GitHub's private vulnerability reporting](https://github.com/Braintum/braintum-search-for-solr/security/advisories/new),
 not in a public issue or forum topic. See [SECURITY.md](../SECURITY.md).
 
 ## Server-side request forgery
@@ -21,7 +21,7 @@ overwhelmingly common Solr deployment is `http://127.0.0.1:8983/solr`, blocked
 on both counts. Filtering `http_request_host_is_external` to permit it would
 weaken the protection for every other plugin on the site.
 
-**What SolrEngine does instead.** `EndpointValidator` applies its own rules:
+**What Braintum Search does instead.** `EndpointValidator` applies its own rules:
 
 | Control | Rule |
 | --- | --- |
@@ -50,8 +50,8 @@ window rather than closing it. Note also that the attacker must already hold
 
 Ranked, best first:
 
-1. **`wp-config.php` constants.** `SOLRENGINE_SOLR_USER` and
-   `SOLRENGINE_SOLR_PASSWORD`. Not in the database, not in a dump, not editable
+1. **`wp-config.php` constants.** `BRAINTUM_SEARCH_SOLR_USER` and
+   `BRAINTUM_SEARCH_SOLR_PASSWORD`. Not in the database, not in a dump, not editable
    through a compromised admin session. Detected automatically; the admin field
    is disabled and says so.
 2. **Encrypted option.** `sodium_crypto_secretbox` with a key derived from
@@ -88,7 +88,7 @@ Not yet reachable — search arrives in Phase 3 — but the design is fixed:
 
 ## Schema changes
 
-SolrEngine can modify a customer's Solr schema. Capability is not consent, so:
+Braintum Search can modify a customer's Solr schema. Capability is not consent, so:
 
 - Only fields prefixed `se_` are ever touched.
 - Only additive commands are issued: `add-field`, `add-dynamic-field`,
@@ -156,7 +156,7 @@ network shares by definition, so one stored value is readable from every site.
 That is the property that makes them usable and it is also their limit: any site
 in the network can read them, so a network is a trust boundary and a compromised
 site administrator on any site has the Solr password. Where that is not
-acceptable, use `SOLRENGINE_SOLR_USER` and `SOLRENGINE_SOLR_PASSWORD` in
+acceptable, use `BRAINTUM_SEARCH_SOLR_USER` and `BRAINTUM_SEARCH_SOLR_PASSWORD` in
 `wp-config.php`, or give each site its own credentials.
 
 **Cross-site leakage under a shared collection** is covered below: `se_i_site` is
@@ -201,7 +201,7 @@ Two leakage paths that return no documents and are easy to miss:
 
 ## Entry points
 
-`solrengine.php` is the only way into the plugin, and every shipped PHP file
+`braintum-search-for-solr.php` is the only way into the plugin, and every shipped PHP file
 either refuses direct access or contains nothing that runs when loaded.
 `bin/check-direct-access.php` enforces that in `composer check`, and Plugin Check
 enforces it again in CI against the built package, with no ignored codes.

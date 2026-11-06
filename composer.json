@@ -1,9 +1,9 @@
 {
-	"name": "solrengine/solrengine",
+	"name": "braintum/braintum-search-for-solr",
 	"description": "Apache Solr powered search for WordPress.",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
-	"homepage": "https://www.solrengine.com",
+	"homepage": "https://www.braintum.com/plugins/braintum-search-for-solr/",
 	"authors": [
 		{
 			"name": "Braintum",
@@ -12,7 +12,7 @@
 	],
 	"require": {
 		"php": ">=7.4",
-		"woocommerce/action-scheduler": "^3.9"
+		"woocommerce/action-scheduler": "^4.2"
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
@@ -29,12 +29,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SolrEngine\\": "src/"
+			"BraintumSearch\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"SolrEngine\\Tests\\": "tests/"
+			"BraintumSearch\\Tests\\": "tests/"
 		}
 	},
 	"config": {

@@ -2,13 +2,13 @@
 /**
  * Circuit breaker state held in an option.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Breaker;
-use SolrEngine\Contracts\Logger;
+use BraintumSearch\Contracts\Breaker;
+use BraintumSearch\Contracts\Logger;
 
 /**
  * The breaker every request shares, stored in one option.
@@ -27,7 +27,7 @@ final class OptionBreaker implements Breaker {
 	 *
 	 * @var string
 	 */
-	public const OPTION = 'solrengine_breaker';
+	public const OPTION = 'braintum_search_breaker';
 
 	/**
 	 * Consecutive failures before the breaker opens.

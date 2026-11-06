@@ -1,9 +1,9 @@
 ---
-name: solrengine-accessibility
-description: Accessibility rules and audit for SolrEngine's front end — the search popup, the suggestion list, the filter panel, and the templates themes override. Use before and while changing anything a visitor sees or operates (assets/src, templates/, the markup a PHP class prints), when a change touches keyboard handling, focus, ARIA, colour or motion, and before calling such a change done.
+name: braintum-search-accessibility
+description: Accessibility rules and audit for Braintum Search's front end — the search popup, the suggestion list, the filter panel, and the templates themes override. Use before and while changing anything a visitor sees or operates (assets/src, templates/, the markup a PHP class prints), when a change touches keyboard handling, focus, ARIA, colour or motion, and before calling such a change done.
 ---
 
-# Accessibility in SolrEngine
+# Accessibility in Braintum Search
 
 The target is WCAG 2.2 AA, checked, not assumed. WordPress.org's accessibility
 guidelines and the theme review's keyboard rules apply on top. `AGENTS.md` wins
@@ -59,7 +59,7 @@ Escape to clear itself.
 the `tabpanel`, labelled by the selected tab.
 
 **Announce, don't move.** Result counts, "no results", errors and "Showing 48 of
-338" go to the polite live region (`data-solrengine-status`). Focus stays where
+338" go to the polite live region (`data-braintum-search-status`). Focus stays where
 the visitor put it.
 
 **Names include the visible text** (WCAG 2.5.3). An `aria-label` starts with
@@ -90,11 +90,11 @@ docblocks state which elements carry meaning; keep them true.
 2. The keyboard and axe audit, on a running site with indexed content:
 
    ```bash
-   SOLRENGINE_A11Y_URL=http://example.test/ npm run test:a11y
+   BRAINTUM_SEARCH_A11Y_URL=http://example.test/ npm run test:a11y
    ```
 
    Options are documented at the top of `tests/a11y/search-modal.js`
-   (`SOLRENGINE_A11Y_QUERY`, and `SOLRENGINE_A11Y_COOKIE` for a site in
+   (`BRAINTUM_SEARCH_A11Y_QUERY`, and `BRAINTUM_SEARCH_A11Y_COOKIE` for a site in
    maintenance or WooCommerce "coming soon" mode — generate a logged-in cookie
    with WP-CLI and never print it). It types into the theme's real search field,
    walks Tab and the arrow keys, pages a type tab by keyboard, and runs axe-core

@@ -2,13 +2,13 @@
 /**
  * WordPress's own locale as a language source.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\Multilingual;
+namespace BraintumSearch\Integration\Multilingual;
 
-use SolrEngine\Contracts\LanguageProvider;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\LanguageProvider;
+use BraintumSearch\Language\LanguageTag;
 
 /**
  * The fallback: one site, one language, the one WordPress is set to.
@@ -43,7 +43,7 @@ final class CoreProvider implements LanguageProvider {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'WordPress site language', 'solrengine' );
+		return __( 'WordPress site language', 'braintum-search-for-solr' );
 	}
 
 	/**

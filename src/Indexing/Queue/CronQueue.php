@@ -2,13 +2,13 @@
 /**
  * WP-Cron job queue driver.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing\Queue;
+namespace BraintumSearch\Indexing\Queue;
 
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Contracts\Result;
 
 /**
  * Runs jobs through WP-Cron.
@@ -112,7 +112,7 @@ final class CronQueue implements JobQueue {
 
 		foreach ( $cron as $events ) {
 			foreach ( (array) $events as $name => $instances ) {
-				if ( 0 !== strpos( (string) $name, 'solrengine_' ) ) {
+				if ( 0 !== strpos( (string) $name, 'braintum_search_' ) ) {
 					continue;
 				}
 

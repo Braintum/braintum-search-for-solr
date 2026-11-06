@@ -1,7 +1,7 @@
 # WooCommerce
 
 Products are indexed as soon as WooCommerce is present. Answering the shop's
-own queries from Solr is a separate switch, on the SolrEngine settings screen,
+own queries from Solr is a separate switch, on the Braintum Search settings screen,
 and it starts off.
 
 ## What is indexed
@@ -53,7 +53,7 @@ cannot accept the approximation removes the price element from its copy of
 
 The practical limit: price filter boundaries can differ from displayed prices
 for customers in another tax jurisdiction. Multi-currency is out of scope, and
-`solrengine_document` is where a multi-currency plugin would add its own fields.
+`braintum_search_document` is where a multi-currency plugin would add its own fields.
 
 ## Stock is a bucket, not a number
 
@@ -67,7 +67,7 @@ absorb that.
 Merchants who need the number can switch it on:
 
 ```php
-add_filter( 'option_solrengine_index_config', function ( $config ) {
+add_filter( 'option_braintum_search_index_config', function ( $config ) {
 	$config['stock_quantity'] = true;
 
 	return $config;
@@ -101,7 +101,7 @@ they narrow products without touching the posts and pages in the same index.
 Three entry points: the classic shop and product archives, the Product
 Collection block, and ordinary site search.
 
-**A query SolrEngine cannot express exactly is handed back to WooCommerce.**
+**A query Braintum Search cannot express exactly is handed back to WooCommerce.**
 That includes a rating filter, a hand-picked list of products, a meta query, an
 ordering it does not recognise, and anything an extension added. The page is
 then answered by the database — slower, and right. A shop page that looks
@@ -134,7 +134,7 @@ from the catalogue's own prices), `stock_status`, `on_sale`, and one facet per
 global attribute. Categories, tags and brands come from the ordinary taxonomy
 facets.
 
-Place them with the **Search filters** block or the `[solrengine_filters]`
+Place them with the **Search filters** block or the `[braintum_search_filters]`
 shortcode — see [facets.md](facets.md). WooCommerce's own filter blocks are
 left alone deliberately: they are built on the Interactivity API, which is
 still moving, and merchants already know them.
@@ -151,7 +151,7 @@ asked again a quarter of an hour later rather than half a day later. Stores
 that would rather fix the bands themselves can:
 
 ```php
-add_filter( 'solrengine_wc_price_bands', function () {
+add_filter( 'braintum_search_wc_price_bands', function () {
 	return array( 'start' => 0.0, 'end' => 2000.0, 'gap' => 250.0 );
 } );
 ```

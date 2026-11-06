@@ -12,30 +12,30 @@
  * this suite needs nothing, so the rules are checked on every commit rather than
  * on every commit that someone remembered to start Docker for.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Backend\Memory\MemoryBackend;
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Contracts\IndexStatus;
-use SolrEngine\Contracts\LifecycleBackend;
-use SolrEngine\Contracts\SchemaBackend;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\Selector;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Search\FilterRegistry;
+use BraintumSearch\Backend\Memory\MemoryBackend;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Contracts\IndexStatus;
+use BraintumSearch\Contracts\LifecycleBackend;
+use BraintumSearch\Contracts\SchemaBackend;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\Selector;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Search\FilterRegistry;
 
 /**
- * @covers \SolrEngine\Backend\Memory\MemoryBackend
+ * @covers \BraintumSearch\Backend\Memory\MemoryBackend
  */
 final class BackendConformanceTest extends TestCase {
 
@@ -328,7 +328,7 @@ final class BackendConformanceTest extends TestCase {
 		// because a managed backend accepts whatever the document model
 		// produces — that is what being managed means.
 		$backend  = $this->backend();
-		$contract = ( new \SolrEngine\Schema\ContractRegistry() )->current();
+		$contract = ( new \BraintumSearch\Schema\ContractRegistry() )->current();
 
 		$planned = $backend->plan( $contract );
 
@@ -339,7 +339,7 @@ final class BackendConformanceTest extends TestCase {
 
 	public function test_a_managed_backend_refuses_to_be_changed(): void {
 		$backend  = $this->backend();
-		$contract = ( new \SolrEngine\Schema\ContractRegistry() )->current();
+		$contract = ( new \BraintumSearch\Schema\ContractRegistry() )->current();
 
 		$this->assertTrue( $backend->apply( $backend->plan( $contract )->value() )->is_failure() );
 	}

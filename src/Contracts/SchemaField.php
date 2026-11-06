@@ -2,10 +2,10 @@
 /**
  * One field or dynamic field definition.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A single field the index must provide.
@@ -182,7 +182,7 @@ final class SchemaField {
 	/**
 	 * Whether a live field definition satisfies this requirement.
 	 *
-	 * Compares only what SolrEngine depends on. A field that is stored when we
+	 * Compares only what Braintum Search depends on. A field that is stored when we
 	 * asked for unstored, or that carries extra attributes we never mentioned,
 	 * still satisfies the contract: the customer may have widened it
 	 * deliberately, and narrowing it back would be exactly the kind of

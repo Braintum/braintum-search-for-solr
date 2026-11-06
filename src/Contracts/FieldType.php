@@ -2,13 +2,13 @@
 /**
  * The type families a document field can have.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
- * Maps a logical type onto SolrEngine's field naming convention.
+ * Maps a logical type onto Braintum Search's field naming convention.
  *
  * A class of constants rather than an enum, because the supported PHP floor is
  * 7.4 (ADR-011).
@@ -73,7 +73,7 @@ final class FieldType {
 	);
 
 	/**
-	 * Whether a prefix is one SolrEngine understands.
+	 * Whether a prefix is one Braintum Search understands.
 	 *
 	 * @since 0.3.0
 	 *

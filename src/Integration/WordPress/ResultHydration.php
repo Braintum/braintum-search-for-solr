@@ -2,12 +2,12 @@
 /**
  * Turning hits into what WP_Query asked for.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
-use SolrEngine\Contracts\SearchResults;
+use BraintumSearch\Contracts\SearchResults;
 use WP_Post;
 use WP_Query;
 

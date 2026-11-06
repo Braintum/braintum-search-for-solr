@@ -2,13 +2,13 @@
 /**
  * WPML as a language source.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\Multilingual;
+namespace BraintumSearch\Integration\Multilingual;
 
-use SolrEngine\Contracts\LanguageProvider;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\LanguageProvider;
+use BraintumSearch\Language\LanguageTag;
 
 /**
  * Reads languages from WPML.
@@ -30,7 +30,7 @@ final class WpmlProvider implements LanguageProvider {
 	/*
 	 * Every apply_filters() below reads a value WPML provides. The prefix sniff
 	 * cannot tell a hook we fire from a hook we consume, and prefixing these
-	 * with "solrengine_" would call hooks that do not exist. Disabled for this
+	 * with "braintum_search_" would call hooks that do not exist. Disabled for this
 	 * class alone, which contains nothing but calls into WPML's documented
 	 * filter API.
 	 *
@@ -52,7 +52,7 @@ final class WpmlProvider implements LanguageProvider {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'WPML', 'solrengine' );
+		return __( 'WPML', 'braintum-search-for-solr' );
 	}
 
 	/**
@@ -61,7 +61,7 @@ final class WpmlProvider implements LanguageProvider {
 	 * Tested by asking rather than by looking for a constant. WPML's constants
 	 * have been renamed across major versions, and a site may have the plugin
 	 * present but not configured — in which case its filters return nothing and
-	 * reporting it active would give SolrEngine an empty language list to work
+	 * reporting it active would give Braintum Search an empty language list to work
 	 * from, which reads as "this site has no languages".
 	 *
 	 * @return bool

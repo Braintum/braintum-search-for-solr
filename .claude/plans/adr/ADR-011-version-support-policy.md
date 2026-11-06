@@ -130,3 +130,12 @@ Q7's recorded trigger — "rising to 8.1 when WooCommerce does" — has not fire
 When it does, raise `config.platform.php` in the same commit as the header, the
 readme, the CI matrix and `docs/compatibility.md`; the pin is the piece most
 easily forgotten, and forgetting it fails CI in a way that does not name itself.
+
+### Amendment, November 2026: WordPress floor raised to 6.9
+
+The WordPress.org review of 1.0.0 asked for the bundled Action Scheduler to be
+current. Action Scheduler 4.0 requires WordPress 6.8 and 4.2 requires 6.9, so
+the floor moved from 6.5 to 6.9 with the upgrade to 4.2.0. WooCommerce already
+requires 6.9, so stores, the priority persona, lose nothing. The plugin header,
+`BRAINTUM_SEARCH_MIN_WP`, the readme, `phpcs.xml.dist`, the CI matrix and
+`docs/compatibility.md` changed together.

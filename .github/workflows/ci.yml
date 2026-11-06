@@ -118,7 +118,7 @@ jobs:
         include:
           # Oldest supported combination.
           - php: '7.4'
-            wordpress: '6.5'
+            wordpress: '6.9'
           # Current.
           - php: '8.3'
             wordpress: 'latest'
@@ -158,7 +158,7 @@ jobs:
 
       - name: Integration tests
         env:
-          SOLRENGINE_TEST_SUITE: integration
+          BRAINTUM_SEARCH_TEST_SUITE: integration
         run: vendor/bin/phpunit --testsuite integration
 
   # The same integration suite with WooCommerce loaded. The plain jobs above
@@ -208,11 +208,11 @@ jobs:
           echo "WooCommerce ${version}"
           curl -sSfL "https://downloads.wordpress.org/plugin/woocommerce.${version}.zip" -o "$RUNNER_TEMP/woocommerce.zip"
           unzip -q "$RUNNER_TEMP/woocommerce.zip" -d "$RUNNER_TEMP"
-          echo "SOLRENGINE_TEST_WOOCOMMERCE=$RUNNER_TEMP/woocommerce" >> "$GITHUB_ENV"
+          echo "BRAINTUM_SEARCH_TEST_WOOCOMMERCE=$RUNNER_TEMP/woocommerce" >> "$GITHUB_ENV"
 
       - name: Integration tests with WooCommerce
         env:
-          SOLRENGINE_TEST_SUITE: integration
+          BRAINTUM_SEARCH_TEST_SUITE: integration
         run: vendor/bin/phpunit --testsuite integration --fail-on-skipped
 
   # Solr-backed tests. Separate because they need a container and are the
@@ -276,8 +276,8 @@ jobs:
 
       - name: Backend tests
         env:
-          SOLRENGINE_TEST_SUITE: backend
-          SOLRENGINE_TEST_SOLR_URL: http://127.0.0.1:8983/solr
+          BRAINTUM_SEARCH_TEST_SUITE: backend
+          BRAINTUM_SEARCH_TEST_SOLR_URL: http://127.0.0.1:8983/solr
         run: vendor/bin/phpunit --testsuite backend
 
   # Directory compliance. Blocking, per plan Appendix A item A17: WordPress.org
@@ -326,18 +326,18 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: solrengine-package
+          name: braintum-search-for-solr-package
           path: |
-            build/solrengine-*.zip
-            build/solrengine-*.zip.sha256
-            build/solrengine-*.manifest.txt
+            build/braintum-search-for-solr-*.zip
+            build/braintum-search-for-solr-*.zip.sha256
+            build/braintum-search-for-solr-*.manifest.txt
           if-no-files-found: error
 
       - uses: wordpress/plugin-check-action@v1
         id: plugin-check
         with:
-          build-dir: ./build/solrengine
-          slug: solrengine
+          build-dir: ./build/braintum-search-for-solr
+          slug: braintum-search-for-solr
           strict: true
 
       # The action's own gate is its exit status, and the audit found the

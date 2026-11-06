@@ -2,18 +2,18 @@
 /**
  * Answers the search popup.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\SearchHit;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\SearchHit;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
 
 /**
  * What the search popup shows for some text and a content-type tab.
@@ -31,7 +31,7 @@ use SolrEngine\Integration\WooCommerce\ProductFields;
  *   and keeps a crafted request from asking Solr for a deep page.
  *
  * Called by the popup's REST route
- * {@see \SolrEngine\Rest\InstantResultsController}. The response shape lives
+ * {@see \BraintumSearch\Rest\InstantResultsController}. The response shape lives
  * here rather than in the surface, so that any other surface answering the
  * popup returns this body unchanged: a second copy of it is a copy that
  * drifts.

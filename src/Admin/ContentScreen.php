@@ -2,18 +2,18 @@
 /**
  * What gets indexed, and how it is mapped.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Documents\MetaAllowlist;
-use SolrEngine\Documents\MetaKeys;
-use SolrEngine\Indexing\ReindexNotice;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Documents\MetaAllowlist;
+use BraintumSearch\Documents\MetaKeys;
+use BraintumSearch\Indexing\ReindexNotice;
+use BraintumSearch\Support\Config;
 
 /**
  * The screen that stops power users needing the filesystem.
@@ -50,14 +50,14 @@ final class ContentScreen extends Screen {
 	 *
 	 * @var string
 	 */
-	public const SLUG = 'solrengine-content';
+	public const SLUG = 'braintum-search-content';
 
 	/**
 	 * Form action.
 	 *
 	 * @var string
 	 */
-	public const ACTION = 'solrengine_save_content';
+	public const ACTION = 'braintum_search_save_content';
 
 	/**
 	 * Configuration.
@@ -99,7 +99,7 @@ final class ContentScreen extends Screen {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'Content', 'solrengine' );
+		return __( 'Content', 'braintum-search-for-solr' );
 	}
 
 	/**
@@ -150,9 +150,9 @@ final class ContentScreen extends Screen {
 		// either set changes what a document should contain, and none of it
 		// reaches a document that is already indexed.
 		if ( $before_types !== $this->configured_types() ) {
-			$this->notice->require_reindex( __( 'the indexed post types changed', 'solrengine' ) );
+			$this->notice->require_reindex( __( 'the indexed post types changed', 'braintum-search-for-solr' ) );
 		} elseif ( $before_meta !== $allowlist->all() ) {
-			$this->notice->require_reindex( __( 'the indexed meta fields changed', 'solrengine' ) );
+			$this->notice->require_reindex( __( 'the indexed meta fields changed', 'braintum-search-for-solr' ) );
 		}
 
 		// The discovery is cached for an hour, which is right while somebody
@@ -190,14 +190,14 @@ final class ContentScreen extends Screen {
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Content', 'solrengine' ); ?></h1>
+			<h1><?php esc_html_e( 'Content', 'braintum-search-for-solr' ); ?></h1>
 
 			<?php
 			$this->render_notice(
 				array(
-					'saved'   => array( 'success', __( 'Saved.', 'solrengine' ) ),
-					'partial' => array( 'warning', __( 'Saved, but some entries were rejected:', 'solrengine' ) ),
-					'nothing' => array( 'warning', __( 'Saved. No post types are selected, so nothing will be indexed.', 'solrengine' ) ),
+					'saved'   => array( 'success', __( 'Saved.', 'braintum-search-for-solr' ) ),
+					'partial' => array( 'warning', __( 'Saved, but some entries were rejected:', 'braintum-search-for-solr' ) ),
+					'nothing' => array( 'warning', __( 'Saved. No post types are selected, so nothing will be indexed.', 'braintum-search-for-solr' ) ),
 				)
 			);
 			?>
@@ -206,11 +206,11 @@ final class ContentScreen extends Screen {
 
 			<?php $this->open_form( self::ACTION ); ?>
 
-			<h2><?php esc_html_e( 'What is indexed', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'What is indexed', 'braintum-search-for-solr' ); ?></h2>
 
 			<table class="form-table" role="presentation">
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Post types', 'solrengine' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Post types', 'braintum-search-for-solr' ); ?></th>
 					<td>
 						<?php foreach ( $this->available_types() as $name => $label ) : ?>
 							<p style="margin:.2em 0">
@@ -233,7 +233,7 @@ final class ContentScreen extends Screen {
 								<?php
 								printf(
 									/* translators: %s: comma-separated list of post type names. */
-									esc_html__( 'Also indexed, added by an integration rather than by this screen: %s. Removing one means removing the code that adds it.', 'solrengine' ),
+									esc_html__( 'Also indexed, added by an integration rather than by this screen: %s. Removing one means removing the code that adds it.', 'braintum-search-for-solr' ),
 									// Escaped one name at a time, because escaping
 									// the joined string would print the markup
 									// that joins it.
@@ -246,17 +246,17 @@ final class ContentScreen extends Screen {
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Custom fields', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'Custom fields', 'braintum-search-for-solr' ); ?></h2>
 
 			<p>
-				<?php esc_html_e( 'Nothing in a custom field is indexed until you list it here. That is deliberate: custom fields hold licence keys, internal notes and personal data as often as they hold anything worth searching, and a search index is the wrong place for any of them.', 'solrengine' ); ?>
+				<?php esc_html_e( 'Nothing in a custom field is indexed until you list it here. That is deliberate: custom fields hold licence keys, internal notes and personal data as often as they hold anything worth searching, and a search index is the wrong place for any of them.', 'braintum-search-for-solr' ); ?>
 			</p>
 
 			<?php $this->render_meta_table(); ?>
 
 			<?php $this->render_stock_option(); ?>
 
-			<?php submit_button( __( 'Save', 'solrengine' ) ); ?>
+			<?php submit_button( __( 'Save', 'braintum-search-for-solr' ) ); ?>
 
 			</form>
 		</div>
@@ -280,10 +280,10 @@ final class ContentScreen extends Screen {
 		<table class="widefat striped" style="max-width:960px">
 			<thead>
 				<tr>
-					<th scope="col" style="width:26em"><?php esc_html_e( 'Custom field', 'solrengine' ); ?></th>
-					<th scope="col" style="width:16em"><?php esc_html_e( 'Holds', 'solrengine' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Index field', 'solrengine' ); ?></th>
-					<th scope="col" style="width:6em"><?php esc_html_e( 'Remove', 'solrengine' ); ?></th>
+					<th scope="col" style="width:26em"><?php esc_html_e( 'Custom field', 'braintum-search-for-solr' ); ?></th>
+					<th scope="col" style="width:16em"><?php esc_html_e( 'Holds', 'braintum-search-for-solr' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Index field', 'braintum-search-for-solr' ); ?></th>
+					<th scope="col" style="width:6em"><?php esc_html_e( 'Remove', 'braintum-search-for-solr' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -294,7 +294,7 @@ final class ContentScreen extends Screen {
 							<input type="hidden" name="meta[<?php echo esc_attr( (string) $row ); ?>][key]" value="<?php echo esc_attr( (string) $key ); ?>"/>
 							<code><?php echo esc_html( (string) $key ); ?></code>
 							<?php if ( MetaAllowlist::is_private( (string) $key ) ) : ?>
-								<br/><span class="description"><?php esc_html_e( 'A private field. Indexed because you asked for it.', 'solrengine' ); ?></span>
+								<br/><span class="description"><?php esc_html_e( 'A private field. Indexed because you asked for it.', 'braintum-search-for-solr' ); ?></span>
 							<?php endif; ?>
 						</td>
 						<td>
@@ -312,7 +312,7 @@ final class ContentScreen extends Screen {
 						<td>
 							<label>
 								<input type="checkbox" name="meta[<?php echo esc_attr( (string) $row ); ?>][remove]" value="1"/>
-								<span class="screen-reader-text"><?php esc_html_e( 'Remove this field', 'solrengine' ); ?></span>
+								<span class="screen-reader-text"><?php esc_html_e( 'Remove this field', 'braintum-search-for-solr' ); ?></span>
 							</label>
 						</td>
 					</tr>
@@ -325,16 +325,16 @@ final class ContentScreen extends Screen {
 							type="text"
 							name="meta[new][key]"
 							class="regular-text code"
-							list="solrengine-meta-keys"
-							placeholder="<?php esc_attr_e( 'Add a custom field', 'solrengine' ); ?>"
+							list="braintum-search-meta-keys"
+							placeholder="<?php esc_attr_e( 'Add a custom field', 'braintum-search-for-solr' ); ?>"
 						/>
-						<datalist id="solrengine-meta-keys">
+						<datalist id="braintum-search-meta-keys">
 							<?php foreach ( $discovered as $key => $count ) : ?>
 								<option value="<?php echo esc_attr( (string) $key ); ?>">
 									<?php
 									printf(
 										/* translators: %s: number of posts using this field. */
-										esc_attr__( 'used by %s', 'solrengine' ),
+										esc_attr__( 'used by %s', 'braintum-search-for-solr' ),
 										esc_attr( number_format_i18n( (int) $count ) )
 									);
 									?>
@@ -342,7 +342,7 @@ final class ContentScreen extends Screen {
 							<?php endforeach; ?>
 						</datalist>
 						<p class="description">
-							<?php esc_html_e( 'Start typing to pick from the fields this site already uses, most used first.', 'solrengine' ); ?>
+							<?php esc_html_e( 'Start typing to pick from the fields this site already uses, most used first.', 'braintum-search-for-solr' ); ?>
 						</p>
 					</td>
 					<td>
@@ -354,7 +354,7 @@ final class ContentScreen extends Screen {
 					</td>
 					<td colspan="2">
 						<span class="description">
-							<?php esc_html_e( 'Choose what the field holds. Getting this wrong does not break indexing — values that do not fit the type are skipped — but a date stored as text cannot be sorted or filtered by range.', 'solrengine' ); ?>
+							<?php esc_html_e( 'Choose what the field holds. Getting this wrong does not break indexing — values that do not fit the type are skipped — but a date stored as text cannot be sorted or filtered by range.', 'braintum-search-for-solr' ); ?>
 						</span>
 					</td>
 				</tr>
@@ -378,11 +378,11 @@ final class ContentScreen extends Screen {
 		}
 
 		?>
-		<h2><?php esc_html_e( 'Products', 'solrengine' ); ?></h2>
+		<h2><?php esc_html_e( 'Products', 'braintum-search-for-solr' ); ?></h2>
 
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'Stock levels', 'solrengine' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'Stock levels', 'braintum-search-for-solr' ); ?></th>
 				<td>
 					<label>
 						<input
@@ -391,10 +391,10 @@ final class ContentScreen extends Screen {
 							value="1"
 							<?php checked( $this->config->get_bool( 'index.stock_quantity' ) ); ?>
 						/>
-						<?php esc_html_e( 'Index the exact number in stock', 'solrengine' ); ?>
+						<?php esc_html_e( 'Index the exact number in stock', 'braintum-search-for-solr' ); ?>
 					</label>
 					<p class="description">
-						<?php esc_html_e( 'Off by default. Availability is indexed either way, as in stock, low stock or out of stock, which is what a shopper filters by. The exact number changes on every order, so indexing it means rewriting a product document every time one sells.', 'solrengine' ); ?>
+						<?php esc_html_e( 'Off by default. Availability is indexed either way, as in stock, low stock or out of stock, which is what a shopper filters by. The exact number changes on every order, so indexing it means rewriting a product document every time one sells.', 'braintum-search-for-solr' ); ?>
 					</p>
 				</td>
 			</tr>
@@ -417,13 +417,13 @@ final class ContentScreen extends Screen {
 			esc_html(
 				sprintf(
 					/* translators: 1: reason a reindex is needed, 2: human time difference. */
-					__( 'Content already in the index does not reflect a change made %2$s ago: %1$s. Existing documents are never rewritten by a settings change.', 'solrengine' ),
+					__( 'Content already in the index does not reflect a change made %2$s ago: %1$s. Existing documents are never rewritten by a settings change.', 'braintum-search-for-solr' ),
 					$this->notice->reason(),
 					human_time_diff( $this->notice->since() )
 				)
 			),
 			esc_url( admin_url( 'admin.php?page=' . ToolsScreen::SLUG ) ),
-			esc_html__( 'Reindex now', 'solrengine' )
+			esc_html__( 'Reindex now', 'braintum-search-for-solr' )
 		);
 	}
 
@@ -438,7 +438,7 @@ final class ContentScreen extends Screen {
 		foreach ( get_post_types( array( 'public' => true ), 'objects' ) as $type ) {
 			if ( 'attachment' === $type->name ) {
 				// Left out on purpose. An attachment's searchable content is the
-				// file itself, which needs extraction SolrEngine does not do, so
+				// file itself, which needs extraction Braintum Search does not do, so
 				// offering it would index a library of titles and nothing else.
 				continue;
 			}
@@ -504,19 +504,19 @@ final class ContentScreen extends Screen {
 	 */
 	private function type_labels(): array {
 		return array(
-			FieldType::TEXT       => __( 'Words to search', 'solrengine' ),
-			FieldType::TEXT_MULTI => __( 'Words to search, several values', 'solrengine' ),
-			FieldType::STRING     => __( 'An exact value, to filter or sort by', 'solrengine' ),
-			FieldType::STRINGS    => __( 'Exact values, several', 'solrengine' ),
-			FieldType::INT        => __( 'A whole number', 'solrengine' ),
-			FieldType::INTS       => __( 'Whole numbers, several', 'solrengine' ),
-			FieldType::LONG       => __( 'A large whole number', 'solrengine' ),
-			FieldType::LONGS      => __( 'Large whole numbers, several', 'solrengine' ),
-			FieldType::FLOAT      => __( 'A decimal, such as a price', 'solrengine' ),
-			FieldType::DOUBLE     => __( 'A precise decimal', 'solrengine' ),
-			FieldType::BOOL       => __( 'Yes or no', 'solrengine' ),
-			FieldType::DATE       => __( 'A date', 'solrengine' ),
-			FieldType::DATES      => __( 'Dates, several', 'solrengine' ),
+			FieldType::TEXT       => __( 'Words to search', 'braintum-search-for-solr' ),
+			FieldType::TEXT_MULTI => __( 'Words to search, several values', 'braintum-search-for-solr' ),
+			FieldType::STRING     => __( 'An exact value, to filter or sort by', 'braintum-search-for-solr' ),
+			FieldType::STRINGS    => __( 'Exact values, several', 'braintum-search-for-solr' ),
+			FieldType::INT        => __( 'A whole number', 'braintum-search-for-solr' ),
+			FieldType::INTS       => __( 'Whole numbers, several', 'braintum-search-for-solr' ),
+			FieldType::LONG       => __( 'A large whole number', 'braintum-search-for-solr' ),
+			FieldType::LONGS      => __( 'Large whole numbers, several', 'braintum-search-for-solr' ),
+			FieldType::FLOAT      => __( 'A decimal, such as a price', 'braintum-search-for-solr' ),
+			FieldType::DOUBLE     => __( 'A precise decimal', 'braintum-search-for-solr' ),
+			FieldType::BOOL       => __( 'Yes or no', 'braintum-search-for-solr' ),
+			FieldType::DATE       => __( 'A date', 'braintum-search-for-solr' ),
+			FieldType::DATES      => __( 'Dates, several', 'braintum-search-for-solr' ),
 		);
 	}
 }

@@ -2,22 +2,22 @@
 /**
  * Connection settings screen.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Diagnostics\ConnectionDiagnostic;
-use SolrEngine\Diagnostics\DiagnosticReport;
-use SolrEngine\Integration\WooCommerce\WooCommerce;
-use SolrEngine\Multisite\SiteScope;
-use SolrEngine\Schema\AppliedSchema;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\Credentials;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Diagnostics\ConnectionDiagnostic;
+use BraintumSearch\Diagnostics\DiagnosticReport;
+use BraintumSearch\Integration\WooCommerce\WooCommerce;
+use BraintumSearch\Multisite\SiteScope;
+use BraintumSearch\Schema\AppliedSchema;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\Credentials;
 
 /**
- * Where an administrator points SolrEngine at their Solr server.
+ * Where an administrator points Braintum Search at their Solr server.
  *
  * Deliberately one screen. The plan's section 17 argues for six in total, not
  * twelve, because every extra top-level item lengthens the setup path for
@@ -27,7 +27,7 @@ use SolrEngine\Support\Credentials;
  * wrong:
  *
  * - It reads the same option it writes. The prototype's settings page wrote
- *   solrengine_settings while its configuration read solrengine_solr_endpoint,
+ *   braintum_search_settings while its configuration read braintum_search_solr_endpoint,
  *   so saving the endpoint had no effect whatsoever.
  * - A value pinned by a constant in wp-config.php is shown as such, and its
  *   field is disabled rather than accepting input that would be discarded.
@@ -48,7 +48,7 @@ final class ConnectionScreen extends Screen {
 	 *
 	 * @var string
 	 */
-	public const SLUG = 'solrengine';
+	public const SLUG = 'braintum-search';
 
 	/**
 	 * Configuration.
@@ -123,7 +123,7 @@ final class ConnectionScreen extends Screen {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'Connection', 'solrengine' );
+		return __( 'Connection', 'braintum-search-for-solr' );
 	}
 
 	/**
@@ -132,7 +132,7 @@ final class ConnectionScreen extends Screen {
 	 * This is the one screen that is also the top-level menu, and it registers
 	 * itself as a submenu as well. Without that, WordPress generates a first
 	 * submenu item labelled with the menu title, so the list would read
-	 * "SolrEngine, Dashboard, Content" and nothing would say which of them holds
+	 * "Braintum Search, Dashboard, Content" and nothing would say which of them holds
 	 * the connection settings.
 	 *
 	 * @since 0.1.0
@@ -141,8 +141,8 @@ final class ConnectionScreen extends Screen {
 	 */
 	public function add_menu(): void {
 		add_menu_page(
-			__( 'SolrEngine', 'solrengine' ),
-			__( 'SolrEngine', 'solrengine' ),
+			__( 'Braintum Search', 'braintum-search-for-solr' ),
+			__( 'Braintum Search', 'braintum-search-for-solr' ),
 			'manage_options',
 			self::SLUG,
 			array( $this, 'render' ),
@@ -169,7 +169,7 @@ final class ConnectionScreen extends Screen {
 	 */
 	public function handle_save(): void {
 		$this->require_manage();
-		check_admin_referer( 'solrengine_save_connection' );
+		check_admin_referer( 'braintum_search_save_connection' );
 
 		$endpoint   = isset( $_POST['endpoint'] ) ? sanitize_text_field( wp_unslash( $_POST['endpoint'] ) ) : '';
 		$collection = isset( $_POST['collection'] ) ? sanitize_text_field( wp_unslash( $_POST['collection'] ) ) : '';
@@ -251,34 +251,34 @@ final class ConnectionScreen extends Screen {
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'SolrEngine', 'solrengine' ); ?></h1>
+			<h1><?php esc_html_e( 'Braintum Search', 'braintum-search-for-solr' ); ?></h1>
 
 			<?php
 			$this->render_notice(
 				array(
-					'saved'              => array( 'success', __( 'Connection settings saved.', 'solrengine' ) ),
-					'credentials_failed' => array( 'error', __( 'The settings were saved, but the password could not be stored securely. Set SOLRENGINE_SOLR_USER and SOLRENGINE_SOLR_PASSWORD in wp-config.php instead.', 'solrengine' ) ),
+					'saved'              => array( 'success', __( 'Connection settings saved.', 'braintum-search-for-solr' ) ),
+					'credentials_failed' => array( 'error', __( 'The settings were saved, but the password could not be stored securely. Set BRAINTUM_SEARCH_SOLR_USER and BRAINTUM_SEARCH_SOLR_PASSWORD in wp-config.php instead.', 'braintum-search-for-solr' ) ),
 				)
 			);
 			?>
 
-			<h2><?php esc_html_e( 'Connection', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'Connection', 'braintum-search-for-solr' ); ?></h2>
 
 			<?php $this->render_backend_choice(); ?>
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-				<input type="hidden" name="action" value="solrengine_save_connection"/>
-				<?php wp_nonce_field( 'solrengine_save_connection' ); ?>
+				<input type="hidden" name="action" value="braintum_search_save_connection"/>
+				<?php wp_nonce_field( 'braintum_search_save_connection' ); ?>
 
 				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row">
-							<label for="solrengine-endpoint"><?php esc_html_e( 'Solr address', 'solrengine' ); ?></label>
+							<label for="braintum-search-endpoint"><?php esc_html_e( 'Solr address', 'braintum-search-for-solr' ); ?></label>
 						</th>
 						<td>
 							<input
 								type="text"
-								id="solrengine-endpoint"
+								id="braintum-search-endpoint"
 								name="endpoint"
 								class="regular-text code"
 								value="<?php echo esc_attr( $endpoint ); ?>"
@@ -286,7 +286,7 @@ final class ConnectionScreen extends Screen {
 								<?php disabled( $this->config->is_locked( 'connection.endpoint' ) ); ?>
 							/>
 							<p class="description">
-								<?php esc_html_e( 'The base address of your Solr server, ending in /solr. A collection name pasted here is ignored; enter it in the next field.', 'solrengine' ); ?>
+								<?php esc_html_e( 'The base address of your Solr server, ending in /solr. A collection name pasted here is ignored; enter it in the next field.', 'braintum-search-for-solr' ); ?>
 								<?php $this->render_lock_note( 'connection.endpoint' ); ?>
 							</p>
 						</td>
@@ -294,12 +294,12 @@ final class ConnectionScreen extends Screen {
 
 					<tr>
 						<th scope="row">
-							<label for="solrengine-collection"><?php esc_html_e( 'Collection or core', 'solrengine' ); ?></label>
+							<label for="braintum-search-collection"><?php esc_html_e( 'Collection or core', 'braintum-search-for-solr' ); ?></label>
 						</th>
 						<td>
 							<input
 								type="text"
-								id="solrengine-collection"
+								id="braintum-search-collection"
 								name="collection"
 								class="regular-text code"
 								value="<?php echo esc_attr( $collection ); ?>"
@@ -307,7 +307,7 @@ final class ConnectionScreen extends Screen {
 								<?php disabled( $this->config->is_locked( 'connection.collection' ) || ( null !== $this->scope && $this->scope->collection_is_derived() ) ); ?>
 							/>
 							<p class="description">
-								<?php esc_html_e( 'SolrEngine does not create this for you. Create it on your Solr server first.', 'solrengine' ); ?>
+								<?php esc_html_e( 'Braintum Search does not create this for you. Create it on your Solr server first.', 'braintum-search-for-solr' ); ?>
 								<?php $this->render_lock_note( 'connection.collection' ); ?>
 								<?php if ( null !== $this->scope && $this->scope->collection_is_derived() ) : ?>
 									<br/>
@@ -315,7 +315,7 @@ final class ConnectionScreen extends Screen {
 										<?php
 										printf(
 											/* translators: %s: collection name. */
-											esc_html__( 'This site uses %s, from the network\'s naming pattern. The field above is ignored.', 'solrengine' ),
+											esc_html__( 'This site uses %s, from the network\'s naming pattern. The field above is ignored.', 'braintum-search-for-solr' ),
 											'<code>' . esc_html( $this->scope->collection() ) . '</code>'
 										);
 										?>
@@ -327,12 +327,12 @@ final class ConnectionScreen extends Screen {
 
 					<tr>
 						<th scope="row">
-							<label for="solrengine-username"><?php esc_html_e( 'Username', 'solrengine' ); ?></label>
+							<label for="braintum-search-username"><?php esc_html_e( 'Username', 'braintum-search-for-solr' ); ?></label>
 						</th>
 						<td>
 							<input
 								type="text"
-								id="solrengine-username"
+								id="braintum-search-username"
 								name="username"
 								class="regular-text"
 								autocomplete="off"
@@ -344,45 +344,45 @@ final class ConnectionScreen extends Screen {
 
 					<tr>
 						<th scope="row">
-							<label for="solrengine-password"><?php esc_html_e( 'Password', 'solrengine' ); ?></label>
+							<label for="braintum-search-password"><?php esc_html_e( 'Password', 'braintum-search-for-solr' ); ?></label>
 						</th>
 						<td>
 							<?php if ( 'constant' === $this->credentials->source() ) : ?>
-								<p><strong><?php esc_html_e( 'Set in wp-config.php.', 'solrengine' ); ?></strong></p>
+								<p><strong><?php esc_html_e( 'Set in wp-config.php.', 'braintum-search-for-solr' ); ?></strong></p>
 								<p class="description">
-									<?php esc_html_e( 'This is the most secure option. Credentials defined there are never written to the database.', 'solrengine' ); ?>
+									<?php esc_html_e( 'This is the most secure option. Credentials defined there are never written to the database.', 'braintum-search-for-solr' ); ?>
 								</p>
 							<?php else : ?>
 								<?php if ( 'network' === $this->credentials->source() ) : ?>
 									<p class="description">
-										<?php esc_html_e( 'This site is using the credentials set for the whole network. Enter a password here only if this site talks to a different Solr.', 'solrengine' ); ?>
+										<?php esc_html_e( 'This site is using the credentials set for the whole network. Enter a password here only if this site talks to a different Solr.', 'braintum-search-for-solr' ); ?>
 									</p>
 								<?php endif; ?>
 								<input
 									type="password"
-									id="solrengine-password"
+									id="braintum-search-password"
 									name="password"
 									class="regular-text"
 									autocomplete="new-password"
-									placeholder="<?php echo esc_attr( $this->credentials->has_password() ? __( 'Saved. Type to replace.', 'solrengine' ) : __( 'Not set', 'solrengine' ) ); ?>"
+									placeholder="<?php echo esc_attr( $this->credentials->has_password() ? __( 'Saved. Type to replace.', 'braintum-search-for-solr' ) : __( 'Not set', 'braintum-search-for-solr' ) ); ?>"
 								/>
 								<?php if ( $this->credentials->has_password() ) : ?>
 									<p>
 										<label>
 											<input type="checkbox" name="clear_password" value="1"/>
-											<?php esc_html_e( 'Remove the saved password', 'solrengine' ); ?>
+											<?php esc_html_e( 'Remove the saved password', 'braintum-search-for-solr' ); ?>
 										</label>
 									</p>
 								<?php endif; ?>
 								<p class="description">
-									<?php esc_html_e( 'Stored encrypted. That protects it if your database is exposed, but not if the server itself is compromised, because the key lives in wp-config.php. For stronger protection, define SOLRENGINE_SOLR_USER and SOLRENGINE_SOLR_PASSWORD there instead.', 'solrengine' ); ?>
+									<?php esc_html_e( 'Stored encrypted. That protects it if your database is exposed, but not if the server itself is compromised, because the key lives in wp-config.php. For stronger protection, define BRAINTUM_SEARCH_SOLR_USER and BRAINTUM_SEARCH_SOLR_PASSWORD there instead.', 'braintum-search-for-solr' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
 					</tr>
 
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Network', 'solrengine' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Network', 'braintum-search-for-solr' ); ?></th>
 						<td>
 							<label>
 								<input
@@ -391,10 +391,10 @@ final class ConnectionScreen extends Screen {
 									value="1"
 									<?php checked( $this->config->get_bool( 'connection.allow_private_ip' ) ); ?>
 								/>
-								<?php esc_html_e( 'My Solr server is on this machine or a private network', 'solrengine' ); ?>
+								<?php esc_html_e( 'My Solr server is on this machine or a private network', 'braintum-search-for-solr' ); ?>
 							</label>
 							<p class="description">
-								<?php esc_html_e( 'Required for addresses like 127.0.0.1 or 10.x.x.x. SolrEngine refuses private addresses unless you confirm, because a plugin that fetches any address an administrator types can be used to probe internal infrastructure. Cloud metadata addresses stay blocked either way.', 'solrengine' ); ?>
+								<?php esc_html_e( 'Required for addresses like 127.0.0.1 or 10.x.x.x. Braintum Search refuses private addresses unless you confirm, because a plugin that fetches any address an administrator types can be used to probe internal infrastructure. Cloud metadata addresses stay blocked either way.', 'braintum-search-for-solr' ); ?>
 							</p>
 
 							<label>
@@ -404,20 +404,20 @@ final class ConnectionScreen extends Screen {
 									value="1"
 									<?php checked( $this->config->get_bool( 'connection.verify_tls', true ) ); ?>
 								/>
-								<?php esc_html_e( 'Verify TLS certificates', 'solrengine' ); ?>
+								<?php esc_html_e( 'Verify TLS certificates', 'braintum-search-for-solr' ); ?>
 							</label>
 							<p class="description">
-								<?php esc_html_e( 'Leave this on unless your Solr uses a self-signed certificate you trust.', 'solrengine' ); ?>
+								<?php esc_html_e( 'Leave this on unless your Solr uses a self-signed certificate you trust.', 'braintum-search-for-solr' ); ?>
 							</p>
 						</td>
 					</tr>
 				</table>
 
-				<h2><?php esc_html_e( 'Search', 'solrengine' ); ?></h2>
+				<h2><?php esc_html_e( 'Search', 'braintum-search-for-solr' ); ?></h2>
 
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Replace WordPress search', 'solrengine' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Replace WordPress search', 'braintum-search-for-solr' ); ?></th>
 						<td>
 							<label>
 								<input
@@ -426,17 +426,17 @@ final class ConnectionScreen extends Screen {
 									value="1"
 									<?php checked( $this->config->get_bool( 'search.enabled' ) ); ?>
 								/>
-								<?php esc_html_e( 'Answer searches from the index', 'solrengine' ); ?>
+								<?php esc_html_e( 'Answer searches from the index', 'braintum-search-for-solr' ); ?>
 							</label>
 							<p class="description">
-								<?php esc_html_e( 'Leave this off until indexing has finished. Turning it on with an empty index would give visitors a site with no search results. If Solr becomes unreachable later, WordPress answers searches itself and visitors see no error.', 'solrengine' ); ?>
+								<?php esc_html_e( 'Leave this off until indexing has finished. Turning it on with an empty index would give visitors a site with no search results. If Solr becomes unreachable later, WordPress answers searches itself and visitors see no error.', 'braintum-search-for-solr' ); ?>
 							</p>
 						</td>
 					</tr>
 
 					<?php if ( WooCommerce::is_active() ) : ?>
 						<tr>
-							<th scope="row"><?php esc_html_e( 'Shop and product pages', 'solrengine' ); ?></th>
+							<th scope="row"><?php esc_html_e( 'Shop and product pages', 'braintum-search-for-solr' ); ?></th>
 							<td>
 								<label>
 									<input
@@ -445,17 +445,17 @@ final class ConnectionScreen extends Screen {
 										value="1"
 										<?php checked( $this->config->get_bool( 'search.shop_enabled' ) ); ?>
 									/>
-									<?php esc_html_e( 'Answer shop, category and product searches from the index', 'solrengine' ); ?>
+									<?php esc_html_e( 'Answer shop, category and product searches from the index', 'braintum-search-for-solr' ); ?>
 								</label>
 								<p class="description">
-									<?php esc_html_e( 'Products are indexed either way. This decides whether WooCommerce asks Solr for them. A query SolrEngine cannot express exactly — a rating filter, or one an extension added — is handed back to WooCommerce rather than answered approximately.', 'solrengine' ); ?>
+									<?php esc_html_e( 'Products are indexed either way. This decides whether WooCommerce asks Solr for them. A query Braintum Search cannot express exactly — a rating filter, or one an extension added — is handed back to WooCommerce rather than answered approximately.', 'braintum-search-for-solr' ); ?>
 								</p>
 							</td>
 						</tr>
 					<?php endif; ?>
 
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Instant search', 'solrengine' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Instant search', 'braintum-search-for-solr' ); ?></th>
 						<td>
 							<label>
 								<input
@@ -464,47 +464,47 @@ final class ConnectionScreen extends Screen {
 									value="1"
 									<?php checked( $this->config->get_bool( 'search.instant_enabled' ) ); ?>
 								/>
-								<?php esc_html_e( 'Show results as visitors type', 'solrengine' ); ?>
+								<?php esc_html_e( 'Show results as visitors type', 'braintum-search-for-solr' ); ?>
 							</label>
-							<fieldset class="solrengine-instant-mode">
-								<legend class="screen-reader-text"><?php esc_html_e( 'How instant search appears', 'solrengine' ); ?></legend>
-								<?php $solrengine_mode = $this->config->get_string( 'search.instant_mode', 'modal' ); ?>
+							<fieldset class="braintum-search-instant-mode">
+								<legend class="screen-reader-text"><?php esc_html_e( 'How instant search appears', 'braintum-search-for-solr' ); ?></legend>
+								<?php $braintum_search_mode = $this->config->get_string( 'search.instant_mode', 'modal' ); ?>
 								<p>
 									<label>
-										<input type="radio" name="instant_mode" value="modal" <?php checked( 'suggest' !== $solrengine_mode ); ?> />
-										<?php esc_html_e( 'Search popup: results with images, prices and content-type tabs', 'solrengine' ); ?>
+										<input type="radio" name="instant_mode" value="modal" <?php checked( 'suggest' !== $braintum_search_mode ); ?> />
+										<?php esc_html_e( 'Search popup: results with images, prices and content-type tabs', 'braintum-search-for-solr' ); ?>
 									</label>
 								</p>
 								<p>
 									<label>
-										<input type="radio" name="instant_mode" value="suggest" <?php checked( 'suggest', $solrengine_mode ); ?> />
-										<?php esc_html_e( 'Suggestion list: matching titles under the search field', 'solrengine' ); ?>
+										<input type="radio" name="instant_mode" value="suggest" <?php checked( 'suggest', $braintum_search_mode ); ?> />
+										<?php esc_html_e( 'Suggestion list: matching titles under the search field', 'braintum-search-for-solr' ); ?>
 									</label>
 								</p>
 							</fieldset>
 							<p class="description">
-								<?php esc_html_e( 'Attaches to the search field your theme already renders: clicking it, typing into it or pressing its button opens the popup. Works independently of the setting above, so you can try it before switching search over. The popup\'s markup can be overridden from your theme.', 'solrengine' ); ?>
+								<?php esc_html_e( 'Attaches to the search field your theme already renders: clicking it, typing into it or pressing its button opens the popup. Works independently of the setting above, so you can try it before switching search over. The popup\'s markup can be overridden from your theme.', 'braintum-search-for-solr' ); ?>
 							</p>
 						</td>
 					</tr>
 				</table>
 
-				<?php submit_button( __( 'Save settings', 'solrengine' ) ); ?>
+				<?php submit_button( __( 'Save settings', 'braintum-search-for-solr' ) ); ?>
 			</form>
 
 			<?php if ( null !== $tested ) : ?>
-				<h2><?php esc_html_e( 'Diagnosis', 'solrengine' ); ?></h2>
+				<h2><?php esc_html_e( 'Diagnosis', 'braintum-search-for-solr' ); ?></h2>
 				<?php $this->render_report( $tested ); ?>
 
 				<p class="description">
 					<?php
 					printf(
 						/* translators: %s: link to the Tools screen. */
-						esc_html__( 'Schema changes, reindexing and the run history are on the %s screen.', 'solrengine' ),
+						esc_html__( 'Schema changes, reindexing and the run history are on the %s screen.', 'braintum-search-for-solr' ),
 						sprintf(
 							'<a href="%s">%s</a>',
 							esc_url( admin_url( 'admin.php?page=' . ToolsScreen::SLUG ) ),
-							esc_html__( 'Tools', 'solrengine' )
+							esc_html__( 'Tools', 'braintum-search-for-solr' )
 						)
 					);
 					?>
@@ -520,7 +520,7 @@ final class ConnectionScreen extends Screen {
 	 * Absent when one backend is registered, which is every ordinary install. A
 	 * dropdown offering one option is a question with one answer.
 	 *
-	 * The chooser exists at all because ADR-010 turns on it: SolrEngine Cloud, if
+	 * The chooser exists at all because ADR-010 turns on it: Braintum Search Cloud, if
 	 * it is ever built, is "a backend choice, not a paywall", and the difference
 	 * between an interface to a paid service and locked functionality is whether
 	 * the alternative sits in a dropdown beside it or behind an upgrade badge.
@@ -545,10 +545,10 @@ final class ConnectionScreen extends Screen {
 		<table class="form-table" role="presentation">
 			<tr>
 				<th scope="row">
-					<label for="solrengine-backend"><?php esc_html_e( 'Search backend', 'solrengine' ); ?></label>
+					<label for="braintum-search-backend"><?php esc_html_e( 'Search backend', 'braintum-search-for-solr' ); ?></label>
 				</th>
 				<td>
-					<select id="solrengine-backend" name="backend" <?php disabled( $this->config->is_locked( 'connection.backend' ) ); ?>>
+					<select id="braintum-search-backend" name="backend" <?php disabled( $this->config->is_locked( 'connection.backend' ) ); ?>>
 						<?php foreach ( $available as $id => $label ) : ?>
 							<option value="<?php echo esc_attr( (string) $id ); ?>" <?php selected( $selected, (string) $id ); ?>>
 								<?php echo esc_html( (string) $label ); ?>
@@ -556,7 +556,7 @@ final class ConnectionScreen extends Screen {
 						<?php endforeach; ?>
 					</select>
 					<p class="description">
-						<?php esc_html_e( 'Which search engine answers this site. Each backend keeps its own credentials, so switching back does not mean typing them again.', 'solrengine' ); ?>
+						<?php esc_html_e( 'Which search engine answers this site. Each backend keeps its own credentials, so switching back does not mean typing them again.', 'braintum-search-for-solr' ); ?>
 						<?php $this->render_lock_note( 'connection.backend' ); ?>
 					</p>
 				</td>
@@ -599,11 +599,11 @@ final class ConnectionScreen extends Screen {
 	private function render_lock_note( string $path ): void {
 		switch ( $this->config->lock_source( $path ) ) {
 			case 'constant':
-				echo '<br/><strong>' . esc_html__( 'Set in wp-config.php.', 'solrengine' ) . '</strong>';
+				echo '<br/><strong>' . esc_html__( 'Set in wp-config.php.', 'braintum-search-for-solr' ) . '</strong>';
 				break;
 
 			case 'network':
-				echo '<br/><strong>' . esc_html__( 'Set for the whole network, and locked. A network administrator can change it under Network Admin, Settings, SolrEngine.', 'solrengine' ) . '</strong>';
+				echo '<br/><strong>' . esc_html__( 'Set for the whole network, and locked. A network administrator can change it under Network Admin, Settings, Braintum Search.', 'braintum-search-for-solr' ) . '</strong>';
 				break;
 		}
 	}

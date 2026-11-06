@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "solrengine/search-filters",
+	"name": "braintum-search/search-filters",
 	"title": "Search filters",
 	"category": "widgets",
 	"icon": "filter",
 	"description": "Filters for Solr-powered search results, built from the facets this site offers.",
 	"keywords": [ "search", "filter", "facet", "solr" ],
-	"textdomain": "solrengine",
+	"textdomain": "braintum-search-for-solr",
 	"supports": {
 		"html": false,
 		"align": [ "wide" ],
@@ -31,6 +31,6 @@
 			"default": true
 		}
 	},
-	"editorScript": "solrengine-filters-block",
-	"style": "solrengine-filters"
+	"editorScript": "braintum-search-filters-block",
+	"style": "braintum-search-filters"
 }

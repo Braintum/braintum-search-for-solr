@@ -2,10 +2,10 @@
 /**
  * Schema backend contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Inspects and, where permitted, changes the index schema.
@@ -91,7 +91,7 @@ interface SchemaBackend {
 	/**
 	 * The schema as configuration an administrator can apply by hand.
 	 *
-	 * The fallback path for a Solr that SolrEngine cannot or should not modify:
+	 * The fallback path for a Solr that Braintum Search cannot or should not modify:
 	 * a managed service, a locked-down cluster, or credentials without
 	 * authorisation. Without this, those customers have no route at all.
 	 *

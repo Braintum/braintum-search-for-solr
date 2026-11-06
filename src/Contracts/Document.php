@@ -2,10 +2,10 @@
 /**
  * A document ready to be written to the index.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * One indexable object, mapped onto index fields.
@@ -100,7 +100,7 @@ final class Document {
 	 * The document as a backend payload.
 	 *
 	 * The identifier is added here rather than stored as a field, so it cannot
-	 * be overwritten by a field map or by the solrengine_document filter.
+	 * be overwritten by a field map or by the braintum_search_document filter.
 	 *
 	 * @since 0.3.0
 	 *

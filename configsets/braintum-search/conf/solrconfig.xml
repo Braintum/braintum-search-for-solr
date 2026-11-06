@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  SolrEngine solrconfig.xml.
+  Braintum Search solrconfig.xml.
 
-  Deliberately close to Solr's default. SolrEngine has opinions about its
+  Deliberately close to Solr's default. Braintum Search has opinions about its
   schema, not about how a customer runs their server, and every setting added
   here is one more thing that can conflict with their operational choices.
 
@@ -17,7 +17,7 @@
   <codecFactory class="solr.SchemaCodecFactory"/>
 
   <!--
-    Managed schema. Required for the Schema API, which is how SolrEngine adds
+    Managed schema. Required for the Schema API, which is how Braintum Search adds
     its fields with an administrator's confirmation rather than by hand.
   -->
   <schemaFactory class="ManagedIndexSchemaFactory">
@@ -35,7 +35,7 @@
     </updateLog>
 
     <!--
-      SolrEngine sends commitWithin on every write rather than committing per
+      Braintum Search sends commitWithin on every write rather than committing per
       document, so these exist as a safety net, not as the primary mechanism.
       openSearcher is false so an autoCommit does not pay for a new searcher;
       the soft commit below handles visibility.
@@ -67,7 +67,7 @@
       <str name="echoParams">none</str>
       <int name="rows">10</int>
       <!--
-        No default df. SolrEngine always sends an explicit query built from its
+        No default df. Braintum Search always sends an explicit query built from its
         own field list; a default field here would silently change relevance
         for anyone who forgot one.
       -->

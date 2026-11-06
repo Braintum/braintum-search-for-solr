@@ -2,12 +2,12 @@
 /**
  * What this site indexes into, and whether it indexes at all.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Multisite;
+namespace BraintumSearch\Multisite;
 
-use SolrEngine\Support\Config;
+use BraintumSearch\Support\Config;
 
 /**
  * The two questions every site in a network has to answer before doing anything.
@@ -64,7 +64,7 @@ final class SiteScope {
 	}
 
 	/**
-	 * Whether SolrEngine should do anything on this site.
+	 * Whether Braintum Search should do anything on this site.
 	 *
 	 * False for a site in a network that the network administrator has not
 	 * switched on. Such a site indexes nothing, searches through WordPress as it

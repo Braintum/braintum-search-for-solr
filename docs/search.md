@@ -2,7 +2,7 @@
 
 ## How it works
 
-SolrEngine hooks WordPress at the query layer, not the template layer. When a
+Braintum Search hooks WordPress at the query layer, not the template layer. When a
 search runs, `posts_pre_query` returns posts from Solr and WordPress does no
 database query of its own.
 
@@ -15,7 +15,7 @@ can tell where the posts came from.
 The filter returns `null` and WordPress runs the query it would have run
 anyway. Visitors get ordinary WordPress results and see no error.
 
-After three consecutive failures SolrEngine stops trying for a minute. Without
+After three consecutive failures Braintum Search stops trying for a minute. Without
 that, an outage of the search backend would make every visitor wait for the
 full timeout before falling back, turning a search problem into a site-speed
 problem.
@@ -27,7 +27,7 @@ outage invisible to it.
 
 ## Relevance
 
-Tune these under **SolrEngine → Search**. They apply to the next search; no
+Tune these under **Braintum Search → Search**. They apply to the next search; no
 reindexing is needed.
 
 | Setting | Default | What it does |
@@ -52,7 +52,7 @@ back. Valid forms are a number (`2`), a percentage (`75%`), or one or more
 `terms<specification` pairs (`2<75% 5<90%`).
 
 On a WooCommerce site, product SKUs and attribute values appear on the list as
-well. SolrEngine supplies a sensible weight for each the first time, and never
+well. Braintum Search supplies a sensible weight for each the first time, and never
 overrules one you have set.
 
 On a multilingual site, searches are answered in the language the visitor is
@@ -77,7 +77,7 @@ though it were what was asked for.
 ## The REST API
 
 ```
-GET /wp-json/solrengine/v1/search
+GET /wp-json/braintum-search/v1/search
 ```
 
 | Parameter | Type | Notes |
@@ -106,7 +106,7 @@ GET /wp-json/solrengine/v1/search
 }
 ```
 
-The administrator endpoint at `/wp-json/solrengine/v1/status` reports
+The administrator endpoint at `/wp-json/braintum-search/v1/status` reports
 connection, index, queue and synchronisation state. It requires
 `manage_options`.
 
@@ -133,12 +133,12 @@ Every case above has a test that runs against a real Solr.
 ## Adding a filter
 
 ```php
-add_action( 'solrengine_register_filters', function ( $registry ) {
+add_action( 'braintum_search_register_filters', function ( $registry ) {
 	$registry->register( 'brand', 'se_ss_meta_brand', 'ss', 'Brand' );
 } );
 ```
 
-The field must be one SolrEngine owns, meaning it starts with `se_`, and the
+The field must be one Braintum Search owns, meaning it starts with `se_`, and the
 meta key must already be on the indexing allowlist.
 
 To let visitors *browse* by that filter rather than only request it, register a
@@ -146,17 +146,17 @@ facet with the same key as well. See [facets.md](facets.md).
 
 ## Changing backend
 
-SolrEngine can use more than one search backend, chosen on the connection screen
+Braintum Search can use more than one search backend, chosen on the connection screen
 when more than one is registered.
 
 Moving between two is done without taking search down, using the same principle
 as the index rebuild: fill the new one while the old one still answers visitors.
 
 ```bash
-wp solrengine backends status
-wp solrengine backends start --to=<backend>
-wp solrengine index
-wp solrengine backends finish
+wp braintum-search backends status
+wp braintum-search backends start --to=<backend>
+wp braintum-search index
+wp braintum-search backends finish
 ```
 
 `finish` refuses while the new backend holds noticeably fewer documents than
@@ -184,13 +184,13 @@ at the CDN or web server.
 
 | Hook | Type | Purpose |
 | --- | --- | --- |
-| `solrengine_should_handle_query` | filter | Veto SolrEngine handling one `WP_Query` |
-| `solrengine_search_query` | filter | The query before it reaches the backend |
-| `solrengine_search_results` | filter | The results before they are returned |
-| `solrengine_register_filters` | action | Register a filter |
-| `solrengine_facet_definitions` | filter | Register a facet |
-| `solrengine_suggest_query` | filter | The autocomplete query before it reaches the backend |
-| `solrengine_rate_limit_request` | filter | Exempt a request from throttling |
+| `braintum_search_should_handle_query` | filter | Veto Braintum Search handling one `WP_Query` |
+| `braintum_search_query` | filter | The query before it reaches the backend |
+| `braintum_search_results` | filter | The results before they are returned |
+| `braintum_search_register_filters` | action | Register a filter |
+| `braintum_search_facet_definitions` | filter | Register a facet |
+| `braintum_search_suggest_query` | filter | The autocomplete query before it reaches the backend |
+| `braintum_search_rate_limit_request` | filter | Exempt a request from throttling |
 
 ---
 
@@ -204,11 +204,11 @@ the theme's own search field, answer through the REST API, and are switched by
 `search.instant_mode`.
 
 Suggestions appear as a visitor types, attached to the search field the theme
-already renders. SolrEngine does not provide its own search box: matching a
+already renders. Braintum Search does not provide its own search box: matching a
 theme's styling on every theme ever written is not a thing a plugin can do, and
 being wrong about it is worse than adding nothing.
 
-Enable it on the SolrEngine settings screen. It works independently of search
+Enable it on the Braintum Search settings screen. It works independently of search
 replacement, so you can try suggestions before switching search over.
 
 ## What a suggestion is
@@ -220,12 +220,12 @@ straight to the page.
 ## Why not Solr's Suggester component
 
 The Suggester needs a `searchComponent` and a request handler in
-`solrconfig.xml`. SolrEngine cannot apply those: the Schema API reaches fields,
+`solrconfig.xml`. Braintum Search cannot apply those: the Schema API reaches fields,
 not configuration, and changing a configset means uploading and reloading it.
 
 Measured against a stock Solr 10, the default configset has no `/suggest`
 handler at all. A Suggester-based autocomplete would therefore have worked only
-for customers who created their collection from SolrEngine's own configset, and
+for customers who created their collection from Braintum Search's own configset, and
 would have been silently broken for everyone else.
 
 A prefix query needs no configuration and works on any collection with the
@@ -261,13 +261,13 @@ is not completed: a word already carrying `~1` is not a plain word.
 To match whole words only, everywhere, turn it off on the way in:
 
 ```php
-add_filter( 'solrengine_search_query', function ( $query ) {
+add_filter( 'braintum_search_query', function ( $query ) {
 	return $query->with_completion( false );
 } );
 ```
 
 With search replacement off, the results page is WordPress's own search, which
-matches any part of a word already; completion only matters where SolrEngine
+matches any part of a word already; completion only matters where Braintum Search
 answers.
 
 ## Privacy
@@ -280,7 +280,7 @@ does, so it is tested the same way.
 ## The endpoint
 
 ```
-GET /wp-json/solrengine/v1/suggest?q=macb&limit=8
+GET /wp-json/braintum-search/v1/suggest?q=macb&limit=8
 ```
 
 ```json
@@ -356,12 +356,12 @@ cache above keep the number of requests down.
 
 ```php
 // Point at a theme's own search markup. Applies to the popup too.
-add_filter( 'solrengine_instant_search_selector', function () {
+add_filter( 'braintum_search_instant_search_selector', function () {
 	return '.my-theme-search input';
 } );
 
 // Reshape suggestions before they are returned.
-add_filter( 'solrengine_suggestions', function ( $suggestions, $query ) {
+add_filter( 'braintum_search_suggestions', function ( $suggestions, $query ) {
 	return $suggestions;
 }, 10, 2 );
 ```

@@ -2,12 +2,12 @@
 /**
  * Records that a configuration change needs content indexed again.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Support\Config;
+use BraintumSearch\Support\Config;
 
 /**
  * The gap between changing a setting and the index reflecting it.
@@ -16,7 +16,7 @@ use SolrEngine\Support\Config;
  * change with a new copyField rule all change what a document should contain —
  * and none of them change a single document that is already indexed. Solr is
  * explicit that "modifying your schema will never modify any documents that are
- * already indexed", and the same is true of SolrEngine's own field map.
+ * already indexed", and the same is true of Braintum Search's own field map.
  *
  * Without this, the setting appears to have taken effect and quietly has not,
  * which is the failure mode this plugin has spent six phases avoiding. The

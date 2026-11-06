@@ -2,12 +2,12 @@
 /**
  * Backend credential storage.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\Result;
 
 /**
  * Stores and retrieves the credentials used to reach the search backend.
@@ -34,28 +34,28 @@ final class Credentials {
 	 *
 	 * @var string
 	 */
-	public const OPTION = 'solrengine_credentials';
+	public const OPTION = 'braintum_search_credentials';
 
 	/**
 	 * Network option holding credentials shared by every site.
 	 *
 	 * @var string
 	 */
-	public const NETWORK_OPTION = 'solrengine_network_credentials';
+	public const NETWORK_OPTION = 'braintum_search_network_credentials';
 
 	/**
 	 * Constant that may hold the username.
 	 *
 	 * @var string
 	 */
-	private const CONST_USER = 'SOLRENGINE_SOLR_USER';
+	private const CONST_USER = 'BRAINTUM_SEARCH_SOLR_USER';
 
 	/**
 	 * Constant that may hold the password.
 	 *
 	 * @var string
 	 */
-	private const CONST_PASSWORD = 'SOLRENGINE_SOLR_PASSWORD';
+	private const CONST_PASSWORD = 'BRAINTUM_SEARCH_SOLR_PASSWORD';
 
 	/**
 	 * Encryption service.
@@ -244,7 +244,7 @@ final class Credentials {
 		if ( ! $this->encryption->is_available() ) {
 			return Result::failure(
 				'encryption_unavailable',
-				'Credentials cannot be stored securely on this server. Set SOLRENGINE_SOLR_USER and SOLRENGINE_SOLR_PASSWORD in wp-config.php instead.'
+				'Credentials cannot be stored securely on this server. Set BRAINTUM_SEARCH_SOLR_USER and BRAINTUM_SEARCH_SOLR_PASSWORD in wp-config.php instead.'
 			);
 		}
 
@@ -304,7 +304,7 @@ final class Credentials {
 		if ( ! $this->encryption->is_available() ) {
 			return Result::failure(
 				'encryption_unavailable',
-				'Credentials cannot be stored securely on this server. Set SOLRENGINE_SOLR_USER and SOLRENGINE_SOLR_PASSWORD in wp-config.php instead.'
+				'Credentials cannot be stored securely on this server. Set BRAINTUM_SEARCH_SOLR_USER and BRAINTUM_SEARCH_SOLR_PASSWORD in wp-config.php instead.'
 			);
 		}
 
@@ -379,13 +379,13 @@ final class Credentials {
 	public function describe(): string {
 		switch ( $this->source() ) {
 			case 'constant':
-				return __( 'Set in wp-config.php', 'solrengine' );
+				return __( 'Set in wp-config.php', 'braintum-search-for-solr' );
 			case 'option':
-				return __( 'Saved and encrypted', 'solrengine' );
+				return __( 'Saved and encrypted', 'braintum-search-for-solr' );
 			case 'network':
-				return __( 'Set for the whole network', 'solrengine' );
+				return __( 'Set for the whole network', 'braintum-search-for-solr' );
 			default:
-				return __( 'Not configured', 'solrengine' );
+				return __( 'Not configured', 'braintum-search-for-solr' );
 		}
 	}
 

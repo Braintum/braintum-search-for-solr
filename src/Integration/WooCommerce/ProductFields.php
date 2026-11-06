@@ -2,12 +2,12 @@
 /**
  * The fields a product contributes to its document.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Documents\DocumentFields;
 
 /**
  * Names, and the rules for deriving them.

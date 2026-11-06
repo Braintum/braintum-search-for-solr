@@ -1,4 +1,4 @@
-# SolrEngine
+# Braintum Search
 
 Apache Solr powered search for WordPress. Faster, more relevant results, with
 WordPress search as an automatic fallback.
@@ -8,7 +8,7 @@ the WordPress.org plugin page renders.
 
 ## What it is
 
-SolrEngine replaces WordPress's built-in search with Apache Solr on sites where
+Braintum Search replaces WordPress's built-in search with Apache Solr on sites where
 the default has stopped coping, and it is built so that **WordPress never depends
 on it**. If Solr is unreachable, slow or misconfigured, WordPress answers searches
 itself and the site keeps working. Nothing white-screens and no visitor sees an
@@ -41,7 +41,7 @@ The unit suite needs nothing else — no WordPress, no Solr, no database. If a u
 test ever needs a WordPress function, a seam has leaked.
 
 To work on the WordPress side without a Solr running, add
-`define( 'SOLRENGINE_MEMORY_BACKEND', true );` to `wp-config.php` and pick the
+`define( 'BRAINTUM_SEARCH_MEMORY_BACKEND', true );` to `wp-config.php` and pick the
 in-memory backend on the connection screen.
 
 Everything else — the integration suite, a real Solr in Docker, the test fixtures
@@ -119,6 +119,6 @@ filters that nothing exercised.
 
 ## Licence
 
-GPLv2 or later. SolrEngine bundles Action Scheduler, which is GPLv3, so the
+GPLv2 or later. Braintum Search bundles Action Scheduler, which is GPLv3, so the
 package as distributed is effectively GPLv3. See
 [compatibility.md](docs/compatibility.md).

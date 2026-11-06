@@ -2,19 +2,19 @@
 /**
  * Turns a Solr response into domain objects.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\FacetBucket;
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FacetResult;
-use SolrEngine\Contracts\SearchHit;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\FacetBucket;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FacetResult;
+use BraintumSearch\Contracts\SearchHit;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Documents\DocumentFields;
 
 /**
  * Reads a Solr select response.

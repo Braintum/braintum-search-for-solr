@@ -2,12 +2,12 @@
 /**
  * What this site has applied to its Solr schema.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Schema;
+namespace BraintumSearch\Schema;
 
-use SolrEngine\Support\Config;
+use BraintumSearch\Support\Config;
 
 /**
  * Remembers which contract was applied, and notices when somebody else changes
@@ -29,7 +29,7 @@ use SolrEngine\Support\Config;
 final class AppliedSchema {
 
 	/**
-	 * Nothing has been applied through SolrEngine.
+	 * Nothing has been applied through Braintum Search.
 	 *
 	 * @var string
 	 */
@@ -187,7 +187,7 @@ final class AppliedSchema {
 		if ( $recorded_version <= 0 || '' === $recorded_fingerprint ) {
 			// The schema is adequate, but this site did not put it there: an
 			// administrator applied the configset by hand, or the collection was
-			// prepared before SolrEngine was installed. Worth distinguishing,
+			// prepared before Braintum Search was installed. Worth distinguishing,
 			// because there is nothing to compare a change against yet.
 			return self::UNRECORDED;
 		}

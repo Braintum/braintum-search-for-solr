@@ -2,17 +2,17 @@
 /**
  * Detects drift between WordPress and the index.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Contracts\IndexStatus;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Support\Config;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Contracts\IndexStatus;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Support\Config;
 
 /**
  * Compares what WordPress has against what the index holds.
@@ -37,14 +37,14 @@ final class Reconciler {
 	 *
 	 * @var string
 	 */
-	public const HOOK = 'solrengine_reconcile';
+	public const HOOK = 'braintum_search_reconcile';
 
 	/**
 	 * Option holding the most recent report.
 	 *
 	 * @var string
 	 */
-	public const OPTION = 'solrengine_reconciliation';
+	public const OPTION = 'braintum_search_reconciliation';
 
 	/**
 	 * Proportion of documents that may be missing before it is reported.
@@ -142,7 +142,7 @@ final class Reconciler {
 			 *
 			 * @param array<string,mixed> $report What was found.
 			 */
-			do_action( 'solrengine_drift_detected', $report );
+			do_action( 'braintum_search_drift_detected', $report );
 		}
 
 		return Result::success( $report );

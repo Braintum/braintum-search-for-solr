@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build the release: build/solrengine, build/solrengine-<version>.zip, its
+# Build the release: build/braintum-search-for-solr, build/braintum-search-for-solr-<version>.zip, its
 # SHA-256 and a manifest of every file in it.
 #
 # What ships is decided by .distignore, so the package cannot accidentally
@@ -22,14 +22,14 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD="${ROOT}/build"
-DEST="${BUILD}/solrengine"
+DEST="${BUILD}/braintum-search-for-solr"
 HELPER="${ROOT}/bin/release-manifest.php"
 
 php "${ROOT}/bin/check-version.php"
 
-VERSION="$(sed -n 's/^ \* Version: *//p' "${ROOT}/solrengine.php" | head -n 1 | tr -d '[:space:]')"
-ZIP="${BUILD}/solrengine-${VERSION}.zip"
-MANIFEST="${BUILD}/solrengine-${VERSION}.manifest.txt"
+VERSION="$(sed -n 's/^ \* Version: *//p' "${ROOT}/braintum-search-for-solr.php" | head -n 1 | tr -d '[:space:]')"
+ZIP="${BUILD}/braintum-search-for-solr-${VERSION}.zip"
+MANIFEST="${BUILD}/braintum-search-for-solr-${VERSION}.manifest.txt"
 
 # The commit being packaged, and whether the working tree matches it. A release
 # should be built from a clean checkout; a dirty one is allowed, for trying the
@@ -91,7 +91,7 @@ HEADER="$(mktemp)"
 trap 'rm -f "${HEADER}"; rm -rf "${VERIFY:-}"' EXIT
 
 {
-	echo "plugin: solrengine ${VERSION}"
+	echo "plugin: braintum-search-for-solr ${VERSION}"
 	echo "commit: ${COMMIT}"
 	echo "uncommitted changes: ${DIRTY}"
 	echo "timestamp: ${EPOCH}"
@@ -104,7 +104,7 @@ php "${HELPER}" write "${DEST}" "${MANIFEST}" "${HEADER}"
 # the owner and extra timestamps; TZ=UTC because zip stores local time.
 (
 	cd "${BUILD}"
-	find solrengine -print | LC_ALL=C sort | TZ=UTC zip -X -q "${ZIP}" -@
+	find braintum-search-for-solr -print | LC_ALL=C sort | TZ=UTC zip -X -q "${ZIP}" -@
 )
 
 ZIP_SHA="$(php -r 'echo hash_file("sha256", $argv[1]);' "${ZIP}")"
@@ -118,15 +118,15 @@ unzip -q "${ZIP}" -d "${VERIFY}"
 
 ROOTS="$(find "${VERIFY}" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ')"
 
-if [ "${ROOTS}" != "1" ] || [ ! -f "${VERIFY}/solrengine/solrengine.php" ]; then
-	echo "Release: the zip must hold exactly one directory, solrengine/." >&2
+if [ "${ROOTS}" != "1" ] || [ ! -f "${VERIFY}/braintum-search-for-solr/braintum-search-for-solr.php" ]; then
+	echo "Release: the zip must hold exactly one directory, braintum-search-for-solr/." >&2
 	exit 1
 fi
 
-php "${HELPER}" verify "${VERIFY}/solrengine" "${MANIFEST}"
+php "${HELPER}" verify "${VERIFY}/braintum-search-for-solr" "${MANIFEST}"
 
 # Every PHP file in the package parses.
-find "${VERIFY}/solrengine" -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l > /dev/null
+find "${VERIFY}/braintum-search-for-solr" -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l > /dev/null
 
 echo "Built ${DEST}"
 echo "      ${ZIP} ($(du -h "${ZIP}" | cut -f1))"

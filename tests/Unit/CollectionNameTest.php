@@ -6,18 +6,18 @@
  * rebuild. Both want the same guard, and the second wants arithmetic that does
  * not reuse the name of an index somebody may still be looking at.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Backend\Solr\CollectionName;
+use BraintumSearch\Backend\Solr\CollectionName;
 
 /**
- * @covers \SolrEngine\Backend\Solr\CollectionName
+ * @covers \BraintumSearch\Backend\Solr\CollectionName
  */
 final class CollectionNameTest extends TestCase {
 

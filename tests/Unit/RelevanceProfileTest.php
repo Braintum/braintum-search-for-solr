@@ -7,18 +7,18 @@
  * box. What it must not do is overrule a decision the site owner has made about
  * one of them, which is what it did until 0.8.0.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Search\RelevanceProfile;
+use BraintumSearch\Search\RelevanceProfile;
 
 /**
- * @covers \SolrEngine\Search\RelevanceProfile
+ * @covers \BraintumSearch\Search\RelevanceProfile
  */
 final class RelevanceProfileTest extends TestCase {
 

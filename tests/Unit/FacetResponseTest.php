@@ -6,24 +6,24 @@
  * both WordPress and the transport: response shapes that would take a fixture
  * cluster to produce are one array literal here.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\ResponseParser;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\ResponseParser;
 
 /**
- * @covers \SolrEngine\Search\ResponseParser
- * @covers \SolrEngine\Contracts\FacetResult
- * @covers \SolrEngine\Contracts\FacetBucket
+ * @covers \BraintumSearch\Search\ResponseParser
+ * @covers \BraintumSearch\Contracts\FacetResult
+ * @covers \BraintumSearch\Contracts\FacetBucket
  */
 final class FacetResponseTest extends TestCase {
 

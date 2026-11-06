@@ -6,7 +6,7 @@
  * generation. Only the entry point is declared, because the default convention
  * expects src/index.js and the file is more usefully named after what it does.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 const defaults = require( '@wordpress/scripts/config/webpack.config' );

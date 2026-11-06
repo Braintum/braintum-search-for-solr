@@ -2,19 +2,19 @@
 /**
  * The search popup's REST route.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Rest;
+namespace BraintumSearch\Rest;
 
-use SolrEngine\Search\InstantResults;
+use BraintumSearch\Search\InstantResults;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * `GET /solrengine/v1/instant` — results and tab counts for the search popup.
+ * `GET /braintum-search/v1/instant` — results and tab counts for the search popup.
  *
  * Calls {@see InstantResults} and returns its body unchanged.
  *
@@ -127,8 +127,8 @@ final class InstantResultsController {
 
 		if ( $allowed->is_failure() ) {
 			return new WP_Error(
-				'solrengine_rate_limited',
-				__( 'Too many searches. Please wait a moment.', 'solrengine' ),
+				'braintum_search_rate_limited',
+				__( 'Too many searches. Please wait a moment.', 'braintum-search-for-solr' ),
 				array(
 					'status'      => 429,
 					'retry_after' => (int) ( $allowed->context()['retry_after'] ?? 10 ),
@@ -175,8 +175,8 @@ final class InstantResultsController {
 	 */
 	private function unavailable(): WP_Error {
 		return new WP_Error(
-			'solrengine_backend_unavailable',
-			__( 'Search is temporarily unavailable.', 'solrengine' ),
+			'braintum_search_backend_unavailable',
+			__( 'Search is temporarily unavailable.', 'braintum-search-for-solr' ),
 			array(
 				'status'      => 503,
 				'retry_after' => 30,

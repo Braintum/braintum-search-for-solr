@@ -13,7 +13,7 @@
  * `sha256sum` take different arguments on macOS and on Linux, and a release has
  * to come out the same on a laptop as on CI.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
@@ -24,7 +24,7 @@ declare( strict_types=1 );
  * @param string $message What went wrong.
  * @return never
  */
-function solrengine_release_fail( string $message ): void {
+function braintum_search_release_fail( string $message ): void {
 	fwrite( STDERR, "Release: {$message}\n" );
 	exit( 1 );
 }
@@ -37,7 +37,7 @@ function solrengine_release_fail( string $message ): void {
  * @param string $dir Directory.
  * @return array{files: string[], dirs: string[]}
  */
-function solrengine_release_tree( string $dir ): array {
+function braintum_search_release_tree( string $dir ): array {
 	$files    = array();
 	$dirs     = array();
 	$iterator = new RecursiveIteratorIterator(
@@ -49,7 +49,7 @@ function solrengine_release_tree( string $dir ): array {
 		$relative = substr( $item->getPathname(), strlen( $dir ) + 1 );
 
 		if ( $item->isLink() ) {
-			solrengine_release_fail( "{$relative} is a symlink. A plugin zip must not contain one." );
+			braintum_search_release_fail( "{$relative} is a symlink. A plugin zip must not contain one." );
 		}
 
 		if ( $item->isDir() ) {
@@ -78,8 +78,8 @@ function solrengine_release_tree( string $dir ): array {
  * @param int    $epoch Timestamp to give every entry.
  * @return void
  */
-function solrengine_release_normalise( string $dir, int $epoch ): void {
-	$tree = solrengine_release_tree( $dir );
+function braintum_search_release_normalise( string $dir, int $epoch ): void {
+	$tree = braintum_search_release_tree( $dir );
 
 	foreach ( $tree['files'] as $file ) {
 		chmod( "{$dir}/{$file}", 0644 );
@@ -101,9 +101,9 @@ function solrengine_release_normalise( string $dir, int $epoch ): void {
  * @param string $dir Package directory.
  * @return void
  */
-function solrengine_release_check( string $dir ): void {
+function braintum_search_release_check( string $dir ): void {
 	$required = array(
-		'solrengine.php',
+		'braintum-search-for-solr.php',
 		'constants.php',
 		'uninstall.php',
 		'readme.txt',
@@ -115,12 +115,12 @@ function solrengine_release_check( string $dir ): void {
 
 	foreach ( $required as $path ) {
 		if ( ! is_file( "{$dir}/{$path}" ) ) {
-			solrengine_release_fail( "{$path} is missing from the package." );
+			braintum_search_release_fail( "{$path} is missing from the package." );
 		}
 	}
 
 	if ( array() === glob( "{$dir}/assets/build/*.asset.php" ) ) {
-		solrengine_release_fail( 'assets/build has no compiled assets. Run: npm ci && npm run build' );
+		braintum_search_release_fail( 'assets/build has no compiled assets. Run: npm ci && npm run build' );
 	}
 
 	// Composer records whether it installed development packages. Read its
@@ -128,33 +128,33 @@ function solrengine_release_check( string $dir ): void {
 	$installed = json_decode( (string) file_get_contents( "{$dir}/vendor/composer/installed.json" ), true );
 
 	if ( ! is_array( $installed ) || ! array_key_exists( 'dev', $installed ) ) {
-		solrengine_release_fail( 'vendor/composer/installed.json is unreadable.' );
+		braintum_search_release_fail( 'vendor/composer/installed.json is unreadable.' );
 	}
 
 	if ( false !== $installed['dev'] || array() !== ( $installed['dev-package-names'] ?? array() ) ) {
-		solrengine_release_fail( 'vendor/ contains development packages: ' . implode( ', ', (array) ( $installed['dev-package-names'] ?? array() ) ) );
+		braintum_search_release_fail( 'vendor/ contains development packages: ' . implode( ', ', (array) ( $installed['dev-package-names'] ?? array() ) ) );
 	}
 
-	$tree = solrengine_release_tree( $dir );
+	$tree = braintum_search_release_tree( $dir );
 
 	foreach ( array_merge( $tree['files'], $tree['dirs'] ) as $path ) {
 		// Plugin Check refuses hidden files outright.
 		foreach ( explode( '/', $path ) as $part ) {
 			if ( '' !== $part && '.' === $part[0] ) {
-				solrengine_release_fail( "{$path} is a hidden file. Add it to .distignore." );
+				braintum_search_release_fail( "{$path} is a hidden file. Add it to .distignore." );
 			}
 		}
 
 		if ( preg_match( '#^(tests|docs|bin|node_modules|assets/src|build)(/|$)#', $path ) ) {
-			solrengine_release_fail( "{$path} is development material. Add it to .distignore." );
+			braintum_search_release_fail( "{$path} is development material. Add it to .distignore." );
 		}
 
 		if ( preg_match( '#(^|/)(phpunit|phpstan|php_codesniffer|squizlabs|wp-coding-standards)(/|$)#i', $path ) ) {
-			solrengine_release_fail( "{$path} is development tooling." );
+			braintum_search_release_fail( "{$path} is development tooling." );
 		}
 
 		if ( preg_match( '#\.(zip|tar|gz|phar|sql|log|map)$#i', $path ) ) {
-			solrengine_release_fail( "{$path} does not belong in a plugin package." );
+			braintum_search_release_fail( "{$path} does not belong in a plugin package." );
 		}
 	}
 }
@@ -170,19 +170,19 @@ function solrengine_release_check( string $dir ): void {
  * @param string $header   File holding the header lines.
  * @return void
  */
-function solrengine_release_write( string $dir, string $manifest, string $header ): void {
+function braintum_search_release_write( string $dir, string $manifest, string $header ): void {
 	$lines = array();
 
 	foreach ( file( $header, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES ) as $line ) {
 		$lines[] = '# ' . $line;
 	}
 
-	$tree    = solrengine_release_tree( $dir );
+	$tree    = braintum_search_release_tree( $dir );
 	$lines[] = '# files: ' . count( $tree['files'] );
 	$lines[] = '';
 
 	foreach ( $tree['files'] as $file ) {
-		$lines[] = hash_file( 'sha256', "{$dir}/{$file}" ) . '  solrengine/' . $file;
+		$lines[] = hash_file( 'sha256', "{$dir}/{$file}" ) . '  braintum-search-for-solr/' . $file;
 	}
 
 	file_put_contents( $manifest, implode( "\n", $lines ) . "\n" );
@@ -194,11 +194,11 @@ function solrengine_release_write( string $dir, string $manifest, string $header
  * Catches what the zip step could get wrong on its own: a file left out, a
  * file added, or the wrong directory archived.
  *
- * @param string $dir      Extracted `solrengine` directory.
+ * @param string $dir      Extracted `braintum-search-for-solr` directory.
  * @param string $manifest Manifest written for the package.
  * @return void
  */
-function solrengine_release_verify( string $dir, string $manifest ): void {
+function braintum_search_release_verify( string $dir, string $manifest ): void {
 	$expected = array();
 
 	foreach ( file( $manifest, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES ) as $line ) {
@@ -208,25 +208,25 @@ function solrengine_release_verify( string $dir, string $manifest ): void {
 
 		list( $hash, $path ) = explode( '  ', $line, 2 );
 
-		$expected[ substr( $path, strlen( 'solrengine/' ) ) ] = $hash;
+		$expected[ substr( $path, strlen( 'braintum-search-for-solr/' ) ) ] = $hash;
 	}
 
-	$actual = solrengine_release_tree( $dir )['files'];
+	$actual = braintum_search_release_tree( $dir )['files'];
 
 	$missing = array_diff( array_keys( $expected ), $actual );
 	$extra   = array_diff( $actual, array_keys( $expected ) );
 
 	if ( array() !== $missing ) {
-		solrengine_release_fail( 'The zip is missing: ' . implode( ', ', $missing ) );
+		braintum_search_release_fail( 'The zip is missing: ' . implode( ', ', $missing ) );
 	}
 
 	if ( array() !== $extra ) {
-		solrengine_release_fail( 'The zip has files the manifest does not: ' . implode( ', ', $extra ) );
+		braintum_search_release_fail( 'The zip has files the manifest does not: ' . implode( ', ', $extra ) );
 	}
 
 	foreach ( $expected as $path => $hash ) {
 		if ( hash_file( 'sha256', "{$dir}/{$path}" ) !== $hash ) {
-			solrengine_release_fail( "{$path} in the zip differs from the package." );
+			braintum_search_release_fail( "{$path} in the zip differs from the package." );
 		}
 	}
 
@@ -237,17 +237,17 @@ $command = $argv[1] ?? '';
 
 switch ( $command ) {
 	case 'normalise':
-		solrengine_release_normalise( rtrim( $argv[2], '/' ), (int) $argv[3] );
+		braintum_search_release_normalise( rtrim( $argv[2], '/' ), (int) $argv[3] );
 		break;
 	case 'check':
-		solrengine_release_check( rtrim( $argv[2], '/' ) );
+		braintum_search_release_check( rtrim( $argv[2], '/' ) );
 		break;
 	case 'write':
-		solrengine_release_write( rtrim( $argv[2], '/' ), $argv[3], $argv[4] );
+		braintum_search_release_write( rtrim( $argv[2], '/' ), $argv[3], $argv[4] );
 		break;
 	case 'verify':
-		solrengine_release_verify( rtrim( $argv[2], '/' ), $argv[3] );
+		braintum_search_release_verify( rtrim( $argv[2], '/' ), $argv[3] );
 		break;
 	default:
-		solrengine_release_fail( 'Usage: php bin/release-manifest.php normalise|check|write|verify ...' );
+		braintum_search_release_fail( 'Usage: php bin/release-manifest.php normalise|check|write|verify ...' );
 }

@@ -2,10 +2,10 @@
 /**
  * Availability, expressed as a bucket rather than a number.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
 /**
  * Turns a stock status and quantity into one of three words.

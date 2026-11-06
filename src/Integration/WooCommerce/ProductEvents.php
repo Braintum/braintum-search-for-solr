@@ -2,13 +2,13 @@
 /**
  * The WooCommerce events that make a product stale.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Indexing\DirtySet;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Indexing\DirtySet;
 use WC_Product;
 
 /**
