@@ -2,15 +2,15 @@
 /**
  * One autocomplete suggestion.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Something a visitor can pick from an autocomplete list.
  *
- * Carries a URL, because SolrEngine's suggestions are documents rather than
+ * Carries a URL, because Braintum Search's suggestions are documents rather than
  * query completions. A visitor typing "macb" wants to reach the MacBook review,
  * not to be handed the word "macbook" and made to press enter again.
  *

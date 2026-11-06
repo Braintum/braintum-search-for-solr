@@ -5,22 +5,22 @@
  * A response is data that crossed a network. A malformed one must cost one
  * missing result, never a fatal error on a page a visitor is looking at.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Search\ResponseParser;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Search\ResponseParser;
 
 /**
- * @covers \SolrEngine\Search\ResponseParser
- * @covers \SolrEngine\Contracts\SearchResults
- * @covers \SolrEngine\Contracts\SearchHit
+ * @covers \BraintumSearch\Search\ResponseParser
+ * @covers \BraintumSearch\Contracts\SearchResults
+ * @covers \BraintumSearch\Contracts\SearchHit
  */
 final class ResponseParserTest extends TestCase {
 

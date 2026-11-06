@@ -2,10 +2,10 @@
 /**
  * Where a product is allowed to appear.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
 /**
  * Turns WooCommerce's catalogue visibility into something a query can filter on.

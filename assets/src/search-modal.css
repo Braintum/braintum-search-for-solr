@@ -5,43 +5,43 @@
  * ships, because a popup is a surface of its own and has no theme styling to
  * inherit from. It still takes the theme's font, and every colour, radius and
  * size a theme is likely to want to change is a custom property on
- * .solrengine-modal, so a theme can restyle it without fighting specificity:
+ * .braintum-search-modal, so a theme can restyle it without fighting specificity:
  *
- *     .solrengine-modal { --solrengine-modal-accent: #b4232a; }
+ *     .braintum-search-modal { --braintum-search-modal-accent: #b4232a; }
  *
  * Selectors carry two classes where a theme rule would otherwise win. Themes
  * style bare `button`, `input[type="search"]`, `a` and `mark` freely, and the
  * popup is rendered inside the theme's page.
  *
- * Width: --solrengine-modal-width when a theme sets it; otherwise the site's
- * content width, which the plugin prints as --solrengine-content-width from
+ * Width: --braintum-search-modal-width when a theme sets it; otherwise the site's
+ * content width, which the plugin prints as --braintum-search-content-width from
  * theme.json or $content_width; otherwise 75rem. Never narrower than 44rem
  * unless a theme says so, and never wider than the window.
  */
 
-.solrengine-modal {
-	--solrengine-modal-bg: #fff;
-	--solrengine-modal-text: #1d2127;
+.braintum-search-modal {
+	--braintum-search-modal-bg: #fff;
+	--braintum-search-modal-text: #1d2127;
 
 	/* Both pass 4.5:1 on every surface they sit on, the pills included. */
-	--solrengine-modal-muted: #5f6673;
-	--solrengine-modal-faint: #656c79;
-	--solrengine-modal-border: #e7e9ed;
-	--solrengine-modal-field: #f5f6f8;
-	--solrengine-modal-field-border: #e3e6ea;
-	--solrengine-modal-footer: #f8f9fa;
-	--solrengine-modal-accent: #2f55d4;
-	--solrengine-modal-mark: #e4ebfc;
-	--solrengine-modal-pill: #eef0f3;
-	--solrengine-modal-hover: #eff2f6;
-	--solrengine-modal-thumb: #eeeae4;
-	--solrengine-modal-backdrop: rgba(17, 24, 39, 0.38);
-	--solrengine-modal-radius: 18px;
-	--solrengine-modal-card-radius: 12px;
-	--solrengine-modal-card-min: 15rem;
-	--solrengine-modal-columns: 4;
-	--solrengine-modal-gap: 1rem;
-	--solrengine-modal-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 24px 56px -12px rgba(16, 24, 40, 0.22);
+	--braintum-search-modal-muted: #5f6673;
+	--braintum-search-modal-faint: #656c79;
+	--braintum-search-modal-border: #e7e9ed;
+	--braintum-search-modal-field: #f5f6f8;
+	--braintum-search-modal-field-border: #e3e6ea;
+	--braintum-search-modal-footer: #f8f9fa;
+	--braintum-search-modal-accent: #2f55d4;
+	--braintum-search-modal-mark: #e4ebfc;
+	--braintum-search-modal-pill: #eef0f3;
+	--braintum-search-modal-hover: #eff2f6;
+	--braintum-search-modal-thumb: #eeeae4;
+	--braintum-search-modal-backdrop: rgba(17, 24, 39, 0.38);
+	--braintum-search-modal-radius: 18px;
+	--braintum-search-modal-card-radius: 12px;
+	--braintum-search-modal-card-min: 15rem;
+	--braintum-search-modal-columns: 4;
+	--braintum-search-modal-gap: 1rem;
+	--braintum-search-modal-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 24px 56px -12px rgba(16, 24, 40, 0.22);
 
 	/* The dialog is a transparent full-viewport layer; the panel is the box. A
 	   click on the layer, outside the panel, closes the popup. */
@@ -55,60 +55,60 @@
 	overflow: hidden;
 	border: 0;
 	background: transparent;
-	color: var(--solrengine-modal-text);
+	color: var(--braintum-search-modal-text);
 	font-family: inherit;
 	font-size: 16px;
 	line-height: 1.45;
 	text-align: left;
 }
 
-.solrengine-modal:not([open]) {
+.braintum-search-modal:not([open]) {
 	display: none;
 }
 
-.solrengine-modal::backdrop {
-	background: var(--solrengine-modal-backdrop);
+.braintum-search-modal::backdrop {
+	background: var(--braintum-search-modal-backdrop);
 	backdrop-filter: blur(2px);
 }
 
-.solrengine-modal *,
-.solrengine-modal *::before,
-.solrengine-modal *::after {
+.braintum-search-modal *,
+.braintum-search-modal *::before,
+.braintum-search-modal *::after {
 	box-sizing: border-box;
 }
 
-html.solrengine-modal-is-open {
+html.braintum-search-modal-is-open {
 	overflow: hidden;
 }
 
-.solrengine-modal .solrengine-modal__panel {
+.braintum-search-modal .braintum-search-modal__panel {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	max-width: var(--solrengine-modal-width, max(44rem, var(--solrengine-content-width, 75rem)));
+	max-width: var(--braintum-search-modal-width, max(44rem, var(--braintum-search-content-width, 75rem)));
 	max-height: 100%;
 	margin: 0 auto;
 	overflow: hidden;
-	border: 1px solid var(--solrengine-modal-border);
-	border-radius: var(--solrengine-modal-radius);
-	background: var(--solrengine-modal-bg);
-	box-shadow: var(--solrengine-modal-shadow);
-	animation: solrengine-modal-in 160ms ease-out;
+	border: 1px solid var(--braintum-search-modal-border);
+	border-radius: var(--braintum-search-modal-radius);
+	background: var(--braintum-search-modal-bg);
+	box-shadow: var(--braintum-search-modal-shadow);
+	animation: braintum-search-modal-in 160ms ease-out;
 }
 
 /* Only the body gives up height; it is the part that scrolls. The tabs scroll
    sideways, and overflow alone would let a column squeeze them flat. */
-.solrengine-modal .solrengine-modal__panel > * {
+.braintum-search-modal .braintum-search-modal__panel > * {
 	flex-shrink: 0;
 }
 
 /* With results, the panel takes the height it has, so the grid does not make
    it grow and shrink on every pause in typing. */
-.solrengine-modal.has-results .solrengine-modal__panel {
+.braintum-search-modal.has-results .braintum-search-modal__panel {
 	height: 100%;
 }
 
-@keyframes solrengine-modal-in {
+@keyframes braintum-search-modal-in {
 
 	from {
 		opacity: 0;
@@ -117,9 +117,9 @@ html.solrengine-modal-is-open {
 }
 
 /* Shared resets for the controls a theme is most likely to have styled. */
-.solrengine-modal .solrengine-modal__close,
-.solrengine-modal .solrengine-modal__clear,
-.solrengine-modal .solrengine-tab {
+.braintum-search-modal .braintum-search-modal__close,
+.braintum-search-modal .braintum-search-modal__clear,
+.braintum-search-modal .braintum-search-tab {
 	display: inline-flex;
 	align-items: center;
 	min-width: 0;
@@ -138,24 +138,24 @@ html.solrengine-modal-is-open {
 	cursor: pointer;
 }
 
-.solrengine-modal p {
+.braintum-search-modal p {
 	margin: 0;
 }
 
-.solrengine-modal svg {
+.braintum-search-modal svg {
 	flex: none;
 }
 
 /* Header ----------------------------------------------------------------- */
 
-.solrengine-modal .solrengine-modal__header {
+.braintum-search-modal .braintum-search-modal__header {
 	display: flex;
 	gap: 0.75rem;
 	align-items: center;
 	padding: 1.5rem 1.5rem 1rem;
 }
 
-.solrengine-modal .solrengine-modal__heading {
+.braintum-search-modal .braintum-search-modal__heading {
 	display: flex;
 	flex: 1 1 auto;
 	gap: 0.5rem;
@@ -167,62 +167,62 @@ html.solrengine-modal-is-open {
 	text-transform: uppercase;
 }
 
-.solrengine-modal .solrengine-modal__heading span {
+.braintum-search-modal .braintum-search-modal__heading span {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-.solrengine-modal .solrengine-modal__tagline {
+.braintum-search-modal .braintum-search-modal__tagline {
 	flex: 0 1 auto;
 	overflow: hidden;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.8125rem;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-.solrengine-modal .solrengine-modal__close {
+.braintum-search-modal .braintum-search-modal__close {
 	justify-content: center;
 	width: 2rem;
 	height: 2rem;
 	margin: -0.25rem -0.5rem -0.25rem 0;
 	border-radius: 8px;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 }
 
-.solrengine-modal .solrengine-modal__close:hover {
-	background: var(--solrengine-modal-hover);
-	color: var(--solrengine-modal-text);
+.braintum-search-modal .braintum-search-modal__close:hover {
+	background: var(--braintum-search-modal-hover);
+	color: var(--braintum-search-modal-text);
 }
 
 /* Search field ----------------------------------------------------------- */
 
-.solrengine-modal .solrengine-modal__search {
+.braintum-search-modal .braintum-search-modal__search {
 	position: relative;
 	display: flex;
 	align-items: center;
 	margin: 0 1.5rem;
 	padding: 0;
-	border: 1px solid var(--solrengine-modal-field-border);
+	border: 1px solid var(--braintum-search-modal-field-border);
 	border-radius: 12px;
-	background: var(--solrengine-modal-field);
+	background: var(--braintum-search-modal-field);
 	transition: border-color 120ms, box-shadow 120ms;
 }
 
-.solrengine-modal .solrengine-modal__search:focus-within {
-	border-color: var(--solrengine-modal-accent);
-	box-shadow: 0 0 0 3px color-mix(in srgb, var(--solrengine-modal-accent) 18%, transparent);
+.braintum-search-modal .braintum-search-modal__search:focus-within {
+	border-color: var(--braintum-search-modal-accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--braintum-search-modal-accent) 18%, transparent);
 }
 
-.solrengine-modal .solrengine-modal__search-icon {
+.braintum-search-modal .braintum-search-modal__search-icon {
 	position: absolute;
 	left: 1rem;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 	pointer-events: none;
 }
 
-.solrengine-modal .solrengine-modal__input {
+.braintum-search-modal .braintum-search-modal__input {
 	flex: 1 1 auto;
 	width: 100%;
 	min-width: 0;
@@ -234,61 +234,61 @@ html.solrengine-modal-is-open {
 	outline: 0;
 	background: transparent;
 	box-shadow: none;
-	color: var(--solrengine-modal-text);
+	color: var(--braintum-search-modal-text);
 	font: inherit;
 	font-size: 1.0625rem;
 	appearance: none;
 }
 
-.solrengine-modal .solrengine-modal__input::placeholder {
-	color: var(--solrengine-modal-faint);
+.braintum-search-modal .braintum-search-modal__input::placeholder {
+	color: var(--braintum-search-modal-faint);
 	opacity: 1;
 }
 
-.solrengine-modal .solrengine-modal__input::-webkit-search-cancel-button,
-.solrengine-modal .solrengine-modal__input::-webkit-search-decoration {
+.braintum-search-modal .braintum-search-modal__input::-webkit-search-cancel-button,
+.braintum-search-modal .braintum-search-modal__input::-webkit-search-decoration {
 	appearance: none;
 }
 
-.solrengine-modal .solrengine-modal__clear {
+.braintum-search-modal .braintum-search-modal__clear {
 	position: absolute;
 	right: 0.625rem;
 	justify-content: center;
 	width: 2rem;
 	height: 2rem;
 	border-radius: 8px;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 }
 
-.solrengine-modal .solrengine-modal__clear:hover {
+.braintum-search-modal .braintum-search-modal__clear:hover {
 	background: rgba(0, 0, 0, 0.05);
-	color: var(--solrengine-modal-text);
+	color: var(--braintum-search-modal-text);
 }
 
-.solrengine-modal .solrengine-modal__clear[hidden] {
+.braintum-search-modal .braintum-search-modal__clear[hidden] {
 	display: none;
 }
 
 /* A quiet spinner, shown only while a request is slow enough to notice. */
-.solrengine-modal .solrengine-modal__spinner {
+.braintum-search-modal .braintum-search-modal__spinner {
 	position: absolute;
 	right: 3rem;
 	width: 1rem;
 	height: 1rem;
-	border: 2px solid var(--solrengine-modal-field-border);
-	border-top-color: var(--solrengine-modal-accent);
+	border: 2px solid var(--braintum-search-modal-field-border);
+	border-top-color: var(--braintum-search-modal-accent);
 	border-radius: 50%;
 	opacity: 0;
 	pointer-events: none;
 }
 
-.solrengine-modal.is-loading .solrengine-modal__spinner {
+.braintum-search-modal.is-loading .braintum-search-modal__spinner {
 	opacity: 1;
 	transition: opacity 120ms 250ms;
-	animation: solrengine-spin 700ms linear infinite;
+	animation: braintum-search-spin 700ms linear infinite;
 }
 
-@keyframes solrengine-spin {
+@keyframes braintum-search-spin {
 
 	to {
 		transform: rotate(360deg);
@@ -297,40 +297,40 @@ html.solrengine-modal-is-open {
 
 /* Tabs ------------------------------------------------------------------- */
 
-.solrengine-modal .solrengine-modal__tabs {
+.braintum-search-modal .braintum-search-modal__tabs {
 	display: flex;
 	gap: 1.75rem;
 	margin-top: 1rem;
 	padding: 0 1.5rem;
 	overflow-x: auto;
-	border-bottom: 1px solid var(--solrengine-modal-border);
+	border-bottom: 1px solid var(--braintum-search-modal-border);
 	scrollbar-width: none;
 }
 
-.solrengine-modal .solrengine-modal__tabs[hidden] {
+.braintum-search-modal .braintum-search-modal__tabs[hidden] {
 	display: none;
 }
 
-.solrengine-modal .solrengine-tab {
+.braintum-search-modal .braintum-search-tab {
 	position: relative;
 	flex: none;
 	gap: 0.5rem;
 	padding: 0.25rem 0 0.9rem;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.9375rem;
 	white-space: nowrap;
 }
 
-.solrengine-modal .solrengine-tab:hover {
-	color: var(--solrengine-modal-text);
+.braintum-search-modal .braintum-search-tab:hover {
+	color: var(--braintum-search-modal-text);
 }
 
-.solrengine-modal .solrengine-tab.is-selected {
-	color: var(--solrengine-modal-accent);
+.braintum-search-modal .braintum-search-tab.is-selected {
+	color: var(--braintum-search-modal-accent);
 	font-weight: 600;
 }
 
-.solrengine-modal .solrengine-tab.is-selected::after {
+.braintum-search-modal .braintum-search-tab.is-selected::after {
 	position: absolute;
 	right: 0;
 	bottom: -1px;
@@ -341,12 +341,12 @@ html.solrengine-modal-is-open {
 	content: "";
 }
 
-.solrengine-modal .solrengine-tab__count {
+.braintum-search-modal .braintum-search-tab__count {
 	min-width: 1.375rem;
 	padding: 0.0625rem 0.375rem;
 	border-radius: 6px;
-	background: var(--solrengine-modal-pill);
-	color: var(--solrengine-modal-muted);
+	background: var(--braintum-search-modal-pill);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.75rem;
 	font-weight: 500;
 	text-align: center;
@@ -354,7 +354,7 @@ html.solrengine-modal-is-open {
 
 /* Results ---------------------------------------------------------------- */
 
-.solrengine-modal .solrengine-modal__body {
+.braintum-search-modal .braintum-search-modal__body {
 	flex: 1 1 auto;
 	min-height: 0;
 	padding: 0 1.5rem 0.5rem;
@@ -362,50 +362,50 @@ html.solrengine-modal-is-open {
 	overscroll-behavior: contain;
 }
 
-.solrengine-modal .solrengine-modal__summary {
+.braintum-search-modal .braintum-search-modal__summary {
 	display: flex;
 	gap: 1rem;
 	justify-content: space-between;
 	padding: 1.25rem 0 0.5rem;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.8125rem;
 }
 
-.solrengine-modal .solrengine-modal__summary[hidden] {
+.braintum-search-modal .braintum-search-modal__summary[hidden] {
 	display: none;
 }
 
-.solrengine-modal .solrengine-modal__results {
+.braintum-search-modal .braintum-search-modal__results {
 	transition: opacity 120ms;
 }
 
-.solrengine-modal.is-loading .solrengine-modal__results {
+.braintum-search-modal.is-loading .braintum-search-modal__results {
 	opacity: 0.6;
 	transition-delay: 200ms;
 }
 
-.solrengine-modal .solrengine-modal__message {
+.braintum-search-modal .braintum-search-modal__message {
 	padding: 1.25rem 0 1rem;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.9375rem;
 }
 
-.solrengine-modal .solrengine-modal__message:empty {
+.braintum-search-modal .braintum-search-modal__message:empty {
 	display: none;
 }
 
 /* Sections --------------------------------------------------------------- */
 
-.solrengine-modal .solrengine-section {
+.braintum-search-modal .braintum-search-section {
 	margin: 0;
 	padding: 0.75rem 0 1rem;
 }
 
-.solrengine-modal .solrengine-section + .solrengine-section {
-	border-top: 1px solid var(--solrengine-modal-border);
+.braintum-search-modal .braintum-search-section + .braintum-search-section {
+	border-top: 1px solid var(--braintum-search-modal-border);
 }
 
-.solrengine-modal .solrengine-section__header {
+.braintum-search-modal .braintum-search-section__header {
 	display: flex;
 	gap: 1rem;
 	align-items: center;
@@ -413,13 +413,13 @@ html.solrengine-modal-is-open {
 	padding: 0.5rem 0 0.875rem;
 }
 
-.solrengine-modal .solrengine-section__title {
+.braintum-search-modal .braintum-search-section__title {
 	display: flex;
 	gap: 0.5rem;
 	align-items: center;
 	margin: 0;
 	padding: 0;
-	color: var(--solrengine-modal-text);
+	color: var(--braintum-search-modal-text);
 	font-family: inherit;
 	font-size: 0.8125rem;
 	font-weight: 700;
@@ -428,20 +428,20 @@ html.solrengine-modal-is-open {
 	text-transform: uppercase;
 }
 
-.solrengine-modal .solrengine-section__count {
+.braintum-search-modal .braintum-search-section__count {
 	min-width: 1.375rem;
 	padding: 0.0625rem 0.375rem;
 	border-radius: 6px;
-	background: var(--solrengine-modal-pill);
-	color: var(--solrengine-modal-muted);
+	background: var(--braintum-search-modal-pill);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.75rem;
 	font-weight: 500;
 	letter-spacing: normal;
 	text-align: center;
 }
 
-.solrengine-modal .solrengine-section__all,
-.solrengine-modal .solrengine-modal__more {
+.braintum-search-modal .braintum-search-section__all,
+.braintum-search-modal .braintum-search-modal__more {
 	display: inline-flex;
 	gap: 0.375rem;
 	align-items: center;
@@ -453,7 +453,7 @@ html.solrengine-modal-is-open {
 	border-radius: 8px;
 	background: none;
 	box-shadow: none;
-	color: var(--solrengine-modal-accent);
+	color: var(--braintum-search-modal-accent);
 	font: inherit;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -462,27 +462,27 @@ html.solrengine-modal-is-open {
 	cursor: pointer;
 }
 
-.solrengine-modal .solrengine-section__all:hover {
-	background: var(--solrengine-modal-hover);
+.braintum-search-modal .braintum-search-section__all:hover {
+	background: var(--braintum-search-modal-hover);
 }
 
-.solrengine-modal .solrengine-section__all[hidden],
-.solrengine-modal .solrengine-modal__more[hidden] {
+.braintum-search-modal .braintum-search-section__all[hidden],
+.braintum-search-modal .braintum-search-modal__more[hidden] {
 	display: none;
 }
 
-/* The grid: as many columns of at least --solrengine-modal-card-min as fit,
-   but never more than --solrengine-modal-columns, and two on a phone. */
-.solrengine-modal .solrengine-section__results {
+/* The grid: as many columns of at least --braintum-search-modal-card-min as fit,
+   but never more than --braintum-search-modal-columns, and two on a phone. */
+.braintum-search-modal .braintum-search-section__results {
 
 	/* A column is at least the card minimum (or half the row, on a phone),
 	   and at least a 1/columns share, so there are never more columns. */
-	--solrengine-grid-floor: min(var(--solrengine-modal-card-min), calc(50% - var(--solrengine-modal-gap) / 2));
-	--solrengine-grid-share: calc((100% - (var(--solrengine-modal-columns) - 1) * var(--solrengine-modal-gap)) / var(--solrengine-modal-columns));
+	--braintum-search-grid-floor: min(var(--braintum-search-modal-card-min), calc(50% - var(--braintum-search-modal-gap) / 2));
+	--braintum-search-grid-share: calc((100% - (var(--braintum-search-modal-columns) - 1) * var(--braintum-search-modal-gap)) / var(--braintum-search-modal-columns));
 
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(max(var(--solrengine-grid-floor), var(--solrengine-grid-share)), 1fr));
-	gap: var(--solrengine-modal-gap);
+	grid-template-columns: repeat(auto-fill, minmax(max(var(--braintum-search-grid-floor), var(--braintum-search-grid-share)), 1fr));
+	gap: var(--braintum-search-modal-gap);
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -490,70 +490,70 @@ html.solrengine-modal-is-open {
 
 /* Load more -------------------------------------------------------------- */
 
-.solrengine-modal .solrengine-modal__more {
+.braintum-search-modal .braintum-search-modal__more {
 	justify-content: center;
 	width: 100%;
 	margin: 0.25rem 0 1rem;
 	padding: 0.75rem 1rem;
-	border: 1px solid var(--solrengine-modal-border);
-	border-radius: var(--solrengine-modal-card-radius);
+	border: 1px solid var(--braintum-search-modal-border);
+	border-radius: var(--braintum-search-modal-card-radius);
 }
 
-.solrengine-modal .solrengine-modal__more:hover {
-	background: var(--solrengine-modal-hover);
+.braintum-search-modal .braintum-search-modal__more:hover {
+	background: var(--braintum-search-modal-hover);
 }
 
-.solrengine-modal .solrengine-modal__more.is-loading {
-	color: var(--solrengine-modal-muted);
+.braintum-search-modal .braintum-search-modal__more.is-loading {
+	color: var(--braintum-search-modal-muted);
 	cursor: progress;
 }
 
-.solrengine-modal .solrengine-modal__more.is-loading::before {
+.braintum-search-modal .braintum-search-modal__more.is-loading::before {
 	width: 0.875rem;
 	height: 0.875rem;
-	border: 2px solid var(--solrengine-modal-field-border);
-	border-top-color: var(--solrengine-modal-accent);
+	border: 2px solid var(--braintum-search-modal-field-border);
+	border-top-color: var(--braintum-search-modal-accent);
 	border-radius: 50%;
 	content: "";
-	animation: solrengine-spin 700ms linear infinite;
+	animation: braintum-search-spin 700ms linear infinite;
 }
 
 /* Cards ------------------------------------------------------------------ */
 
-.solrengine-modal .solrengine-result {
+.braintum-search-modal .braintum-search-result {
 	min-width: 0;
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-.solrengine-modal .solrengine-result[hidden] {
+.braintum-search-modal .braintum-search-result[hidden] {
 	display: none;
 }
 
-.solrengine-modal .solrengine-result__link {
+.braintum-search-modal .braintum-search-result__link {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	overflow: hidden;
-	border: 1px solid var(--solrengine-modal-border);
-	border-radius: var(--solrengine-modal-card-radius);
-	background: var(--solrengine-modal-bg);
+	border: 1px solid var(--braintum-search-modal-border);
+	border-radius: var(--braintum-search-modal-card-radius);
+	background: var(--braintum-search-modal-bg);
 	color: inherit;
 	text-decoration: none;
 	cursor: pointer;
 	transition: border-color 120ms, box-shadow 120ms, transform 120ms;
 }
 
-.solrengine-modal .solrengine-result__link:hover,
-.solrengine-modal .solrengine-result__link:focus-visible {
-	border-color: color-mix(in srgb, var(--solrengine-modal-accent) 45%, var(--solrengine-modal-border));
+.braintum-search-modal .braintum-search-result__link:hover,
+.braintum-search-modal .braintum-search-result__link:focus-visible {
+	border-color: color-mix(in srgb, var(--braintum-search-modal-accent) 45%, var(--braintum-search-modal-border));
 	box-shadow: 0 8px 20px -10px rgba(16, 24, 40, 0.28);
 	transform: translateY(-1px);
 }
 
-.solrengine-modal .solrengine-result__media {
+.braintum-search-modal .braintum-search-result__media {
 	position: relative;
 	display: flex;
 	flex: none;
@@ -561,20 +561,20 @@ html.solrengine-modal-is-open {
 	justify-content: center;
 	aspect-ratio: 4 / 3;
 	overflow: hidden;
-	background: var(--solrengine-modal-thumb);
+	background: var(--braintum-search-modal-thumb);
 }
 
 /* The template removes the box when there is no thumbnail; this covers one
    whose image the script refused, so no empty box is left behind. */
-.solrengine-modal .solrengine-result__media:not(:has(img)) {
+.braintum-search-modal .braintum-search-result__media:not(:has(img)) {
 	display: none;
 }
 
-.solrengine-modal .solrengine-result--product .solrengine-result__media {
+.braintum-search-modal .braintum-search-result--product .braintum-search-result__media {
 	aspect-ratio: 1;
 }
 
-.solrengine-modal .solrengine-result__image {
+.braintum-search-modal .braintum-search-result__image {
 	position: absolute;
 	inset: 0;
 	display: block;
@@ -585,7 +585,7 @@ html.solrengine-modal-is-open {
 	object-fit: cover;
 }
 
-.solrengine-modal .solrengine-result__body {
+.braintum-search-modal .braintum-search-result__body {
 	display: flex;
 	flex: 1 1 auto;
 	flex-direction: column;
@@ -594,8 +594,8 @@ html.solrengine-modal-is-open {
 	padding: 0.875rem 1rem 1rem;
 }
 
-.solrengine-modal .solrengine-result__type {
-	color: var(--solrengine-modal-muted);
+.braintum-search-modal .braintum-search-result__type {
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.6875rem;
 	font-weight: 500;
 	letter-spacing: 0.08em;
@@ -603,10 +603,10 @@ html.solrengine-modal-is-open {
 	text-transform: uppercase;
 }
 
-.solrengine-modal .solrengine-result__title {
+.braintum-search-modal .braintum-search-result__title {
 	display: -webkit-box;
 	overflow: hidden;
-	color: var(--solrengine-modal-text);
+	color: var(--braintum-search-modal-text);
 	font-size: 0.9375rem;
 	font-weight: 600;
 	line-height: 1.35;
@@ -614,10 +614,10 @@ html.solrengine-modal-is-open {
 	-webkit-box-orient: vertical;
 }
 
-.solrengine-modal .solrengine-result__excerpt {
+.braintum-search-modal .braintum-search-result__excerpt {
 	display: -webkit-box;
 	overflow: hidden;
-	color: var(--solrengine-modal-muted);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.8125rem;
 	line-height: 1.45;
 	-webkit-line-clamp: 2;
@@ -626,114 +626,114 @@ html.solrengine-modal-is-open {
 
 /* A card without an image is text only: clear the arrow, and let the excerpt
    use the height an image would have taken beside cards that have one. */
-.solrengine-modal .solrengine-result__body:first-child {
+.braintum-search-modal .braintum-search-result__body:first-child {
 	padding-top: 1rem;
 	padding-right: 3rem;
 }
 
-.solrengine-modal .solrengine-result__body:first-child .solrengine-result__excerpt {
+.braintum-search-modal .braintum-search-result__body:first-child .braintum-search-result__excerpt {
 	-webkit-line-clamp: 6;
 }
 
-.solrengine-modal .solrengine-mark {
+.braintum-search-modal .braintum-search-mark {
 	padding: 0 0.0625em;
 	border-radius: 3px;
-	background: var(--solrengine-modal-mark);
+	background: var(--braintum-search-modal-mark);
 	color: inherit;
 }
 
-.solrengine-modal .solrengine-result__price {
+.braintum-search-modal .braintum-search-result__price {
 	display: block;
 	margin-top: auto;
 	padding-top: 0.25rem;
 	font-size: 0.9375rem;
 }
 
-.solrengine-modal .solrengine-price__current {
+.braintum-search-modal .braintum-search-price__current {
 	font-weight: 600;
 }
 
-.solrengine-modal .solrengine-price__regular {
+.braintum-search-modal .braintum-search-price__regular {
 	margin-left: 0.375rem;
-	color: var(--solrengine-modal-faint);
+	color: var(--braintum-search-modal-faint);
 	font-size: 0.8125rem;
 	text-decoration: line-through;
 }
 
 /* The card's top corner: over the image, or beside the type on a card
    without one. */
-.solrengine-modal .solrengine-result__go {
+.braintum-search-modal .braintum-search-result__go {
 	position: absolute;
 	top: 0.625rem;
 	right: 0.625rem;
 	box-sizing: content-box;
 	padding: 0.3125rem;
 	border-radius: 50%;
-	background: color-mix(in srgb, var(--solrengine-modal-bg) 88%, transparent);
-	color: var(--solrengine-modal-muted);
+	background: color-mix(in srgb, var(--braintum-search-modal-bg) 88%, transparent);
+	color: var(--braintum-search-modal-muted);
 	transition: transform 120ms, color 120ms;
 }
 
-.solrengine-modal .solrengine-result__link:hover .solrengine-result__go,
-.solrengine-modal .solrengine-result__link:focus-visible .solrengine-result__go {
-	color: var(--solrengine-modal-accent);
+.braintum-search-modal .braintum-search-result__link:hover .braintum-search-result__go,
+.braintum-search-modal .braintum-search-result__link:focus-visible .braintum-search-result__go {
+	color: var(--braintum-search-modal-accent);
 	transform: translate(1px, -1px);
 }
 
 /* Footer ----------------------------------------------------------------- */
 
-.solrengine-modal .solrengine-modal__footer {
+.braintum-search-modal .braintum-search-modal__footer {
 	display: flex;
 	gap: 1rem;
 	align-items: center;
 	justify-content: space-between;
 	min-height: 3.25rem;
 	padding: 0.875rem 1.5rem;
-	border-top: 1px solid var(--solrengine-modal-border);
-	background: var(--solrengine-modal-footer);
-	color: var(--solrengine-modal-muted);
+	border-top: 1px solid var(--braintum-search-modal-border);
+	background: var(--braintum-search-modal-footer);
+	color: var(--braintum-search-modal-muted);
 	font-size: 0.8125rem;
 }
 
-.solrengine-modal .solrengine-modal__all {
+.braintum-search-modal .braintum-search-modal__all {
 	display: inline-flex;
 	gap: 0.375rem;
 	align-items: center;
 	margin-left: auto;
-	color: var(--solrengine-modal-accent);
+	color: var(--braintum-search-modal-accent);
 	font-weight: 500;
 	text-decoration: none;
 }
 
-.solrengine-modal .solrengine-modal__all:hover {
+.braintum-search-modal .braintum-search-modal__all:hover {
 	text-decoration: underline;
 }
 
-.solrengine-modal .solrengine-modal__all[hidden] {
+.braintum-search-modal .braintum-search-modal__all[hidden] {
 	display: none;
 }
 
 /* Focus, accessibility helpers, small screens ---------------------------- */
 
-.solrengine-modal .solrengine-tab:focus-visible,
-.solrengine-modal .solrengine-modal__close:focus-visible,
-.solrengine-modal .solrengine-modal__clear:focus-visible,
-.solrengine-modal .solrengine-modal__all:focus-visible,
-.solrengine-modal .solrengine-section__all:focus-visible,
-.solrengine-modal .solrengine-modal__more:focus-visible {
+.braintum-search-modal .braintum-search-tab:focus-visible,
+.braintum-search-modal .braintum-search-modal__close:focus-visible,
+.braintum-search-modal .braintum-search-modal__clear:focus-visible,
+.braintum-search-modal .braintum-search-modal__all:focus-visible,
+.braintum-search-modal .braintum-search-section__all:focus-visible,
+.braintum-search-modal .braintum-search-modal__more:focus-visible {
 	border-radius: 6px;
-	outline: 2px solid var(--solrengine-modal-accent);
+	outline: 2px solid var(--braintum-search-modal-accent);
 	outline-offset: 2px;
 }
 
 /* A card's lift and border alone are too faint to find focus by, and vanish
    in forced colours: an outline is drawn around the whole card as well. */
-.solrengine-modal .solrengine-result__link:focus-visible {
-	outline: 3px solid var(--solrengine-modal-accent);
+.braintum-search-modal .braintum-search-result__link:focus-visible {
+	outline: 3px solid var(--braintum-search-modal-accent);
 	outline-offset: 2px;
 }
 
-.solrengine-modal .screen-reader-text {
+.braintum-search-modal .screen-reader-text {
 	position: absolute;
 	width: 1px;
 	height: 1px;
@@ -748,93 +748,93 @@ html.solrengine-modal-is-open {
 
 @media (forced-colors: active) {
 
-	.solrengine-modal .solrengine-result__link:focus-visible {
+	.braintum-search-modal .braintum-search-result__link:focus-visible {
 		outline: 3px solid Highlight;
 		outline-offset: 2px;
 	}
 
-	.solrengine-modal .solrengine-tab.is-selected::after {
+	.braintum-search-modal .braintum-search-tab.is-selected::after {
 		background: Highlight;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
 
-	.solrengine-modal .solrengine-modal__panel,
-	.solrengine-modal.is-loading .solrengine-modal__spinner,
-	.solrengine-modal .solrengine-modal__more.is-loading::before {
+	.braintum-search-modal .braintum-search-modal__panel,
+	.braintum-search-modal.is-loading .braintum-search-modal__spinner,
+	.braintum-search-modal .braintum-search-modal__more.is-loading::before {
 		animation: none;
 	}
 
-	.solrengine-modal .solrengine-result__link:hover,
-	.solrengine-modal .solrengine-result__link:focus-visible {
+	.braintum-search-modal .braintum-search-result__link:hover,
+	.braintum-search-modal .braintum-search-result__link:focus-visible {
 		transform: none;
 	}
 
-	.solrengine-modal * {
+	.braintum-search-modal * {
 		transition: none !important;
 	}
 }
 
 @media (max-width: 600px) {
 
-	.solrengine-modal {
-		--solrengine-modal-gap: 0.625rem;
+	.braintum-search-modal {
+		--braintum-search-modal-gap: 0.625rem;
 
 		padding: 0;
 	}
 
-	.solrengine-modal .solrengine-modal__panel {
+	.braintum-search-modal .braintum-search-modal__panel {
 		height: 100%;
 		max-height: none;
 		border: 0;
 		border-radius: 0;
 	}
 
-	.solrengine-modal .solrengine-modal__header {
+	.braintum-search-modal .braintum-search-modal__header {
 		padding: 1rem 1rem 0.75rem;
 	}
 
-	.solrengine-modal .solrengine-modal__tagline {
+	.braintum-search-modal .braintum-search-modal__tagline {
 		display: none;
 	}
 
-	.solrengine-modal .solrengine-modal__search {
+	.braintum-search-modal .braintum-search-modal__search {
 		margin: 0 1rem;
 	}
 
-	.solrengine-modal .solrengine-modal__tabs {
+	.braintum-search-modal .braintum-search-modal__tabs {
 		gap: 1.25rem;
 		padding: 0 1rem;
 	}
 
-	.solrengine-modal .solrengine-modal__body {
+	.braintum-search-modal .braintum-search-modal__body {
 		padding: 0 1rem 0.5rem;
 	}
 
-	.solrengine-modal .solrengine-result__body {
+	.braintum-search-modal .braintum-search-result__body {
 		padding: 0.625rem 0.75rem 0.75rem;
 	}
 
-	.solrengine-modal .solrengine-result__excerpt {
+	.braintum-search-modal .braintum-search-result__excerpt {
 		display: none;
 	}
 
-	.solrengine-modal .solrengine-result__body:first-child {
+	.braintum-search-modal .braintum-search-result__body:first-child {
 		padding: 0.75rem 2.5rem 0.75rem 0.75rem;
 	}
 
 	/* Without an image, the excerpt is all a card has to say. */
-	.solrengine-modal .solrengine-result__body:first-child .solrengine-result__excerpt {
+	.braintum-search-modal .braintum-search-result__body:first-child .braintum-search-result__excerpt {
 		display: -webkit-box;
 		-webkit-line-clamp: 3;
 	}
 
-	.solrengine-modal .solrengine-modal__order {
+	.braintum-search-modal .braintum-search-modal__order {
 		display: none;
 	}
 
-	.solrengine-modal .solrengine-modal__footer {
+	.braintum-search-modal .braintum-search-modal__footer {
 		padding: 0.75rem 1rem;
 	}
 }

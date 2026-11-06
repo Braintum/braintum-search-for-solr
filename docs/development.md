@@ -30,7 +30,7 @@ a seam has leaked and the fix belongs in the code, not the test.
 | `composer test` | Unit tests |
 | `composer test:integration` | WordPress integration tests |
 | `composer check` | Lint, analyse and unit tests |
-| `SOLRENGINE_A11Y_URL=… npm run test:a11y` | Keyboard and axe-core audit of the search popup on a running site; see `tests/a11y/search-modal.js` |
+| `BRAINTUM_SEARCH_A11Y_URL=… npm run test:a11y` | Keyboard and axe-core audit of the search popup on a running site; see `tests/a11y/search-modal.js` |
 | `php bin/check-version.php` | Verify the header, constant and readme agree |
 | `bash bin/build-release.sh` | Build the release package, zip, checksum and manifest into `build/`; see [Release package](#release-package) |
 
@@ -41,7 +41,7 @@ a seam has leaked and the fix belongs in the code, not the test.
 ```
 
 It tells Composer to resolve every dependency as though it were running on the
-oldest PHP SolrEngine supports, whatever the machine doing the resolving is
+oldest PHP Braintum Search supports, whatever the machine doing the resolving is
 running.
 
 Without it, `composer update` on a PHP 8 machine — which is every machine — picks
@@ -73,7 +73,7 @@ the diff after auto-fixing, and never auto-fix and commit in one step.
 
 ```bash
 bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1 latest
-SOLRENGINE_TEST_SUITE=integration composer test:integration
+BRAINTUM_SEARCH_TEST_SUITE=integration composer test:integration
 ```
 
 Needs `curl` (or `wget`), `tar` and a MySQL you can reach. Deliberately **not**
@@ -89,7 +89,7 @@ it wrong and the answer is a 404 rather than anything that names itself.
 ## Working without Solr
 
 ```php
-define( 'SOLRENGINE_MEMORY_BACKEND', true );
+define( 'BRAINTUM_SEARCH_MEMORY_BACKEND', true );
 ```
 
 Registers an in-memory backend, selectable on the connection screen. It holds
@@ -118,10 +118,10 @@ Produces, in `build/`:
 
 | | |
 | --- | --- |
-| `solrengine/` | The package, as WordPress.org will unpack it |
-| `solrengine-<version>.zip` | The package, with one root directory, `solrengine/` |
-| `solrengine-<version>.zip.sha256` | Its checksum, in `sha256sum -c` format |
-| `solrengine-<version>.manifest.txt` | The commit, whether the tree was clean, the `composer.lock` checksum, and a checksum for every file |
+| `braintum-search/` | The package, as WordPress.org will unpack it |
+| `braintum-search-<version>.zip` | The package, with one root directory, `braintum-search/` |
+| `braintum-search-<version>.zip.sha256` | Its checksum, in `sha256sum -c` format |
+| `braintum-search-<version>.manifest.txt` | The commit, whether the tree was clean, the `composer.lock` checksum, and a checksum for every file |
 
 What ships is decided by `.distignore`. `vendor/` is never copied from the
 working tree: the script installs it into the package from `composer.lock` with
@@ -136,7 +136,7 @@ files in byte order, so two builds of one commit have the same checksum. Set
 Finally it unpacks the zip into a temporary directory, checks every file against
 the manifest, and lints every PHP file in it. CI runs the script and Plugin
 Check against the result, strictly, and keeps the zip, checksum and manifest as
-the `solrengine-package` artifact of the run.
+the `braintum-search-package` artifact of the run.
 
 Build a release from a clean checkout. The script warns when the working tree
 has uncommitted changes, and the manifest records it.
@@ -144,17 +144,17 @@ has uncommitted changes, and the manifest records it.
 ## Solr for backend tests
 
 ```bash
-docker run -d --rm --name solrengine-test -p 8983:8983 solr:10 solr-precreate wordpress
+docker run -d --rm --name braintum-search-test -p 8983:8983 solr:10 solr-precreate wordpress
 
-SOLRENGINE_TEST_SUITE=backend SOLRENGINE_TEST_SOLR_URL=http://127.0.0.1:8983/solr \
+BRAINTUM_SEARCH_TEST_SUITE=backend BRAINTUM_SEARCH_TEST_SOLR_URL=http://127.0.0.1:8983/solr \
 	vendor/bin/phpunit --testsuite backend
 ```
 
 The `solr-precreate wordpress` argument matters: a stock Solr starts with no
 cores at all, and the suite skips or fails against a server that has none. Set
-`SOLRENGINE_TEST_SOLR_COLLECTION` if you name yours something else.
+`BRAINTUM_SEARCH_TEST_SOLR_COLLECTION` if you name yours something else.
 
-Without `SOLRENGINE_TEST_SOLR_URL` every test in the suite skips, so an
+Without `BRAINTUM_SEARCH_TEST_SOLR_URL` every test in the suite skips, so an
 unnoticed skip looks like a pass. Check the count.
 
 Both supported Solr lines are exercised in CI: 10.x as the recommended target
@@ -166,14 +166,14 @@ and 9.10 as the last supported 9.x. See ADR-011.
 WooCommerce CRUD — a variable product's price range, an attribute's terms, a
 hidden product's refusal — none of which can be faked convincingly.
 
-It skips unless WooCommerce is loaded. Point `SOLRENGINE_TEST_WOOCOMMERCE` at
+It skips unless WooCommerce is loaded. Point `BRAINTUM_SEARCH_TEST_WOOCOMMERCE` at
 an unpacked WooCommerce directory and `tests/bootstrap.php` loads it before
-SolrEngine and installs it:
+Braintum Search and installs it:
 
 ```bash
 curl -sSfL https://downloads.wordpress.org/plugin/woocommerce.latest-stable.zip -o /tmp/wc.zip
 unzip -q /tmp/wc.zip -d /tmp
-SOLRENGINE_TEST_SUITE=integration SOLRENGINE_TEST_WOOCOMMERCE=/tmp/woocommerce \
+BRAINTUM_SEARCH_TEST_SUITE=integration BRAINTUM_SEARCH_TEST_WOOCOMMERCE=/tmp/woocommerce \
   vendor/bin/phpunit --testsuite integration --fail-on-skipped
 ```
 
@@ -200,14 +200,14 @@ next free block when adding a suite.
 ## Layout
 
 ```
-solrengine.php      Plugin entry point. Must parse on old PHP: it is what tells
+braintum-search-for-solr.php      Plugin entry point. Must parse on old PHP: it is what tells
                     a user their PHP is too old, so no modern syntax belongs in
                     it.
 constants.php       Version, paths, schema contract version. Needs no
                     WordPress, so any entry point can include it rather than
                     define them twice.
 templates/          Front-end templates. A theme overrides one by copying it to
-                    yourtheme/solrengine/. Their data-solrengine-* attributes
+                    yourtheme/braintum-search/. Their data-braintum-search-* attributes
                     are public API.
 src/Contracts/      Public API. Interfaces and value objects. No WordPress,
                     no network, no Solr vocabulary.
@@ -232,8 +232,8 @@ Two, both owned by `Support\Tables`:
 
 | Table | Holds |
 | --- | --- |
-| `{prefix}solrengine_index_runs` | One row per indexing run, pruned to the most recent fifty |
-| `{prefix}solrengine_failures` | Objects that failed inside a run, capped per run |
+| `{prefix}braintum_search_index_runs` | One row per indexing run, pruned to the most recent fifty |
+| `{prefix}braintum_search_failures` | Objects that failed inside a run, capped per run |
 
 Created on activation, and checked again the first time a run is recorded —
 a site that was upgraded rather than activated never runs the activation hook.
@@ -249,11 +249,11 @@ Everything else lives in options. Three are autoloaded, and the rest are not:
 
 | Option | Autoloaded | Holds |
 | --- | --- | --- |
-| `solrengine_connection` | yes | Endpoint, collection, timeouts, TLS |
-| `solrengine_index_config` | yes | What is indexed, and the search settings |
-| `solrengine_state` | yes | Applied schema version and fingerprint, reindex notice |
-| `solrengine_credentials` | no | Encrypted, and read only when a request talks to Solr |
-| `solrengine_breaker` | no | Circuit breaker state. Absent on a healthy site |
+| `braintum_search_connection` | yes | Endpoint, collection, timeouts, TLS |
+| `braintum_search_index_config` | yes | What is indexed, and the search settings |
+| `braintum_search_state` | yes | Applied schema version and fingerprint, reindex notice |
+| `braintum_search_credentials` | no | Encrypted, and read only when a request talks to Solr |
+| `braintum_search_breaker` | no | Circuit breaker state. Absent on a healthy site |
 | everything else | no | Versions, install time, sync progress |
 
 The three autoloaded groups are read by every request that searches, so leaving
@@ -271,8 +271,8 @@ argument, so `wp_set_options_autoload()` is what actually moves the flag.
 ## Conventions
 
 - `StudlyCase` classes, `snake_case` methods and variables, PSR-4 autoloading.
-- Everything in the global namespace is prefixed `solrengine` / `SOLRENGINE` /
-  `SolrEngine`.
+- Everything in the global namespace is prefixed `braintum_search` / `BRAINTUM_SEARCH` /
+  `BraintumSearch`.
 - Solr fields are prefixed `se_`.
 - Services take their dependencies through their constructors. Nothing but the
   composition root, the CLI and tests touches the container.

@@ -7,22 +7,22 @@
  * is only partly understood shows a shopper a page that looks filtered and is
  * not. Every refusal below is a query that goes back to the database instead.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Integration\WooCommerce\CatalogContext;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Integration\WooCommerce\ShopQuery;
-use SolrEngine\Search\FilterRegistry;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Integration\WooCommerce\CatalogContext;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Integration\WooCommerce\ShopQuery;
+use BraintumSearch\Search\FilterRegistry;
 
 /**
- * @covers \SolrEngine\Integration\WooCommerce\ShopQuery
+ * @covers \BraintumSearch\Integration\WooCommerce\ShopQuery
  */
 final class ShopQueryTest extends TestCase {
 
@@ -256,7 +256,7 @@ final class ShopQueryTest extends TestCase {
 	 *
 	 * @param string $orderby  WooCommerce ordering.
 	 * @param string $order    Direction.
-	 * @param string $expected SolrEngine sort key.
+	 * @param string $expected Braintum Search sort key.
 	 */
 	public function test_shop_orderings_map_to_sort_keys( string $orderby, string $order, string $expected ): void {
 		$query = $this->shop()->for_query(
@@ -298,7 +298,7 @@ final class ShopQueryTest extends TestCase {
 	}
 
 	public function test_woocommerces_own_visibility_terms_are_recognised_not_refused(): void {
-		// WooCommerce adds these to every product query. They are SolrEngine's
+		// WooCommerce adds these to every product query. They are Braintum Search's
 		// rules expressed in taxonomy terms, so they are dropped rather than
 		// translated — and must not cause a refusal.
 		$query = $this->shop()->for_query(

@@ -2,18 +2,18 @@
 /**
  * Turns references into index writes.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\WriteResult;
-use SolrEngine\Documents\PostDocumentBuilder;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\WriteResult;
+use BraintumSearch\Documents\PostDocumentBuilder;
 use WP_Post;
 
 /**
@@ -132,7 +132,7 @@ final class Indexer {
 		 * @param DocumentRef[] $refs    References that were processed.
 		 * @param IndexOutcome  $outcome What happened to them.
 		 */
-		do_action( 'solrengine_indexed', $refs, $outcome );
+		do_action( 'braintum_search_indexed', $refs, $outcome );
 
 		return Result::success( $outcome );
 	}
@@ -244,7 +244,7 @@ final class Indexer {
 			 * @param DocumentRef $ref   The document that failed.
 			 * @param string      $error Why it failed.
 			 */
-			do_action( 'solrengine_index_failed', $document->ref(), $single->message() );
+			do_action( 'braintum_search_index_failed', $document->ref(), $single->message() );
 		}
 
 		return Result::success( new WriteResult( $written, $failures ) );

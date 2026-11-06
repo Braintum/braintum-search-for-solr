@@ -2,10 +2,10 @@
 /**
  * What happened to a batch.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
 /**
  * The result of processing one set of references.

@@ -2,17 +2,17 @@
 /**
  * Logging contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Records what happened, without deciding where it goes.
  *
  * Exists so that no shipped code calls error_log() directly, which the
  * prototype did and which both PHP_CodeSniffer and the plugin review flag. The
- * default implementation discards everything unless SOLRENGINE_DEBUG is on, so
+ * default implementation discards everything unless BRAINTUM_SEARCH_DEBUG is on, so
  * a production site pays nothing for instrumentation.
  *
  * Implementations must redact credentials from context before writing. A log
@@ -20,7 +20,7 @@ namespace SolrEngine\Contracts;
  * it.
  *
  * Intentionally narrower than PSR-3: four levels, no interpolation, no
- * dependency. SolrEngine has no use for emergency, alert or notice, and adding
+ * dependency. Braintum Search has no use for emergency, alert or notice, and adding
  * a PSR-3 package to the runtime would contradict ADR-001.
  *
  * @since 0.1.0 Unstable until 1.0.

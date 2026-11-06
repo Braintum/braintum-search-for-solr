@@ -2,24 +2,24 @@
 /**
  * Per-language field tests.
  *
- * The rule these enforce is ADR-003's second: SolrEngine never creates a field
+ * The rule these enforce is ADR-003's second: Braintum Search never creates a field
  * type. A language whose analyser the server does not have is not an error and
  * not a silent failure — its content is indexed and searchable through the
  * neutral fields, and only stemming is missing.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SchemaState;
-use SolrEngine\Schema\LanguageFields;
+use BraintumSearch\Contracts\SchemaState;
+use BraintumSearch\Schema\LanguageFields;
 
 /**
- * @covers \SolrEngine\Schema\LanguageFields
+ * @covers \BraintumSearch\Schema\LanguageFields
  */
 final class LanguageFieldsTest extends TestCase {
 

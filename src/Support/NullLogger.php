@@ -2,12 +2,12 @@
 /**
  * Discarding logger.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Logger;
+use BraintumSearch\Contracts\Logger;
 
 /**
  * Throws every message away.

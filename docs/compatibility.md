@@ -1,6 +1,6 @@
 # Compatibility
 
-What SolrEngine supports, what it is tested against, and what it bundles.
+What Braintum Search supports, what it is tested against, and what it bundles.
 
 The policy behind this table is [ADR-011](../.claude/plans/adr/ADR-011-version-support-policy.md);
 the numbers below are what CI actually runs.
@@ -10,12 +10,12 @@ the numbers below are what CI actually runs.
 | | Minimum | Recommended |
 | --- | --- | --- |
 | PHP | 7.4 | 8.3 |
-| WordPress | 6.5 | Current stable |
+| WordPress | 6.9 | Current stable |
 | Apache Solr | 9.10 | 10.x |
 | WooCommerce | Current stable, or the previous minor | Current stable |
 | MySQL / MariaDB | Whatever your WordPress requires | |
 
-SolrEngine needs no PHP extension beyond what WordPress itself requires. It uses
+Braintum Search needs no PHP extension beyond what WordPress itself requires. It uses
 the WordPress HTTP API rather than cURL directly, and `sodium` — bundled with PHP
 7.2 and later — for encrypting stored credentials. Where `sodium` is somehow
 absent, credential storage reports itself unavailable and points you at
@@ -39,8 +39,8 @@ Both deployment modes are supported — SolrCloud and user-managed — detected 
 connection time rather than configured, with behaviour adapted per mode. Solr 10
 defaults to SolrCloud.
 
-Three Solr 10 changes SolrEngine is built around, recorded because each one breaks
-plugins that assumed otherwise: the PHP response writer is gone (SolrEngine
+Three Solr 10 changes Braintum Search is built around, recorded because each one breaks
+plugins that assumed otherwise: the PHP response writer is gone (Braintum Search
 requests JSON only), `stream.body` is gone (never relied on), and base URLs must be
 root paths ending in `/solr` (normalised and validated once, then immutable).
 
@@ -52,7 +52,7 @@ is indexed and searchable; only stemming is missing. See
 ## PHP
 
 CI runs the unit suite on **7.4, 8.1, 8.3 and 8.4**, and the integration suite on
-7.4 with WordPress 6.5 (the oldest supported combination) and on 8.3 with current
+7.4 with WordPress 6.9 (the oldest supported combination) and on 8.3 with current
 and trunk. The trunk job is allowed to fail so a WordPress beta cannot block a
 release.
 
@@ -67,9 +67,9 @@ newer syntax cannot reach a release by being merged on a newer machine.
 
 ## WordPress
 
-Minimum 6.5. Tested against current stable and trunk.
+Minimum 6.9, the floor of the bundled Action Scheduler 4.2. Tested against current stable and trunk.
 
-SolrEngine hooks WordPress at the *query* layer — one `posts_pre_query`
+Braintum Search hooks WordPress at the *query* layer — one `posts_pre_query`
 substitution — rather than at the template layer. That is why classic themes,
 block themes, Elementor, Bricks and WooCommerce loops keep working: none of them
 can tell the difference. It is also why compatibility with a page builder is not a
@@ -85,7 +85,7 @@ Multisite is supported from 0.9.0, in both collection topologies. See
 | [Action Scheduler](https://actionscheduler.org/) | ^3.9 | **GPL-3.0-or-later** | Reliable background indexing with claim isolation, which WP-Cron does not have |
 
 **Action Scheduler is GPLv3, and that makes the distributed whole GPLv3.**
-SolrEngine's own code is "GPLv2 or later"; combining it with a GPLv3 library means
+Braintum Search's own code is "GPLv2 or later"; combining it with a GPLv3 library means
 the package as distributed is effectively GPLv3. Both licences are GPL-compatible
 and this satisfies the directory's requirement that every bundled library be
 GPL-compatible, but it is a real consequence of a real choice and is recorded here
@@ -93,14 +93,14 @@ rather than left for somebody to work out.
 
 It is loaded defensively. Action Scheduler negotiates versions across every plugin
 that ships it, so the copy that ends up running may belong to WooCommerce or to
-another plugin entirely; requiring SolrEngine's copy adds it to that negotiation
+another plugin entirely; requiring Braintum Search's copy adds it to that negotiation
 rather than forcing it to win. A broken or partial copy does not fatal the site —
 the queue reports itself unavailable and indexing falls back to WP-Cron, which the
 dashboard says plainly.
 
 **No other runtime dependency.** [ADR-001](../.claude/plans/adr/ADR-001-solr-client-strategy.md)
 removed Solarium, which would have forced a PHP 8.1 floor and put Symfony packages
-in every site's global namespace; SolrEngine uses a thin internal transport over
+in every site's global namespace; Braintum Search uses a thin internal transport over
 the WordPress HTTP API instead. `vendor/` for development holds only test and
 analysis tooling, and none of it is shipped.
 
@@ -127,16 +127,16 @@ normal case; Polylang not being installed means one language.
 
 ## What is not supported
 
-- **Solr 8 and older.** Warned, not blocked. Several things SolrEngine relies on
+- **Solr 8 and older.** Warned, not blocked. Several things Braintum Search relies on
   behave differently or are absent.
 - **Shared hosting without Solr.** Most shared hosting does not provide it, and
-  SolrEngine does not include one. A VPS, a container, or a managed Solr service is
+  Braintum Search does not include one. A VPS, a container, or a managed Solr service is
   needed.
 - **Network-wide search** across a multisite network. The data model supports it;
   the feature is not built. See [multisite](multisite.md).
 - **Multi-currency WooCommerce.** Prices are indexed in the store's base currency.
   Documented as unsupported rather than approximated, because a wrong price is
   worse than no filter.
-- **Attachment content.** Indexing a PDF's text needs extraction SolrEngine does
+- **Attachment content.** Indexing a PDF's text needs extraction Braintum Search does
   not do, so attachments are left off the indexable list rather than indexed as a
   library of titles.

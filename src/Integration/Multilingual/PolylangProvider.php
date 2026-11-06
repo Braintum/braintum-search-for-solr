@@ -2,13 +2,13 @@
 /**
  * Polylang as a language source.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\Multilingual;
+namespace BraintumSearch\Integration\Multilingual;
 
-use SolrEngine\Contracts\LanguageProvider;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\LanguageProvider;
+use BraintumSearch\Language\LanguageTag;
 
 /**
  * Reads languages from Polylang.
@@ -44,7 +44,7 @@ final class PolylangProvider implements LanguageProvider {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'Polylang', 'solrengine' );
+		return __( 'Polylang', 'braintum-search-for-solr' );
 	}
 
 	/**

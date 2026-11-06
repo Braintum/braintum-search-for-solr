@@ -2,18 +2,18 @@
 /**
  * Prefix matching rule tests.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Search\PrefixTerms;
+use BraintumSearch\Search\PrefixTerms;
 
 /**
- * @covers \SolrEngine\Search\PrefixTerms
+ * @covers \BraintumSearch\Search\PrefixTerms
  */
 final class PrefixTermsTest extends TestCase {
 

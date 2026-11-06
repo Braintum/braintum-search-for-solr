@@ -14,23 +14,23 @@
  * signal rather than the leak. Config is the adapter to options, so a test of
  * something built on it belongs on this side of the line.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Integration;
+namespace BraintumSearch\Tests\Integration;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Backend\Memory\MemoryBackend;
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Contracts\SchemaBackend;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Support\Config;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Backend\Memory\MemoryBackend;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Contracts\SchemaBackend;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Support\Config;
 use WP_UnitTestCase;
 
 /**
- * @covers \SolrEngine\Backend\BackendRegistry
+ * @covers \BraintumSearch\Backend\BackendRegistry
  */
 final class BackendRegistryTest extends WP_UnitTestCase {
 

@@ -5,19 +5,19 @@
  * Coalescing is the difference between an importer running at normal speed and
  * an importer crawling, so the rules are worth pinning down.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Indexing\DirtySet;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Indexing\DirtySet;
 
 /**
- * @covers \SolrEngine\Indexing\DirtySet
+ * @covers \BraintumSearch\Indexing\DirtySet
  */
 final class DirtySetTest extends TestCase {
 

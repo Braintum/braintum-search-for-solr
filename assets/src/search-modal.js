@@ -16,7 +16,7 @@
  *
  * Markup comes from the page, not from this file. The dialog and every result
  * card are PHP templates a theme can override, printed once into the page; this
- * script finds their parts by `data-solrengine-*` attribute and fills copies.
+ * script finds their parts by `data-braintum-search-*` attribute and fills copies.
  * Text is only ever inserted as text.
  *
  * Accessibility, in short: a native modal <dialog> (focus is contained and
@@ -38,7 +38,7 @@
 import { __, _n, sprintf } from '@wordpress/i18n';
 import './search-modal.css';
 
-const SETTINGS = window.solrEngineSearchModal || {};
+const SETTINGS = window.braintumSearchSearchModal || {};
 
 /** Milliseconds to wait after the last keystroke before asking the server. */
 const DEBOUNCE_MS = 150;
@@ -117,7 +117,7 @@ function escapeRegExp( text ) {
  */
 function attach( dialog ) {
 	const part = ( name ) =>
-		dialog.querySelector( `[data-solrengine-${ name }]` );
+		dialog.querySelector( `[data-braintum-search-${ name }]` );
 
 	const input = part( 'input' );
 	const results = part( 'results' );
@@ -137,20 +137,20 @@ function attach( dialog ) {
 	const status = part( 'status' );
 	const viewAll = part( 'view-all' );
 	const more = part( 'more' );
-	const moreLabel = more?.querySelector( '.solrengine-modal__more-label' );
+	const moreLabel = more?.querySelector( '.braintum-search-modal__more-label' );
 	const tabTemplate = dialog.querySelector(
-		'template[data-solrengine-template="tab"]',
+		'template[data-braintum-search-template="tab"]',
 	);
 	const sectionTemplate = dialog.querySelector(
-		'template[data-solrengine-template="section"]',
+		'template[data-braintum-search-template="section"]',
 	);
 
 	const cards = new Map();
 
 	document
-		.querySelectorAll( 'template[data-solrengine-template="result"]' )
+		.querySelectorAll( 'template[data-braintum-search-template="result"]' )
 		.forEach( ( template ) => {
-			cards.set( template.dataset.solrenginePostType || '', template );
+			cards.set( template.dataset.braintumSearchPostType || '', template );
 		} );
 
 	const types = new Map(
@@ -183,7 +183,7 @@ function attach( dialog ) {
 	let moreController = null;
 	let moreInView = false;
 
-	const baseId = results.id || 'solrengine-modal-results';
+	const baseId = results.id || 'braintum-search-modal-results';
 
 	results.id = baseId;
 
@@ -202,8 +202,8 @@ function attach( dialog ) {
 			...root.querySelectorAll( selector ),
 		];
 
-		within( '[data-solrengine-if]' ).forEach( ( element ) => {
-			const found = value( element.dataset.solrengineIf );
+		within( '[data-braintum-search-if]' ).forEach( ( element ) => {
+			const found = value( element.dataset.braintumSearchIf );
 
 			if (
 				element !== root &&
@@ -213,12 +213,12 @@ function attach( dialog ) {
 			}
 		} );
 
-		within( '[data-solrengine-field]' ).forEach( ( element ) =>
-			write( element, element.dataset.solrengineField ),
+		within( '[data-braintum-search-field]' ).forEach( ( element ) =>
+			write( element, element.dataset.braintumSearchField ),
 		);
 
-		within( '[data-solrengine-href]' ).forEach( ( element ) => {
-			const url = safeUrl( value( element.dataset.solrengineHref ) );
+		within( '[data-braintum-search-href]' ).forEach( ( element ) => {
+			const url = safeUrl( value( element.dataset.braintumSearchHref ) );
 
 			if ( url ) {
 				element.setAttribute( 'href', url );
@@ -227,8 +227,8 @@ function attach( dialog ) {
 			}
 		} );
 
-		within( '[data-solrengine-src]' ).forEach( ( element ) => {
-			const url = safeUrl( value( element.dataset.solrengineSrc ) );
+		within( '[data-braintum-search-src]' ).forEach( ( element ) => {
+			const url = safeUrl( value( element.dataset.braintumSearchSrc ) );
 
 			if ( url ) {
 				element.setAttribute( 'src', url );
@@ -270,7 +270,7 @@ function attach( dialog ) {
 			}
 
 			const mark = document.createElement( 'mark' );
-			mark.className = 'solrengine-mark';
+			mark.className = 'braintum-search-mark';
 			mark.textContent = piece;
 
 			return mark;
@@ -317,7 +317,7 @@ function attach( dialog ) {
 	 */
 	function priceNode( price ) {
 		const wrapper = document.createElement( 'span' );
-		wrapper.className = 'solrengine-price';
+		wrapper.className = 'braintum-search-price';
 
 		// Indexed prices are base prices. Where the store shows prices with
 		// tax, scale by the ratio the index recorded for this product.
@@ -346,7 +346,7 @@ function attach( dialog ) {
 		if ( undefined !== price.min && undefined !== price.max ) {
 			add(
 				'span',
-				'solrengine-price__current',
+				'braintum-search-price__current',
 				`${ money( price.min * factor ) } – ${ money(
 					price.max * factor,
 				) }`,
@@ -358,15 +358,15 @@ function attach( dialog ) {
 		const current = money( price.current * factor );
 
 		if ( undefined === price.regular ) {
-			add( 'span', 'solrengine-price__current', current );
+			add( 'span', 'braintum-search-price__current', current );
 
 			return wrapper;
 		}
 
 		const regular = money( price.regular * factor );
 
-		add( 'span', 'solrengine-price__current', current, true );
-		add( 'del', 'solrengine-price__regular', regular, true );
+		add( 'span', 'braintum-search-price__current', current, true );
+		add( 'del', 'braintum-search-price__regular', regular, true );
 		add(
 			'span',
 			'screen-reader-text',
@@ -374,7 +374,7 @@ function attach( dialog ) {
 			sprintf(
 				__(
 					'Original price was: %1$s. Current price is: %2$s.',
-					'solrengine',
+					'braintum-search-for-solr',
 				),
 				regular,
 				current,
@@ -441,7 +441,7 @@ function attach( dialog ) {
 		const element = source.cloneNode( true );
 
 		element.id = `${ baseId }-${ index }`;
-		element.dataset.solrengineIndex = String( index );
+		element.dataset.braintumSearchIndex = String( index );
 
 		// A copy of the template from a development build before 1.0.0: the card is a
 		// list item now, and its link is reached like any other.
@@ -501,9 +501,9 @@ function attach( dialog ) {
 	 * @param {Object}  result  Result.
 	 */
 	function nameLink( element, result ) {
-		const link = element.matches( '[data-solrengine-href]' )
+		const link = element.matches( '[data-braintum-search-href]' )
 			? element
-			: element.querySelector( '[data-solrengine-href]' );
+			: element.querySelector( '[data-braintum-search-href]' );
 
 		if ( ! link ) {
 			return;
@@ -521,11 +521,11 @@ function attach( dialog ) {
 
 		const described = [ 'type', 'price', 'date', 'author' ]
 			.map( ( field ) =>
-				element.querySelector( `[data-solrengine-field="${ field }"]` ),
+				element.querySelector( `[data-braintum-search-field="${ field }"]` ),
 			)
 			.filter( ( slot ) => slot && '' !== slot.textContent.trim() )
 			.map( ( slot ) => {
-				slot.id ||= `${ element.id }-${ slot.dataset.solrengineField }`;
+				slot.id ||= `${ element.id }-${ slot.dataset.braintumSearchField }`;
 
 				return slot.id;
 			} );
@@ -548,7 +548,7 @@ function attach( dialog ) {
 		const element = source
 			? source.cloneNode( true )
 			: document.createElement( 'section' );
-		let list = element.querySelector( '[data-solrengine-section-results]' );
+		let list = element.querySelector( '[data-braintum-search-section-results]' );
 
 		if ( ! list ) {
 			list = document.createElement( 'ul' );
@@ -557,15 +557,15 @@ function attach( dialog ) {
 
 		const label = types.get( type )?.plural || type;
 		const id = `${ baseId }-section-${ type || 'all' }`;
-		const head = element.querySelector( '[data-solrengine-section-header]' );
+		const head = element.querySelector( '[data-braintum-search-section-header]' );
 
 		list.id = `${ id }-list`;
-		list.dataset.solrengineSectionResults = '';
+		list.dataset.braintumSearchSectionResults = '';
 		// Lists styled without bullets lose their list semantics in Safari;
 		// the role puts them back, so "list, 4 items" is still announced.
 		list.setAttribute( 'role', 'list' );
-		element.dataset.solrengineSection = type;
-		element.dataset.solrengineTotal = String( total );
+		element.dataset.braintumSearchSection = type;
+		element.dataset.braintumSearchTotal = String( total );
 
 		if ( header && head ) {
 			const title = head.querySelector( 'h1, h2, h3, h4, h5, h6' ) || head;
@@ -590,18 +590,18 @@ function attach( dialog ) {
 				} else if ( 'see_all' === field ) {
 					target.textContent = sprintf(
 						/* translators: %s: number of results of one content type. */
-						__( 'See all %s', 'solrengine' ),
+						__( 'See all %s', 'braintum-search-for-solr' ),
 						numberFormat.format( total ),
 					);
 					// Visible text first, so a voice user saying what they see
 					// still matches the name (WCAG 2.5.3).
 					target
-						.closest( '[data-solrengine-see-all]' )
+						.closest( '[data-braintum-search-see-all]' )
 						?.setAttribute(
 							'aria-label',
 							sprintf(
 								/* translators: 1: number of results, 2: content type, plural. */
-								__( 'See all %1$s: %2$s', 'solrengine' ),
+								__( 'See all %1$s: %2$s', 'braintum-search-for-solr' ),
 								numberFormat.format( total ),
 								label,
 							),
@@ -613,7 +613,7 @@ function attach( dialog ) {
 		);
 
 		element
-			.querySelector( '[data-solrengine-see-all]' )
+			.querySelector( '[data-braintum-search-see-all]' )
 			?.addEventListener( 'click', () => {
 				selectTab( type, false );
 				input.focus();
@@ -646,7 +646,7 @@ function attach( dialog ) {
 		// move them.
 		added.forEach( ( [ element, result ] ) => {
 			element.dispatchEvent(
-				new window.CustomEvent( 'solrengine:result', {
+				new window.CustomEvent( 'braintum-search:result', {
 					bubbles: true,
 					detail: { result, element },
 				} ),
@@ -667,15 +667,15 @@ function attach( dialog ) {
 			return;
 		}
 
-		results.querySelectorAll( '[data-solrengine-section]' ).forEach( ( group ) => {
-			const list = group.querySelector( '[data-solrengine-section-results]' );
-			const cardsIn = [ ...list.querySelectorAll( '[data-solrengine-index]' ) ];
+		results.querySelectorAll( '[data-braintum-search-section]' ).forEach( ( group ) => {
+			const list = group.querySelector( '[data-braintum-search-section-results]' );
+			const cardsIn = [ ...list.querySelectorAll( '[data-braintum-search-index]' ) ];
 			const columns = window
 				.getComputedStyle( list )
 				.gridTemplateColumns.split( ' ' )
 				.filter( Boolean ).length;
 			const visible = columns >= 3 ? columns : Math.max( 1, columns ) * 2;
-			const seeAll = group.querySelector( '[data-solrengine-see-all]' );
+			const seeAll = group.querySelector( '[data-braintum-search-see-all]' );
 
 			cardsIn.forEach( ( element, i ) => {
 				element.hidden = i >= visible;
@@ -683,7 +683,7 @@ function attach( dialog ) {
 
 			if ( seeAll ) {
 				seeAll.hidden =
-					Number( group.dataset.solrengineTotal ) <=
+					Number( group.dataset.braintumSearchTotal ) <=
 					Math.min( visible, cardsIn.length );
 			}
 		} );
@@ -711,8 +711,8 @@ function attach( dialog ) {
 		if ( moreLabel ) {
 			moreLabel.textContent =
 				'failed' === state
-					? __( 'Could not load more. Try again', 'solrengine' )
-					: __( 'Load more results', 'solrengine' );
+					? __( 'Could not load more. Try again', 'braintum-search-for-solr' )
+					: __( 'Load more results', 'braintum-search-for-solr' );
 		}
 	}
 
@@ -731,7 +731,7 @@ function attach( dialog ) {
 
 		if ( ! source ) {
 			button.type = 'button';
-			button.className = 'solrengine-tab';
+			button.className = 'braintum-search-tab';
 			button.textContent = `${ entry.label } ${ entry.count }`;
 		}
 
@@ -741,7 +741,7 @@ function attach( dialog ) {
 		button.setAttribute( 'aria-controls', results.id );
 		button.tabIndex = selected ? 0 : -1;
 		button.classList.toggle( 'is-selected', selected );
-		button.dataset.solrengineTab = entry.key;
+		button.dataset.braintumSearchTab = entry.key;
 
 		fill(
 			button,
@@ -778,7 +778,7 @@ function attach( dialog ) {
 		}
 
 		const entries = [
-			{ key: '', label: __( 'All', 'solrengine' ), count: data.all || 0 },
+			{ key: '', label: __( 'All', 'braintum-search-for-solr' ), count: data.all || 0 },
 		];
 
 		( SETTINGS.postTypes || [] ).forEach( ( type ) => {
@@ -853,7 +853,7 @@ function attach( dialog ) {
 				/* translators: %s: the text searched for. */
 				__(
 					'No results for “%s”. Check the spelling or try fewer words.',
-					'solrengine',
+					'braintum-search-for-solr',
 				),
 				data.query,
 			);
@@ -868,7 +868,7 @@ function attach( dialog ) {
 				'%1$s result for “%2$s”',
 				'%1$s results for “%2$s”',
 				data.total,
-				'solrengine',
+				'braintum-search-for-solr',
 			),
 			numberFormat.format( data.total ),
 			data.query,
@@ -879,7 +879,7 @@ function attach( dialog ) {
 		if ( 'standard' !== data.strategy ) {
 			message.textContent = __(
 				'No exact matches, so these are the closest.',
-				'solrengine',
+				'braintum-search-for-solr',
 			);
 		}
 
@@ -903,7 +903,7 @@ function attach( dialog ) {
 		summaryRow.hidden = true;
 		message.textContent = __(
 			'Start typing to see results.',
-			'solrengine',
+			'braintum-search-for-solr',
 		);
 		status.textContent = '';
 		busy( false );
@@ -919,13 +919,13 @@ function attach( dialog ) {
 
 		message.textContent = __(
 			'Instant results are unavailable right now. Press Enter to search the site instead.',
-			'solrengine',
+			'braintum-search-for-solr',
 		);
 
 		if ( 429 === code ) {
 			message.textContent = __(
 				'That was a lot of searches at once. Please wait a moment and try again.',
-				'solrengine',
+				'braintum-search-for-solr',
 			);
 		}
 
@@ -1014,7 +1014,7 @@ function attach( dialog ) {
 	}
 
 	/**
-	 * Whether a reply came from SolrEngine.
+	 * Whether a reply came from Braintum Search.
 	 *
 	 * @param {Response} response Response.
 	 * @param {*}        body     Parsed body.
@@ -1212,7 +1212,7 @@ function attach( dialog ) {
 
 			if ( follows ) {
 				cardLink(
-					target.querySelector( `[data-solrengine-index="${ first }"]` ),
+					target.querySelector( `[data-braintum-search-index="${ first }"]` ),
 				)?.focus();
 			}
 
@@ -1220,7 +1220,7 @@ function attach( dialog ) {
 			hasMore = !! body.has_more;
 			status.textContent = sprintf(
 				/* translators: 1: number of results shown, 2: number of results. */
-				__( 'Showing %1$s of %2$s results.', 'solrengine' ),
+				__( 'Showing %1$s of %2$s results.', 'braintum-search-for-solr' ),
 				numberFormat.format( items.length ),
 				numberFormat.format( body.total || items.length ),
 			);
@@ -1266,7 +1266,7 @@ function attach( dialog ) {
 	 */
 	function cardLinks() {
 		return [
-			...results.querySelectorAll( '[data-solrengine-index]:not([hidden])' ),
+			...results.querySelectorAll( '[data-braintum-search-index]:not([hidden])' ),
 		]
 			.map( cardLink )
 			.filter( Boolean );
@@ -1300,7 +1300,7 @@ function attach( dialog ) {
 	 */
 	function follow( element ) {
 		const url = safeUrl(
-			items[ Number( element?.dataset.solrengineIndex ) ]?.url,
+			items[ Number( element?.dataset.braintumSearchIndex ) ]?.url,
 		);
 
 		if ( url ) {
@@ -1328,7 +1328,7 @@ function attach( dialog ) {
 		if ( focus ) {
 			tabList
 				.querySelector(
-					`[data-solrengine-tab="${ CSS.escape( key ) }"]`,
+					`[data-braintum-search-tab="${ CSS.escape( key ) }"]`,
 				)
 				?.focus();
 		}
@@ -1347,7 +1347,7 @@ function attach( dialog ) {
 		if ( ! dialog.open ) {
 			dialog.showModal();
 			document.documentElement.classList.add(
-				'solrengine-modal-is-open',
+				'braintum-search-modal-is-open',
 			);
 		}
 
@@ -1370,7 +1370,7 @@ function attach( dialog ) {
 	}
 
 	dialog.addEventListener( 'close', () => {
-		document.documentElement.classList.remove( 'solrengine-modal-is-open' );
+		document.documentElement.classList.remove( 'braintum-search-modal-is-open' );
 		window.clearTimeout( timer );
 
 		if ( controller ) {
@@ -1501,7 +1501,7 @@ function attach( dialog ) {
 
 		new window.ResizeObserver( () => {
 			const now = window.getComputedStyle(
-				results.querySelector( '[data-solrengine-section-results]' ) ||
+				results.querySelector( '[data-braintum-search-section-results]' ) ||
 					results,
 			).gridTemplateColumns;
 
@@ -1523,19 +1523,19 @@ function attach( dialog ) {
 	} );
 
 	tabList.addEventListener( 'click', ( event ) => {
-		const button = event.target.closest( '[data-solrengine-tab]' );
+		const button = event.target.closest( '[data-braintum-search-tab]' );
 
 		if ( button ) {
-			selectTab( button.dataset.solrengineTab, false );
+			selectTab( button.dataset.braintumSearchTab, false );
 		}
 	} );
 
 	tabList.addEventListener( 'keydown', ( event ) => {
 		const buttons = [
-			...tabList.querySelectorAll( '[data-solrengine-tab]' ),
+			...tabList.querySelectorAll( '[data-braintum-search-tab]' ),
 		];
 		const index = buttons.indexOf(
-			event.target.closest( '[data-solrengine-tab]' ),
+			event.target.closest( '[data-braintum-search-tab]' ),
 		);
 
 		if ( index < 0 ) {
@@ -1558,7 +1558,7 @@ function attach( dialog ) {
 		const next =
 			buttons[ ( moves[ event.key ] + buttons.length ) % buttons.length ];
 
-		selectTab( next.dataset.solrengineTab, true );
+		selectTab( next.dataset.braintumSearchTab, true );
 	} );
 
 	/**
@@ -1676,7 +1676,7 @@ function attach( dialog ) {
 
 /** Find the dialog and wire it. */
 function init() {
-	const dialog = document.querySelector( '[data-solrengine-modal]' );
+	const dialog = document.querySelector( '[data-braintum-search-modal]' );
 
 	// Without <dialog> support the theme's form is left exactly as it was,
 	// which still searches.

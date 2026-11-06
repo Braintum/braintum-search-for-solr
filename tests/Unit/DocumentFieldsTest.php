@@ -2,20 +2,20 @@
 /**
  * Field naming and value coercion tests.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Documents\DocumentFields;
 
 /**
- * @covers \SolrEngine\Documents\DocumentFields
- * @covers \SolrEngine\Contracts\FieldType
+ * @covers \BraintumSearch\Documents\DocumentFields
+ * @covers \BraintumSearch\Contracts\FieldType
  */
 final class DocumentFieldsTest extends TestCase {
 

@@ -7,19 +7,19 @@
  * must not run before `init`. That makes "registering does not resolve the
  * label" a property worth pinning.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Support\Config;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Support\Config;
 
 /**
- * @covers \SolrEngine\Backend\BackendRegistry
+ * @covers \BraintumSearch\Backend\BackendRegistry
  */
 final class BackendRegistryLabelTest extends TestCase {
 

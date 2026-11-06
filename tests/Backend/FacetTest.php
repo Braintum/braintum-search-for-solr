@@ -10,31 +10,31 @@
  * disagrees with its own result set is the defining bug of faceted search, and
  * only a live index can prove it does not happen here.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Backend;
+namespace BraintumSearch\Tests\Backend;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
-use SolrEngine\Search\ResponseParser;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
+use BraintumSearch\Search\ResponseParser;
 
 /**
- * @covers \SolrEngine\Search\FacetTranslator
- * @covers \SolrEngine\Search\ResponseParser
- * @covers \SolrEngine\Search\FilterRegistry
+ * @covers \BraintumSearch\Search\FacetTranslator
+ * @covers \BraintumSearch\Search\ResponseParser
+ * @covers \BraintumSearch\Search\FilterRegistry
  */
 final class FacetTest extends TestCase {
 
@@ -71,7 +71,7 @@ final class FacetTest extends TestCase {
 	private const OTHER_SITE = 702;
 
 	public static function setUpBeforeClass(): void {
-		$base = getenv( 'SOLRENGINE_TEST_SOLR_URL' );
+		$base = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_URL' );
 
 		if ( ! is_string( $base ) || '' === $base ) {
 			return;
@@ -79,7 +79,7 @@ final class FacetTest extends TestCase {
 
 		self::$base = rtrim( $base, '/' );
 
-		$collection = getenv( 'SOLRENGINE_TEST_SOLR_COLLECTION' );
+		$collection = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_COLLECTION' );
 
 		self::$collection = is_string( $collection ) && '' !== $collection ? $collection : 'wordpress';
 
@@ -94,7 +94,7 @@ final class FacetTest extends TestCase {
 
 	protected function setUp(): void {
 		if ( '' === self::$base ) {
-			$this->markTestSkipped( 'Set SOLRENGINE_TEST_SOLR_URL to run backend tests.' );
+			$this->markTestSkipped( 'Set BRAINTUM_SEARCH_TEST_SOLR_URL to run backend tests.' );
 		}
 	}
 
@@ -314,7 +314,7 @@ final class FacetTest extends TestCase {
 	 *
 	 * @param SearchQuery        $query    Query to run.
 	 * @param FacetRegistry|null $registry Facets to count.
-	 * @return \SolrEngine\Contracts\SearchResults
+	 * @return \BraintumSearch\Contracts\SearchResults
 	 */
 	private function parse( SearchQuery $query, ?FacetRegistry $registry = null ) {
 		$registry = $registry ?? $this->registry();
@@ -330,7 +330,7 @@ final class FacetTest extends TestCase {
 	 *
 	 * @param SearchQuery        $query    Query to run.
 	 * @param FacetRegistry|null $registry Facets to count.
-	 * @return array<string,\SolrEngine\Contracts\FacetResult>
+	 * @return array<string,\BraintumSearch\Contracts\FacetResult>
 	 */
 	private function facets( SearchQuery $query, ?FacetRegistry $registry = null ): array {
 		return $this->parse( $query, $registry )->facets();
@@ -339,7 +339,7 @@ final class FacetTest extends TestCase {
 	/**
 	 * Bucket counts keyed by value.
 	 *
-	 * @param array<string,\SolrEngine\Contracts\FacetResult> $facets Facet results.
+	 * @param array<string,\BraintumSearch\Contracts\FacetResult> $facets Facet results.
 	 * @param string                                          $key    Facet key.
 	 * @return array<string,int>
 	 */

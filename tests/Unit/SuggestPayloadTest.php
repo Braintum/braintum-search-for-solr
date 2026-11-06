@@ -5,23 +5,23 @@
  * The shape `instant-search.js` reads is pinned here, so that any surface
  * answering autocomplete renders exactly this body.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\Suggestion;
-use SolrEngine\Contracts\Suggestions;
-use SolrEngine\Search\SuggestPayload;
-use SolrEngine\Search\SuggestionParser;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\Suggestion;
+use BraintumSearch\Contracts\Suggestions;
+use BraintumSearch\Search\SuggestPayload;
+use BraintumSearch\Search\SuggestionParser;
 
 /**
- * @covers \SolrEngine\Search\SuggestPayload
- * @covers \SolrEngine\Search\SuggestionParser
+ * @covers \BraintumSearch\Search\SuggestPayload
+ * @covers \BraintumSearch\Search\SuggestionParser
  */
 final class SuggestPayloadTest extends TestCase {
 

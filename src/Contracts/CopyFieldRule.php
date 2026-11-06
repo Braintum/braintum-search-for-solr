@@ -2,15 +2,15 @@
 /**
  * One copyField rule.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A copy from one field into another.
  *
- * Two Solr constraints shape every rule SolrEngine declares. Wildcards may only
+ * Two Solr constraints shape every rule Braintum Search declares. Wildcards may only
  * lead or trail, and "no copy feeds into another copy" — chains are prohibited.
  * Where an aggregate would naturally be built by chaining, the same source is
  * declared twice instead, which the guide permits: "the same source field can be

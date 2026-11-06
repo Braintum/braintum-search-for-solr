@@ -2,19 +2,19 @@
 /**
  * Container tests.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use SolrEngine\Support\Container;
+use BraintumSearch\Support\Container;
 
 /**
- * @covers \SolrEngine\Support\Container
+ * @covers \BraintumSearch\Support\Container
  */
 final class ContainerTest extends TestCase {
 
@@ -31,8 +31,8 @@ final class ContainerTest extends TestCase {
 			}
 		);
 
-		// Laziness is the point: a request that never touches SolrEngine must
-		// not pay for SolrEngine's services.
+		// Laziness is the point: a request that never touches Braintum Search must
+		// not pay for Braintum Search's services.
 		$this->assertFalse( $constructed );
 		$this->assertFalse( $container->is_resolved( 'thing' ) );
 	}

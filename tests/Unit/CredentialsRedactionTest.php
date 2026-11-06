@@ -8,18 +8,18 @@
  *
  * redact() is static and pure, so it is unit-testable without WordPress.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Support\Credentials;
+use BraintumSearch\Support\Credentials;
 
 /**
- * @covers \SolrEngine\Support\Credentials::redact
+ * @covers \BraintumSearch\Support\Credentials::redact
  */
 final class CredentialsRedactionTest extends TestCase {
 

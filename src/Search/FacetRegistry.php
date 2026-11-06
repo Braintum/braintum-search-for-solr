@@ -2,14 +2,14 @@
 /**
  * Which facets a caller may ask for.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Documents\DocumentFields;
 
 /**
  * The server-side list of facets, and the boundary that keeps the search
@@ -60,7 +60,7 @@ final class FacetRegistry {
 			FacetDefinition::terms(
 				'post_type',
 				DocumentFields::POST_TYPE,
-				__( 'Content type', 'solrengine' ),
+				__( 'Content type', 'braintum-search-for-solr' ),
 				FieldType::STRING
 			)
 		);
@@ -72,7 +72,7 @@ final class FacetRegistry {
 				FacetDefinition::terms(
 					'language',
 					DocumentFields::LANG,
-					__( 'Language', 'solrengine' ),
+					__( 'Language', 'braintum-search-for-solr' ),
 					FieldType::STRING
 				)
 			);
@@ -117,7 +117,7 @@ final class FacetRegistry {
 		 *
 		 * @param FacetRegistry $registry The registry.
 		 */
-		$filtered = apply_filters( 'solrengine_facet_definitions', $registry );
+		$filtered = apply_filters( 'braintum_search_facet_definitions', $registry );
 
 		return $filtered instanceof self ? $filtered : $registry;
 	}

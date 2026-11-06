@@ -2,14 +2,14 @@
 /**
  * Best-effort request throttling.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Rest;
+namespace BraintumSearch\Rest;
 
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\Viewer;
-use SolrEngine\Support\WpViewer;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\Viewer;
+use BraintumSearch\Support\WpViewer;
 
 /**
  * Limits how often one client may call a public endpoint.
@@ -36,7 +36,7 @@ final class RateLimiter {
 	 *
 	 * @var string
 	 */
-	private const GROUP = 'solrengine_rate';
+	private const GROUP = 'braintum_search_rate';
 
 	/**
 	 * Requests allowed per window.
@@ -57,7 +57,7 @@ final class RateLimiter {
 	 *
 	 * Asked through the contract rather than `is_user_logged_in()`, so the
 	 * limiter unit-tests without WordPress. The same seam
-	 * {@see \SolrEngine\Search\SearchService} uses.
+	 * {@see \BraintumSearch\Search\SearchService} uses.
 	 *
 	 * @var Viewer
 	 */
@@ -107,7 +107,7 @@ final class RateLimiter {
 		 * @param bool   $limited Whether to apply the limit.
 		 * @param string $route   Route being called.
 		 */
-		if ( ! apply_filters( 'solrengine_rate_limit_request', true, $route ) ) {
+		if ( ! apply_filters( 'braintum_search_rate_limit_request', true, $route ) ) {
 			return Result::success();
 		}
 

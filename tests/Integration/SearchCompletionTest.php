@@ -2,22 +2,22 @@
 /**
  * The results page and its filter panel complete what the visitor typed.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Integration;
+namespace BraintumSearch\Tests\Integration;
 
-use SolrEngine\Backend\Memory\MemoryBackend;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Integration\WordPress\QueryIntegration;
-use SolrEngine\Integration\WordPress\SearchFilters;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\NullLogger;
+use BraintumSearch\Backend\Memory\MemoryBackend;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Integration\WordPress\QueryIntegration;
+use BraintumSearch\Integration\WordPress\SearchFilters;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\NullLogger;
 use WP_Query;
 use WP_UnitTestCase;
 
@@ -25,8 +25,8 @@ use WP_UnitTestCase;
  * Both must ask for completion, or the panel's counts would describe a
  * different result set from the one beside them.
  *
- * @covers \SolrEngine\Integration\WordPress\QueryIntegration
- * @covers \SolrEngine\Integration\WordPress\SearchFilters
+ * @covers \BraintumSearch\Integration\WordPress\QueryIntegration
+ * @covers \BraintumSearch\Integration\WordPress\SearchFilters
  */
 final class SearchCompletionTest extends WP_UnitTestCase {
 
@@ -43,7 +43,7 @@ final class SearchCompletionTest extends WP_UnitTestCase {
 		$this->seen = array();
 
 		add_filter(
-			'solrengine_search_query',
+			'braintum_search_query',
 			function ( SearchQuery $query ): SearchQuery {
 				$this->seen[] = $query;
 
@@ -53,7 +53,7 @@ final class SearchCompletionTest extends WP_UnitTestCase {
 	}
 
 	public function tear_down(): void {
-		remove_all_filters( 'solrengine_search_query' );
+		remove_all_filters( 'braintum_search_query' );
 		unset( $_GET['s'] );
 
 		parent::tear_down();
@@ -64,7 +64,7 @@ final class SearchCompletionTest extends WP_UnitTestCase {
 
 		$query = new WP_Query();
 		$query->set( 's', 'hoo' );
-		$query->set( 'solrengine_handled', true );
+		$query->set( 'braintum_search_handled', true );
 
 		$integration->maybe_substitute( null, $query );
 

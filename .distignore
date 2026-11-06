@@ -63,3 +63,4 @@ node_modules
 webpack.config.js
 .eslintrc.json
 .npm-cache
+.DS_Store

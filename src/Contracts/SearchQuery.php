@@ -2,10 +2,10 @@
 /**
  * A search request, expressed without engine syntax.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What to search for, as structured values.
@@ -495,7 +495,7 @@ final class SearchQuery {
 	 *
 	 * For text that is still being typed: "hoo" finds "hoodie". Only the last
 	 * word, and only a plain word of two or more letters or digits; see
-	 * {@see \SolrEngine\Search\PrefixTerms}. A backend that already matches
+	 * {@see \BraintumSearch\Search\PrefixTerms}. A backend that already matches
 	 * partial words may ignore it.
 	 *
 	 * @since 1.0.0

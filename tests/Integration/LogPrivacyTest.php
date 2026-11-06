@@ -11,28 +11,28 @@
  * Here rather than in the unit suite because HttpTransport reads credentials,
  * and Credentials reads options.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Integration;
+namespace BraintumSearch\Tests\Integration;
 
-use SolrEngine\Backend\Solr\Endpoint;
-use SolrEngine\Backend\Solr\HttpTransport;
-use SolrEngine\Backend\Solr\Sender;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Support\Credentials;
-use SolrEngine\Support\Encryption;
+use BraintumSearch\Backend\Solr\Endpoint;
+use BraintumSearch\Backend\Solr\HttpTransport;
+use BraintumSearch\Backend\Solr\Sender;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Support\Credentials;
+use BraintumSearch\Support\Encryption;
 use WP_UnitTestCase;
 
 /**
- * @covers \SolrEngine\Backend\Solr\HttpTransport
+ * @covers \BraintumSearch\Backend\Solr\HttpTransport
  */
 final class LogPrivacyTest extends WP_UnitTestCase {
 
-	private const MARKER = 'solrengine-audit-marker';
+	private const MARKER = 'braintum-search-audit-marker';
 
 	public function test_a_successful_search_logs_no_search_text(): void {
 		$logger = $this->logger();

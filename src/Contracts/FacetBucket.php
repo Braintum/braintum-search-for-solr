@@ -2,10 +2,10 @@
 /**
  * One counted value within a facet.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A value and how many documents carry it.

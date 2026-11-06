@@ -2,28 +2,28 @@
 /**
  * What deactivation and uninstall do to queued work.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
 use ActionScheduler;
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Indexing\Queue\ActionSchedulerQueue;
-use SolrEngine\Indexing\QueueWorker;
-use SolrEngine\Indexing\Rebuild;
-use SolrEngine\Indexing\Reconciler;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Indexing\Queue\ActionSchedulerQueue;
+use BraintumSearch\Indexing\QueueWorker;
+use BraintumSearch\Indexing\Rebuild;
+use BraintumSearch\Indexing\Reconciler;
 
 /**
- * Stops SolrEngine's background work, and only SolrEngine's.
+ * Stops Braintum Search's background work, and only Braintum Search's.
  *
  * One list of the hooks the plugin schedules, shared by deactivation and
  * uninstall, so that a hook added later cannot be cleaned up by one and missed
  * by the other.
  *
  * Work is queued in one of two places. WP-Cron events are removed by hook.
- * Action Scheduler jobs are cancelled by group: every job SolrEngine queues
- * there carries the `solrengine` group, so the group is exactly the set that
+ * Action Scheduler jobs are cancelled by group: every job Braintum Search queues
+ * there carries the `braintum-search` group, so the group is exactly the set that
  * belongs to this plugin. Action Scheduler's tables are shared with WooCommerce
  * and anything else that bundles it, and are never dropped or emptied.
  *
@@ -32,7 +32,7 @@ use SolrEngine\Indexing\Reconciler;
 final class Lifecycle {
 
 	/**
-	 * Every WP-Cron hook SolrEngine schedules.
+	 * Every WP-Cron hook Braintum Search schedules.
 	 *
 	 * @since 1.0.0
 	 *

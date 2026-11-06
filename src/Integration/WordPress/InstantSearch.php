@@ -2,13 +2,13 @@
 /**
  * Attaches autocomplete to the theme's search field.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Support\Config;
 
 /**
  * Enqueues the instant-search component.
@@ -27,7 +27,7 @@ final class InstantSearch {
 	 *
 	 * @var string
 	 */
-	private const HANDLE = 'solrengine-instant-search';
+	private const HANDLE = 'braintum-search-instant-search';
 
 	/**
 	 * Configuration.
@@ -79,7 +79,7 @@ final class InstantSearch {
 		 * @param string $selector A CSS selector.
 		 */
 		return (string) apply_filters(
-			'solrengine_instant_search_selector',
+			'braintum_search_instant_search_selector',
 			'input[type="search"], input[name="s"], .wp-block-search__input'
 		);
 	}
@@ -96,7 +96,7 @@ final class InstantSearch {
 			return;
 		}
 
-		$asset_file = SOLRENGINE_PLUGIN_DIR . 'assets/build/instant-search.asset.php';
+		$asset_file = BRAINTUM_SEARCH_PLUGIN_DIR . 'assets/build/instant-search.asset.php';
 
 		if ( ! is_readable( $asset_file ) ) {
 			// Built assets are missing. A source checkout without a build is a
@@ -109,31 +109,31 @@ final class InstantSearch {
 
 		wp_enqueue_script(
 			self::HANDLE,
-			SOLRENGINE_PLUGIN_URL . 'assets/build/instant-search.js',
+			BRAINTUM_SEARCH_PLUGIN_URL . 'assets/build/instant-search.js',
 			$asset['dependencies'] ?? array(),
-			$asset['version'] ?? SOLRENGINE_VERSION,
+			$asset['version'] ?? BRAINTUM_SEARCH_VERSION,
 			true
 		);
 
 		wp_enqueue_style(
 			self::HANDLE,
-			SOLRENGINE_PLUGIN_URL . 'assets/build/instant-search.css',
+			BRAINTUM_SEARCH_PLUGIN_URL . 'assets/build/instant-search.css',
 			array(),
-			$asset['version'] ?? SOLRENGINE_VERSION
+			$asset['version'] ?? BRAINTUM_SEARCH_VERSION
 		);
 
 		wp_localize_script(
 			self::HANDLE,
-			'solrEngineInstantSearch',
+			'braintumSearchInstantSearch',
 			array(
-				'endpoint' => rest_url( 'solrengine/v1/suggest' ),
+				'endpoint' => rest_url( 'braintum-search/v1/suggest' ),
 				'limit'    => $this->config->get_int( 'search.instant_limit', 8 ),
 				'minimum'  => SuggestQuery::MIN_LENGTH,
 				'selector' => self::selector(),
 				'i18n'     => array(
-					'noResults'    => __( 'No suggestions', 'solrengine' ),
+					'noResults'    => __( 'No suggestions', 'braintum-search-for-solr' ),
 					/* translators: %d: number of suggestions found. */
-					'resultsFound' => __( '%d suggestions available', 'solrengine' ),
+					'resultsFound' => __( '%d suggestions available', 'braintum-search-for-solr' ),
 				),
 			)
 		);

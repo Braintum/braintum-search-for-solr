@@ -2,10 +2,10 @@
 /**
  * Circuit breaker around a backend.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Remembers that the backend is failing, so every visitor does not rediscover it.
@@ -19,7 +19,7 @@ namespace SolrEngine\Contracts;
  * results page and instant-search read and write the same record. A backend
  * autocomplete has found broken is one the results page stops waiting for.
  *
- * Extracted from {@see \SolrEngine\Search\SearchService} so that the service can
+ * Extracted from {@see \BraintumSearch\Search\SearchService} so that the service can
  * be tested without WordPress — reading `get_option()` there was a leaked seam —
  * and so a process that must not write on a read can decline to.
  *

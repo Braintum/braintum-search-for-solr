@@ -2,10 +2,10 @@
 /**
  * Describes a set of documents without listing them.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A structured description of which documents an operation applies to.

@@ -3,7 +3,7 @@
  * Uninstall handler.
  *
  * Runs only when the user deletes the plugin, never on deactivation. Removes
- * everything SolrEngine created in this site's database.
+ * everything Braintum Search created in this site's database.
  *
  * Deliberately does NOT delete documents from Solr. The index belongs to the
  * customer's infrastructure, the endpoint may be unreachable, and deleting
@@ -11,7 +11,7 @@
  * this file should make silently. The admin screen offers an explicit
  * "remove my documents from Solr" action for that.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -19,34 +19,34 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 /**
- * Remove SolrEngine data for the current site.
+ * Remove Braintum Search data for the current site.
  *
  * @since 0.1.0
  *
  * @return void
  */
-function solrengine_uninstall_site() {
+function braintum_search_uninstall_site() {
 	global $wpdb;
 
 	$options = array(
-		'solrengine_connection',
-		'solrengine_credentials',
-		'solrengine_index_config',
-		'solrengine_state',
-		'solrengine_version',
-		'solrengine_installed_at',
-		'solrengine_db_version',
-		'solrengine_meta_keys',
+		'braintum_search_connection',
+		'braintum_search_credentials',
+		'braintum_search_index_config',
+		'braintum_search_state',
+		'braintum_search_version',
+		'braintum_search_installed_at',
+		'braintum_search_db_version',
+		'braintum_search_meta_keys',
 		// Run state. Each is written by a different part of the indexing
 		// pipeline, and each would otherwise survive the plugin's removal and
 		// confuse a later reinstall into thinking a run was in progress.
-		'solrengine_sync_run',
-		'solrengine_sync_run_rebuild',
-		'solrengine_rebuild',
-		'solrengine_reconciliation',
+		'braintum_search_sync_run',
+		'braintum_search_sync_run_rebuild',
+		'braintum_search_rebuild',
+		'braintum_search_reconciliation',
 		// The circuit breaker's failure count. Harmless on its own, but a
 		// reinstall would start with search paused if it had tripped.
-		'solrengine_breaker',
+		'braintum_search_breaker',
 	);
 
 	foreach ( $options as $option ) {
@@ -55,13 +55,13 @@ function solrengine_uninstall_site() {
 
 	// The discovered meta-key list is a transient rather than an option, and
 	// transients are stored as options with a prefix, so it needs naming twice.
-	delete_transient( 'solrengine_meta_keys' );
-	delete_transient( 'solrengine_wc_price_ceiling' );
+	delete_transient( 'braintum_search_meta_keys' );
+	delete_transient( 'braintum_search_wc_price_ceiling' );
 
 	// Legacy 0.1.0 prototype options.
-	delete_option( 'solrengine_settings' );
-	delete_option( 'solrengine_solr_endpoint' );
-	delete_option( 'solrengine_commit_on_update' );
+	delete_option( 'braintum_search_settings' );
+	delete_option( 'braintum_search_solr_endpoint' );
+	delete_option( 'braintum_search_commit_on_update' );
 
 	/*
 	 * Per-backend credentials. Their option names carry the backend identifier,
@@ -70,20 +70,20 @@ function solrengine_uninstall_site() {
 	 * this file owns, not anything from a request.
 	 */
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-	$solrengine_credential_options = $wpdb->get_col(
+	$braintum_search_credential_options = $wpdb->get_col(
 		$wpdb->prepare(
 			"SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",
-			$wpdb->esc_like( 'solrengine_credentials_' ) . '%'
+			$wpdb->esc_like( 'braintum_search_credentials_' ) . '%'
 		)
 	);
 
-	foreach ( (array) $solrengine_credential_options as $solrengine_credential_option ) {
-		delete_option( $solrengine_credential_option );
+	foreach ( (array) $braintum_search_credential_options as $braintum_search_credential_option ) {
+		delete_option( $braintum_search_credential_option );
 	}
 
 	$tables = array(
-		$wpdb->prefix . 'solrengine_index_runs',
-		$wpdb->prefix . 'solrengine_failures',
+		$wpdb->prefix . 'braintum_search_index_runs',
+		$wpdb->prefix . 'braintum_search_failures',
 	);
 
 	foreach ( $tables as $table ) {
@@ -92,12 +92,12 @@ function solrengine_uninstall_site() {
 		$wpdb->query( 'DROP TABLE IF EXISTS `' . esc_sql( $table ) . '`' ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery
 	}
 
-	if ( class_exists( '\SolrEngine\Support\Lifecycle' ) ) {
+	if ( class_exists( '\BraintumSearch\Support\Lifecycle' ) ) {
 		// Every WP-Cron hook and every Action Scheduler job in the plugin's
 		// group. Shared Action Scheduler tables are left alone.
-		\SolrEngine\Support\Lifecycle::cancel_queued_work();
+		\BraintumSearch\Support\Lifecycle::cancel_queued_work();
 	} else {
-		wp_clear_scheduled_hook( 'solrengine_reconcile' );
+		wp_clear_scheduled_hook( 'braintum_search_reconcile' );
 	}
 }
 
@@ -109,22 +109,22 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 if ( is_multisite() ) {
-	$solrengine_site_ids = get_sites(
+	$braintum_search_site_ids = get_sites(
 		array(
 			'fields' => 'ids',
 			'number' => 0,
 		)
 	);
 
-	foreach ( $solrengine_site_ids as $solrengine_site_id ) {
-		switch_to_blog( $solrengine_site_id );
-		solrengine_uninstall_site();
+	foreach ( $braintum_search_site_ids as $braintum_search_site_id ) {
+		switch_to_blog( $braintum_search_site_id );
+		braintum_search_uninstall_site();
 		restore_current_blog();
 	}
 
-	delete_site_option( 'solrengine_network_connection' );
-	delete_site_option( 'solrengine_network_state' );
-	delete_site_option( 'solrengine_network_credentials' );
+	delete_site_option( 'braintum_search_network_connection' );
+	delete_site_option( 'braintum_search_network_state' );
+	delete_site_option( 'braintum_search_network_credentials' );
 } else {
-	solrengine_uninstall_site();
+	braintum_search_uninstall_site();
 }

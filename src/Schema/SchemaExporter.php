@@ -2,13 +2,13 @@
 /**
  * Renders a contract as Solr configuration.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Schema;
+namespace BraintumSearch\Schema;
 
-use SolrEngine\Contracts\SchemaContract;
-use SolrEngine\Contracts\SchemaField;
+use BraintumSearch\Contracts\SchemaContract;
+use BraintumSearch\Contracts\SchemaField;
 
 /**
  * Turns a schema contract into XML an administrator can paste into a schema.
@@ -40,7 +40,7 @@ final class SchemaExporter {
 		$lines = array();
 
 		$lines[] = '<!--';
-		$lines[] = '  SolrEngine schema contract version ' . $contract->version() . '.';
+		$lines[] = '  Braintum Search schema contract version ' . $contract->version() . '.';
 		$lines[] = '';
 		$lines[] = '  Paste these into your managed-schema or schema.xml, inside <schema>.';
 		$lines[] = '  Every name is prefixed "se_" so nothing here can collide with fields';

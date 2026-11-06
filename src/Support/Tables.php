@@ -2,13 +2,13 @@
 /**
  * Custom table definitions.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
 /**
- * The two tables SolrEngine owns, and their installation.
+ * The two tables Braintum Search owns, and their installation.
  *
  * Two tables rather than options, and the reasoning is the plan's section 17.5:
  * a log is exactly the shape that grows without bound, and an autoloaded option
@@ -34,7 +34,7 @@ final class Tables {
 	 *
 	 * @var string
 	 */
-	public const OPTION_VERSION = 'solrengine_db_version';
+	public const OPTION_VERSION = 'braintum_search_db_version';
 
 	/**
 	 * Current table layout version.
@@ -71,7 +71,7 @@ final class Tables {
 	public static function runs(): string {
 		global $wpdb;
 
-		return $wpdb->prefix . 'solrengine_index_runs';
+		return $wpdb->prefix . 'braintum_search_index_runs';
 	}
 
 	/**
@@ -84,7 +84,7 @@ final class Tables {
 	public static function failures(): string {
 		global $wpdb;
 
-		return $wpdb->prefix . 'solrengine_failures';
+		return $wpdb->prefix . 'braintum_search_failures';
 	}
 
 	/**

@@ -6,18 +6,18 @@
  * These cover the half that needs no WordPress; the half that walks a real
  * taxonomy is exercised by the integration suite.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Documents\TermPaths;
+use BraintumSearch\Documents\TermPaths;
 
 /**
- * @covers \SolrEngine\Documents\TermPaths
+ * @covers \BraintumSearch\Documents\TermPaths
  */
 final class TermPathsTest extends TestCase {
 

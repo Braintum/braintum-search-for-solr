@@ -2,16 +2,16 @@
 /**
  * Front-end templates a theme can override.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
 /**
- * Finds and renders SolrEngine's templates, preferring the theme's copy.
+ * Finds and renders Braintum Search's templates, preferring the theme's copy.
  *
  * The convention WooCommerce made familiar: copy a file from the plugin's
- * `templates/` directory into a `solrengine/` directory in the theme, keeping
+ * `templates/` directory into a `braintum-search/` directory in the theme, keeping
  * its relative path, and edit the copy. A child theme wins over its parent,
  * and both win over the plugin. Nothing has to be registered.
  *
@@ -29,7 +29,7 @@ final class Templates {
 	 *
 	 * @var string
 	 */
-	public const THEME_DIR = 'solrengine';
+	public const THEME_DIR = 'braintum-search';
 
 	/**
 	 * A relative template path: lowercase segments, ending in .php.
@@ -54,16 +54,16 @@ final class Templates {
 		$found = locate_template( array( self::THEME_DIR . '/' . $name ), false, false );
 
 		if ( '' === $found ) {
-			$bundled = SOLRENGINE_PLUGIN_DIR . 'templates/' . $name;
+			$bundled = BRAINTUM_SEARCH_PLUGIN_DIR . 'templates/' . $name;
 			$found   = is_readable( $bundled ) ? $bundled : '';
 		}
 
 		/**
-		 * Filters the file a SolrEngine template resolves to.
+		 * Filters the file a Braintum Search template resolves to.
 		 *
 		 * For a plugin, rather than a theme, that wants to supply a template:
 		 * a theme needs no hook, because a file at
-		 * `{theme}/solrengine/{name}` is found on its own. Return '' to
+		 * `{theme}/braintum-search/{name}` is found on its own. Return '' to
 		 * suppress a template altogether — a per-post-type card, for instance,
 		 * so that type falls back to the default card.
 		 *
@@ -72,7 +72,7 @@ final class Templates {
 		 * @param string $path Absolute path found, or '' when none was.
 		 * @param string $name Relative template name.
 		 */
-		$path = apply_filters( 'solrengine_template', $found, $name );
+		$path = apply_filters( 'braintum_search_template', $found, $name );
 
 		return is_string( $path ) && '' !== $path && is_readable( $path ) ? $path : '';
 	}

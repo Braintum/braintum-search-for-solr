@@ -1,7 +1,7 @@
 # Facets and filters
 
 A facet is a count: "Guides (31)". A filter is what happens when a visitor
-clicks it. SolrEngine computes both in the same Solr request, which is the only
+clicks it. Braintum Search computes both in the same Solr request, which is the only
 way the number beside a choice can be trusted to match the results that choice
 produces.
 
@@ -26,10 +26,10 @@ Two front doors to the same renderer:
 
 - The **Search filters** block, for block themes. Add it to a search results
   template, or to any template that shows Solr results.
-- `[solrengine_filters]`, for classic themes, widget areas and page builders.
+- `[braintum_search_filters]`, for classic themes, widget areas and page builders.
 
 ```
-[solrengine_filters facets="category,post_type" heading="Narrow these results" counts="yes"]
+[braintum_search_filters facets="category,post_type" heading="Narrow these results" counts="yes"]
 ```
 
 | Attribute | Default | What it does |
@@ -93,7 +93,7 @@ Two consequences worth knowing:
   it, and it is what makes the count agree with the result page.
 - **The path format changed in 0.6.0** and documents indexed by an earlier
   version carry the old form. Run a full reindex once — from the dashboard or
-  `wp solrengine index full` — or hierarchical facets will find nothing.
+  `wp braintum-search index full` — or hierarchical facets will find nothing.
 
 ## Multi-select
 
@@ -107,7 +107,7 @@ documents in one or the other.
 A facet can opt out, if a single choice is what it means:
 
 ```php
-add_filter( 'solrengine_facet_definitions', function ( $registry ) {
+add_filter( 'braintum_search_facet_definitions', function ( $registry ) {
 	$registry->register(
 		FacetDefinition::terms( 'format', 'se_s_meta_format', 'Format' )
 			->with_multi_select( false )
@@ -120,10 +120,10 @@ add_filter( 'solrengine_facet_definitions', function ( $registry ) {
 ## Registering your own
 
 ```php
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
 
-add_filter( 'solrengine_facet_definitions', function ( $registry ) {
+add_filter( 'braintum_search_facet_definitions', function ( $registry ) {
 	$registry->register(
 		FacetDefinition::terms( 'brand', 'se_ss_meta_brand', 'Brand', FieldType::STRING )
 			->with_limit( 30 )
@@ -137,7 +137,7 @@ add_filter( 'solrengine_facet_definitions', function ( $registry ) {
 	return $registry;
 } );
 
-add_action( 'solrengine_register_filters', function ( $filters ) {
+add_action( 'braintum_search_register_filters', function ( $filters ) {
 	$filters->register( 'brand', 'se_ss_meta_brand', 'ss', 'Brand' );
 	$filters->register_bands( 'price', 'se_f_meta_price', 250.0, 'Price' );
 } );
@@ -147,7 +147,7 @@ Both halves are needed, and they must share a key: the facet counts, the filter
 narrows, and the shared key is what pairs them so multi-select can exclude the
 right filter from the right facet.
 
-The field must be one SolrEngine owns — it starts with `se_` — and the meta key
+The field must be one Braintum Search owns — it starts with `se_` — and the meta key
 must already be on the indexing allowlist. A definition that could not produce a
 sane Solr request is dropped at registration rather than at query time, so a
 mistake shows up as a missing facet on the next page load instead of as an empty
@@ -166,7 +166,7 @@ for an arbitrary range over an arbitrary field.
 ## The REST API
 
 ```
-GET /wp-json/solrengine/v1/facets
+GET /wp-json/braintum-search/v1/facets
 ```
 
 | Parameter | Type | Notes |
@@ -229,5 +229,5 @@ collection holds. The backend test suite asserts both against a real Solr.
 
 | Hook | Type | Purpose |
 | --- | --- | --- |
-| `solrengine_facet_definitions` | filter | Register, change or remove facets |
-| `solrengine_register_filters` | action | Register the filter that pairs with a facet |
+| `braintum_search_facet_definitions` | filter | Register, change or remove facets |
+| `braintum_search_register_filters` | action | Register the filter that pairs with a facet |

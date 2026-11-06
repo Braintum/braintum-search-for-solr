@@ -2,10 +2,10 @@
 /**
  * Index backend contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Writes to a search index.

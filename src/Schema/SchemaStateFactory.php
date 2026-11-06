@@ -2,12 +2,12 @@
 /**
  * Builds a SchemaState from a Solr schema response.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Schema;
+namespace BraintumSearch\Schema;
 
-use SolrEngine\Contracts\SchemaState;
+use BraintumSearch\Contracts\SchemaState;
 
 /**
  * Turns Solr's /schema response into the shape the planner understands.

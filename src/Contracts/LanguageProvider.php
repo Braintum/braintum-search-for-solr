@@ -2,10 +2,10 @@
 /**
  * Language provider contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Where a site's languages come from.
@@ -13,8 +13,8 @@ namespace SolrEngine\Contracts;
  * WordPress has no multilingual model. It has a locale, and everything above
  * that is a plugin — WPML, Polylang, TranslatePress, and several more, each with
  * its own idea of what a language is attached to. The plan's risk 11 is explicit
- * that SolrEngine should "integrate with WPML and Polylang rather than inventing
- * a language model", and this is the seam that keeps that promise: SolrEngine
+ * that Braintum Search should "integrate with WPML and Polylang rather than inventing
+ * a language model", and this is the seam that keeps that promise: Braintum Search
  * asks three questions and does not care who answers them.
  *
  * It is a contract rather than a filter because the three questions are
@@ -34,7 +34,7 @@ interface LanguageProvider {
 	/**
 	 * Stable identifier, for example "core", "polylang" or "wpml".
 	 *
-	 * Shown in the admin so an administrator can see which plugin SolrEngine is
+	 * Shown in the admin so an administrator can see which plugin Braintum Search is
 	 * reading languages from, which is the first thing to check when a
 	 * translation is missing from search.
 	 *

@@ -1,10 +1,10 @@
 # Privacy
 
-What SolrEngine indexes, what leaves your server, and what it never touches.
+What Braintum Search indexes, what leaves your server, and what it never touches.
 
 ## The short version
 
-**SolrEngine sends your content to exactly one place: the Solr server whose
+**Braintum Search sends your content to exactly one place: the Solr server whose
 address you typed.** It is not operated by us, we cannot see it, and nothing is
 sent anywhere else. There is no telemetry, no analytics, no licence check and no
 phone-home.
@@ -26,7 +26,7 @@ your infrastructure at all.
 | On a shop: SKUs, prices, stock status, attributes, ratings | `wp-config.php`, database credentials, API keys |
 
 **Custom fields are opt-in, one key at a time.** Nothing in post meta is indexed
-until you list it under SolrEngine → Content. That is the single most important
+until you list it under Braintum Search → Content. That is the single most important
 privacy decision in the plugin: custom fields routinely hold licence keys, API
 tokens, internal editorial notes and personal data, and the 0.1.0 prototype
 indexed all of them. Private keys — the ones beginning with `_` — are hidden in
@@ -40,7 +40,7 @@ email address is not, and there is no setting that would index it.
 The search text, the filters selected, and the page number. These reach the same
 Solr server and nowhere else.
 
-**SolrEngine does not log search queries.** There is no table of what visitors
+**Braintum Search does not log search queries.** There is no table of what visitors
 searched for, no click tracking, and no per-query analytics. The plan places
 those in a future commercial tier specifically so that the free plugin does not
 collect them by default. The run history records what was *indexed* and what
@@ -98,7 +98,7 @@ acceptable, give each site its own credentials.
 
 If you need wording, this is accurate for a standard installation:
 
-> This site uses SolrEngine to provide search. Content published on this site,
+> This site uses Braintum Search to provide search. Content published on this site,
 > and the words visitors type into the search box, are sent to a search server
 > operated by [who operates it]. Search queries are not logged or retained by the
 > plugin.
@@ -108,7 +108,7 @@ and it is usually the reassuring one.
 
 ## Other backends
 
-SolrEngine can talk to more than one kind of search backend. Today it ships two:
+Braintum Search can talk to more than one kind of search backend. Today it ships two:
 Apache Solr, and an in-memory backend used only for development, which stores
 nothing beyond a single request.
 

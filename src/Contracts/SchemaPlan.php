@@ -2,10 +2,10 @@
 /**
  * The difference between what is required and what exists.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What would change, if an administrator says yes.
@@ -90,7 +90,7 @@ final class SchemaPlan {
 	/**
 	 * Reasons the plan cannot be applied.
 	 *
-	 * A schema that is not mutable, or a missing field type SolrEngine will not
+	 * A schema that is not mutable, or a missing field type Braintum Search will not
 	 * create for itself, are blockers rather than failures: the administrator
 	 * can still apply the shipped configset by hand.
 	 *
@@ -131,7 +131,7 @@ final class SchemaPlan {
 	}
 
 	/**
-	 * Whether every operation is one SolrEngine is permitted to issue.
+	 * Whether every operation is one Braintum Search is permitted to issue.
 	 *
 	 * @since 0.1.0
 	 *

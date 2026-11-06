@@ -7,22 +7,22 @@
  * would miss. Both are only true if every hook, option and queued job is
  * accounted for, which is what these assert.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Integration;
+namespace BraintumSearch\Tests\Integration;
 
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Indexing\Queue\ActionSchedulerQueue;
-use SolrEngine\Indexing\QueueWorker;
-use SolrEngine\Support\Lifecycle;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Indexing\Queue\ActionSchedulerQueue;
+use BraintumSearch\Indexing\QueueWorker;
+use BraintumSearch\Support\Lifecycle;
 use WP_UnitTestCase;
 
 /**
- * @covers \SolrEngine\Support\Lifecycle
- * @covers \SolrEngine\Indexing\Queue\CronQueue::cancel
+ * @covers \BraintumSearch\Support\Lifecycle
+ * @covers \BraintumSearch\Indexing\Queue\CronQueue::cancel
  */
 final class LifecycleTest extends WP_UnitTestCase {
 
@@ -65,7 +65,7 @@ final class LifecycleTest extends WP_UnitTestCase {
 	}
 
 	public function test_deactivation_marks_a_running_sync_stalled_and_keeps_settings(): void {
-		update_option( 'solrengine_connection', array( 'url' => 'http://127.0.0.1:8983/solr' ), false );
+		update_option( 'braintum_search_connection', array( 'url' => 'http://127.0.0.1:8983/solr' ), false );
 		update_option(
 			FullSync::OPTION,
 			array(
@@ -82,7 +82,7 @@ final class LifecycleTest extends WP_UnitTestCase {
 
 		$this->assertSame( 'stalled', $run['state'] );
 		$this->assertSame( 10, $run['processed'] );
-		$this->assertNotFalse( get_option( 'solrengine_connection' ) );
+		$this->assertNotFalse( get_option( 'braintum_search_connection' ) );
 	}
 
 	public function test_deactivation_leaves_a_finished_sync_as_it_was(): void {
@@ -94,20 +94,20 @@ final class LifecycleTest extends WP_UnitTestCase {
 	}
 
 	public function test_uninstall_removes_the_breaker_and_queued_work(): void {
-		update_option( 'solrengine_breaker', array( 'failures' => 3 ), false );
-		update_option( 'solrengine_connection', array( 'url' => 'http://127.0.0.1:8983/solr' ), false );
-		set_transient( 'solrengine_wc_price_ceiling', 100.0 );
+		update_option( 'braintum_search_breaker', array( 'failures' => 3 ), false );
+		update_option( 'braintum_search_connection', array( 'url' => 'http://127.0.0.1:8983/solr' ), false );
+		set_transient( 'braintum_search_wc_price_ceiling', 100.0 );
 		wp_schedule_single_event( time() + 60, QueueWorker::INDEX_HOOK, array( 'batch-a' ) );
 
 		if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-			define( 'WP_UNINSTALL_PLUGIN', 'solrengine/solrengine.php' );
+			define( 'WP_UNINSTALL_PLUGIN', 'braintum-search-for-solr/braintum-search-for-solr.php' );
 		}
 
 		require dirname( __DIR__, 2 ) . '/uninstall.php';
 
-		$this->assertFalse( get_option( 'solrengine_breaker' ) );
-		$this->assertFalse( get_option( 'solrengine_connection' ) );
-		$this->assertFalse( get_transient( 'solrengine_wc_price_ceiling' ) );
+		$this->assertFalse( get_option( 'braintum_search_breaker' ) );
+		$this->assertFalse( get_option( 'braintum_search_connection' ) );
+		$this->assertFalse( get_transient( 'braintum_search_wc_price_ceiling' ) );
 		$this->assertFalse( $this->scheduled( QueueWorker::INDEX_HOOK ) );
 	}
 

@@ -2,25 +2,25 @@
 /**
  * WP-CLI commands.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Cli;
+namespace BraintumSearch\Cli;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Contracts\SchemaBackend;
-use SolrEngine\Diagnostics\ConnectionDiagnostic;
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Indexing\Rebuild;
-use SolrEngine\Indexing\RunHistory;
-use SolrEngine\Multisite\NetworkConfig;
-use SolrEngine\Support\Container;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaExporter;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Contracts\SchemaBackend;
+use BraintumSearch\Diagnostics\ConnectionDiagnostic;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Indexing\Rebuild;
+use BraintumSearch\Indexing\RunHistory;
+use BraintumSearch\Multisite\NetworkConfig;
+use BraintumSearch\Support\Container;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaExporter;
 use WP_CLI;
 
 /**
- * Manage SolrEngine from the command line.
+ * Manage Braintum Search from the command line.
  *
  * The command line matters more here than for most plugins. Diagnosing a Solr
  * connection over SSH beats clicking through wp-admin, and later phases will
@@ -107,8 +107,8 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine test
-	 *     wp solrengine test --format=json
+	 *     wp braintum-search test
+	 *     wp braintum-search test --format=json
 	 *
 	 * @since 0.1.0
 	 *
@@ -155,7 +155,7 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine status
+	 *     wp braintum-search status
 	 *
 	 * @since 0.1.0
 	 *
@@ -193,7 +193,7 @@ final class Commands {
 				),
 				array(
 					'property' => 'Plugin version',
-					'value'    => SOLRENGINE_VERSION,
+					'value'    => BRAINTUM_SEARCH_VERSION,
 				),
 			),
 			array( 'property', 'value' )
@@ -216,9 +216,9 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine schema check
-	 *     wp solrengine schema export > schema-fragment.xml
-	 *     wp solrengine schema apply
+	 *     wp braintum-search schema check
+	 *     wp braintum-search schema export > schema-fragment.xml
+	 *     wp braintum-search schema apply
 	 *
 	 * @since 0.1.0
 	 *
@@ -237,7 +237,7 @@ final class Commands {
 		$backend = $this->backends->schema();
 
 		if ( null === $backend ) {
-			WP_CLI::error( 'This backend does not expose schema management. Use "wp solrengine schema export" and apply the result by hand.' );
+			WP_CLI::error( 'This backend does not expose schema management. Use "wp braintum-search schema export" and apply the result by hand.' );
 
 			return;
 		}
@@ -277,7 +277,7 @@ final class Commands {
 
 		if ( 'check' === $action ) {
 			WP_CLI::line( '' );
-			WP_CLI::line( sprintf( '%d change(s) pending. Run "wp solrengine schema apply" to make them.', count( $plan->operations() ) ) );
+			WP_CLI::line( sprintf( '%d change(s) pending. Run "wp braintum-search schema apply" to make them.', count( $plan->operations() ) ) );
 
 			return;
 		}
@@ -331,10 +331,10 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine index
-	 *     wp solrengine index --post-type=post,page
-	 *     wp solrengine index progress
-	 *     wp solrengine index cancel
+	 *     wp braintum-search index
+	 *     wp braintum-search index --post-type=post,page
+	 *     wp braintum-search index progress
+	 *     wp braintum-search index cancel
 	 *
 	 * @since 0.3.0
 	 *
@@ -346,7 +346,7 @@ final class Commands {
 		$sync = $this->container->get( 'indexing.full_sync' );
 
 		if ( ! $sync instanceof FullSync ) {
-			WP_CLI::error( 'No usable backend. Run "wp solrengine test" to see why.' );
+			WP_CLI::error( 'No usable backend. Run "wp braintum-search test" to see why.' );
 
 			return;
 		}
@@ -445,7 +445,7 @@ final class Commands {
 		);
 
 		if ( (int) $run['failed'] > 0 ) {
-			WP_CLI::warning( 'Some objects could not be indexed. Enable SOLRENGINE_DEBUG to see why.' );
+			WP_CLI::warning( 'Some objects could not be indexed. Enable BRAINTUM_SEARCH_DEBUG to see why.' );
 		}
 	}
 
@@ -532,15 +532,15 @@ final class Commands {
 	 * ---
 	 *
 	 * [--target=<name>]
-	 * : Index to build into. Required where SolrEngine cannot create one, which
+	 * : Index to build into. Required where Braintum Search cannot create one, which
 	 * is any Solr not running in SolrCloud mode.
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine rebuild start
-	 *     wp solrengine rebuild start --target=wordpress_v2
-	 *     wp solrengine rebuild verify
-	 *     wp solrengine rebuild switch
+	 *     wp braintum-search rebuild start
+	 *     wp braintum-search rebuild start --target=wordpress_v2
+	 *     wp braintum-search rebuild verify
+	 *     wp braintum-search rebuild switch
 	 *
 	 * @since 0.8.0
 	 *
@@ -552,7 +552,7 @@ final class Commands {
 		$rebuild = $this->container->get( 'indexing.rebuild' );
 
 		if ( ! $rebuild instanceof Rebuild ) {
-			WP_CLI::error( 'No usable backend. Run "wp solrengine test" to see why.' );
+			WP_CLI::error( 'No usable backend. Run "wp braintum-search test" to see why.' );
 		}
 
 		$action = isset( $args[0] ) ? (string) $args[0] : 'status';
@@ -620,8 +620,8 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine history
-	 *     wp solrengine history --failures
+	 *     wp braintum-search history
+	 *     wp braintum-search history --failures
 	 *
 	 * @since 0.8.0
 	 *
@@ -716,7 +716,7 @@ final class Commands {
 
 		$this->report_rebuild( $this->expect( $rebuild->verify() ) );
 
-		WP_CLI::log( 'Run "wp solrengine rebuild switch" when you are satisfied with the new index.' );
+		WP_CLI::log( 'Run "wp braintum-search rebuild switch" when you are satisfied with the new index.' );
 	}
 
 	/**
@@ -748,7 +748,7 @@ final class Commands {
 	/**
 	 * Unwrap a Result, or stop with its message.
 	 *
-	 * @param \SolrEngine\Contracts\Result $result Result to unwrap.
+	 * @param \BraintumSearch\Contracts\Result $result Result to unwrap.
 	 * @return mixed
 	 */
 	private function expect( $result ) {
@@ -760,7 +760,7 @@ final class Commands {
 	}
 
 	/**
-	 * Manage SolrEngine across a multisite network.
+	 * Manage Braintum Search across a multisite network.
 	 *
 	 * Network-wide work belongs here rather than in the network admin screen, and
 	 * §14.4 says so from the outset: per-site collections multiply every migration
@@ -797,10 +797,10 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine network status
-	 *     wp solrengine network enable 2 3 4
-	 *     wp solrengine network index --pause=30
-	 *     wp solrengine network schema
+	 *     wp braintum-search network status
+	 *     wp braintum-search network enable 2 3 4
+	 *     wp braintum-search network index --pause=30
+	 *     wp braintum-search network schema
 	 *
 	 * @since 0.9.0
 	 *
@@ -831,11 +831,11 @@ final class Commands {
 				return;
 
 			case 'index':
-				$this->network_run( $network, 'solrengine index', $assoc_args );
+				$this->network_run( $network, 'braintum-search index', $assoc_args );
 				return;
 
 			case 'schema':
-				$this->network_run( $network, 'solrengine schema apply --yes', $assoc_args );
+				$this->network_run( $network, 'braintum-search schema apply --yes', $assoc_args );
 				return;
 
 			default:
@@ -915,7 +915,7 @@ final class Commands {
 				count( $targets ),
 				$on ? 'on' : 'off',
 				$on
-					? 'Nothing is indexed yet: run "wp solrengine network index" when you are ready.'
+					? 'Nothing is indexed yet: run "wp braintum-search network index" when you are ready.'
 					: 'Their documents are still in Solr. Remove them per site if you want them gone.'
 			)
 		);
@@ -941,7 +941,7 @@ final class Commands {
 		$enabled = $network->enabled_sites();
 
 		if ( array() === $enabled ) {
-			WP_CLI::error( 'No sites are switched on. Run "wp solrengine network enable" first.' );
+			WP_CLI::error( 'No sites are switched on. Run "wp braintum-search network enable" first.' );
 		}
 
 		$pause  = isset( $assoc_args['pause'] ) ? max( 0, (int) $assoc_args['pause'] ) : 0;
@@ -1038,10 +1038,10 @@ final class Commands {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp solrengine backends status
-	 *     wp solrengine backends start --to=memory
-	 *     wp solrengine index
-	 *     wp solrengine backends finish
+	 *     wp braintum-search backends status
+	 *     wp braintum-search backends start --to=memory
+	 *     wp braintum-search index
+	 *     wp braintum-search backends finish
 	 *
 	 * @since 0.10.0
 	 *
@@ -1079,7 +1079,7 @@ final class Commands {
 
 				WP_CLI::success(
 					sprintf(
-						'Indexing now writes to "%s"; searches are still answered by "%s". Run "wp solrengine index", then "wp solrengine backends finish".',
+						'Indexing now writes to "%s"; searches are still answered by "%s". Run "wp braintum-search index", then "wp braintum-search backends finish".',
 						$target,
 						$this->backends->search_id()
 					)
@@ -1102,7 +1102,7 @@ final class Commands {
 				}
 
 				// Indexing goes back to where searches never left. Whatever was
-				// written to the other backend stays there; SolrEngine does not
+				// written to the other backend stays there; Braintum Search does not
 				// delete an index it was told to fill.
 				$config->set( 'connection.backend', $this->backends->search_id() );
 				$config->set( 'connection.search_backend', '' );
@@ -1122,7 +1122,7 @@ final class Commands {
 	 * Verified before switching, by the same rule the rebuild uses: a run that
 	 * finished is not the same claim as an index that is correct.
 	 *
-	 * @param \SolrEngine\Support\Config $config Configuration.
+	 * @param \BraintumSearch\Support\Config $config Configuration.
 	 * @return void
 	 */
 	private function finish_migration( $config ): void {
@@ -1139,13 +1139,13 @@ final class Commands {
 		}
 
 		$reconciler = $this->container->get( 'indexing.reconciler' );
-		$expected   = $reconciler instanceof \SolrEngine\Indexing\Reconciler ? $reconciler->expected_count() : 0;
+		$expected   = $reconciler instanceof \BraintumSearch\Indexing\Reconciler ? $reconciler->expected_count() : 0;
 		$actual     = $status->value()->document_count();
 
 		if ( $expected > 0 && $actual < (int) floor( $expected * 0.98 ) ) {
 			WP_CLI::error(
 				sprintf(
-					'The new backend holds %s documents and should hold about %s. Index it fully before finishing, or run "wp solrengine backends abort".',
+					'The new backend holds %s documents and should hold about %s. Index it fully before finishing, or run "wp braintum-search backends abort".',
 					number_format_i18n( $actual ),
 					number_format_i18n( $expected )
 				)

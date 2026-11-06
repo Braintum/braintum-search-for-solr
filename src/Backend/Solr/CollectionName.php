@@ -2,10 +2,10 @@
 /**
  * Naming rules for collections and cores.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Solr;
+namespace BraintumSearch\Backend\Solr;
 
 /**
  * Validates and derives collection names.
@@ -20,7 +20,7 @@ namespace SolrEngine\Backend\Solr;
  * The second is generation naming for a rebuild. The live name is generation one
  * whether or not it says so, so the first replacement is "_v2" and an
  * administrator can read the history of a collection from the cluster listing
- * without consulting SolrEngine.
+ * without consulting Braintum Search.
  *
  * Pure. No network, no WordPress.
  *

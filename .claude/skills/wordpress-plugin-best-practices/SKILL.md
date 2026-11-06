@@ -1,12 +1,12 @@
 ---
 name: wordpress-plugin-best-practices
-description: General WordPress plugin engineering practice — security (escaping, sanitising, nonces, capabilities), hooks, options and custom tables, activation/upgrade/uninstall, REST routes, admin-ajax, cron and background work, asset loading, i18n, performance, multisite, blocks, optional integrations and testing. Use when writing or reviewing any WordPress plugin PHP or JS, when touching a WordPress API you have not used in this codebase yet, or when a change crosses into lifecycle, data storage or a new request surface. For SolrEngine's own rules and release checklist use solrengine-development; for markup and interaction use solrengine-accessibility.
+description: General WordPress plugin engineering practice — security (escaping, sanitising, nonces, capabilities), hooks, options and custom tables, activation/upgrade/uninstall, REST routes, admin-ajax, cron and background work, asset loading, i18n, performance, multisite, blocks, optional integrations and testing. Use when writing or reviewing any WordPress plugin PHP or JS, when touching a WordPress API you have not used in this codebase yet, or when a change crosses into lifecycle, data storage or a new request surface. For Braintum Search's own rules and release checklist use braintum-search-development; for markup and interaction use braintum-search-accessibility.
 ---
 
 # WordPress plugin best practices
 
 The rules here hold for any well-built plugin. Project rules beat them: in
-SolrEngine that is `AGENTS.md`, then the `solrengine-development` skill. Where
+Braintum Search that is `AGENTS.md`, then the `braintum-search-development` skill. Where
 this file and those disagree, they win. Worked code for the patterns below is
 in [references/patterns.md](references/patterns.md). Read the section you need
 rather than the whole file.
@@ -244,4 +244,4 @@ markup breaks existing posts unless you add a `deprecated` entry.
 - [ ] No new work at include time, on every request, or in a loop.
 - [ ] Anything the plugin creates is removed by uninstall.
 - [ ] Anything that is now public API (hook, route, template, option others may read) is documented with `@since`.
-- [ ] The project's own checks pass (`composer check` and friends in SolrEngine).
+- [ ] The project's own checks pass (`composer check` and friends in Braintum Search).

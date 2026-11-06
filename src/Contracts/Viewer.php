@@ -2,15 +2,15 @@
 /**
  * Who is asking.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Answers the one question the search path asks about the current visitor.
  *
- * {@see \SolrEngine\Search\SearchService} has to know whether it may put a
+ * {@see \BraintumSearch\Search\SearchService} has to know whether it may put a
  * result set in a shared cache. It may not for an authenticated user, who can
  * see drafts and private posts a visitor cannot, and one shared entry would
  * serve one of them the other's view.

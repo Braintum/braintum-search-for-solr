@@ -1,6 +1,6 @@
 # Hooks
 
-Every action and filter SolrEngine fires, with its signature and the release
+Every action and filter Braintum Search fires, with its signature and the release
 it arrived in. Each one is public API from 1.0.
 
 <!--
@@ -25,11 +25,11 @@ it arrived in. Each one is public API from 1.0.
 
 ## Startup
 
-### `solrengine_allowed_ports`
+### `braintum_search_allowed_ports`
 
 Filter · since 0.1.0 · `src/Bootstrap.php:388`
 
-Ports SolrEngine will connect to.
+Ports Braintum Search will connect to.
 
 Widening this widens the surface an administrator could use
 to probe internal infrastructure, so it is a filter rather
@@ -39,11 +39,11 @@ than a setting: a deliberate act by a site owner, in code.
 | --- | --- | --- |
 | `$ports` | `int[]` | Permitted ports. |
 
-### `solrengine_booted`
+### `braintum_search_booted`
 
 Action · since 0.1.0 · `src/Bootstrap.php:192`
 
-Fires once SolrEngine has registered its services.
+Fires once Braintum Search has registered its services.
 
 The place for an add-on to register a backend, a facet or an admin
 screen. Nothing has been constructed yet, so registering here costs
@@ -51,17 +51,17 @@ nothing on requests that never use it.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `$container` | `Container` | SolrEngine's service container. |
+| `$container` | `Container` | Braintum Search's service container. |
 
 ## What gets indexed
 
-### `solrengine_document`
+### `braintum_search_document`
 
 Filter · since 0.3.0 · `src/Documents/PostDocumentBuilder.php:190`
 
 Filters a document immediately before it is queued for indexing.
 
-The primary customisation point. Field names must follow SolrEngine's
+The primary customisation point. Field names must follow Braintum Search's
 conventions, since anything else has no dynamic field to land in and
 will be rejected by the backend.
 
@@ -70,7 +70,7 @@ will be rejected by the backend.
 | `$document` | `Document` | The built document. |
 | `$post` | `WP_Post` | The post it was built from. |
 
-### `solrengine_indexable_post_types`
+### `braintum_search_indexable_post_types`
 
 Filter · since 0.3.0 · `src/Documents/IndexedTypes.php:49`
 
@@ -83,7 +83,7 @@ adds products here — and where a site removes one.
 | --- | --- | --- |
 | `$types` | `string[]` | Configured post types. |
 
-### `solrengine_should_index_object`
+### `braintum_search_should_index_object`
 
 Filter · since 0.3.0 · `src/Documents/PostDocumentBuilder.php:115`
 
@@ -100,7 +100,7 @@ than as silently missing.
 
 ## Indexing
 
-### `solrengine_drift_detected`
+### `braintum_search_drift_detected`
 
 Action · since 0.4.0 · `src/Indexing/Reconciler.php:145`
 
@@ -110,7 +110,7 @@ Fires when the index and WordPress disagree beyond tolerance.
 | --- | --- | --- |
 | `$report` | `array<string,mixed>` | What was found. |
 
-### `solrengine_full_sync_complete`
+### `braintum_search_full_sync_complete`
 
 Action · since 0.3.0 · `src/Indexing/FullSync.php:305`
 
@@ -120,7 +120,7 @@ Fires when a full synchronisation finishes.
 | --- | --- | --- |
 | `$run` | `array<string,mixed>` | Final run state. |
 
-### `solrengine_index_failed`
+### `braintum_search_index_failed`
 
 Action · since 0.3.0 · `src/Indexing/Indexer.php:247`
 
@@ -131,7 +131,7 @@ Fires when one document could not be indexed.
 | `$ref` | `DocumentRef` | The document that failed. |
 | `$error` | `string` | Why it failed. |
 
-### `solrengine_indexed`
+### `braintum_search_indexed`
 
 Action · since 0.3.0 · `src/Indexing/Indexer.php:135`
 
@@ -142,7 +142,7 @@ Fires after a batch has been written to the index.
 | `$refs` | `DocumentRef[]` | References that were processed. |
 | `$outcome` | `IndexOutcome` | What happened to them. |
 
-### `solrengine_rebuild_switched`
+### `braintum_search_rebuild_switched`
 
 Action · since 0.8.0 · `src/Indexing/Rebuild.php:524`
 
@@ -153,7 +153,7 @@ Fires when searches have been switched to a rebuilt index.
 | `$target` | `string` | Index now serving searches. |
 | `$state` | `array<string,mixed>` | Final rebuild state. |
 
-### `solrengine_run_full_sync_batch`
+### `braintum_search_run_full_sync_batch`
 
 Action · since 0.3.0 · `src/Indexing/QueueWorker.php:225`
 
@@ -161,7 +161,7 @@ Fires when the queue asks for the next full-sync batch.
 
 ## Searching
 
-### `solrengine_facet_definitions`
+### `braintum_search_facet_definitions`
 
 Filter · since 0.6.0 · `src/Search/FacetRegistry.php:120`
 
@@ -176,7 +176,17 @@ keeps the public endpoint from becoming a Solr proxy.
 | --- | --- | --- |
 | `$registry` | `FacetRegistry` | The registry. |
 
-### `solrengine_register_filters`
+### `braintum_search_query`
+
+Filter · since 0.4.0 · `src/Search/SearchService.php:159`
+
+Filters a query before it reaches the backend.
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `$query` | `SearchQuery` | The query about to run. |
+
+### `braintum_search_register_filters`
 
 Action · since 0.4.0 · `src/Search/FilterRegistry.php:102`
 
@@ -189,17 +199,7 @@ registered here cannot be filtered on through the API, by design.
 | --- | --- | --- |
 | `$registry` | `FilterRegistry` | The registry. |
 
-### `solrengine_search_query`
-
-Filter · since 0.4.0 · `src/Search/SearchService.php:159`
-
-Filters a query before it reaches the backend.
-
-| Parameter | Type | Description |
-| --- | --- | --- |
-| `$query` | `SearchQuery` | The query about to run. |
-
-### `solrengine_search_results`
+### `braintum_search_results`
 
 Filter · since 0.4.0 · `src/Search/SearchService.php:197`
 
@@ -210,13 +210,13 @@ Filters results before they are returned.
 | `$results` | `SearchResults` | The results. |
 | `$query` | `SearchQuery` | The query that produced them. |
 
-### `solrengine_suggest_query`
+### `braintum_search_suggest_query`
 
 Filter · since 0.7.0 · `src/Search/SearchService.php:240`
 
 Filters an autocomplete query before it reaches the backend.
 
-The counterpart of `solrengine_search_query`, and it exists for the
+The counterpart of `braintum_search_query`, and it exists for the
 same reason: rules that narrow what a visitor may see have to reach
 every path that reads the index, not only the results page.
 
@@ -224,7 +224,7 @@ every path that reads the index, not only the results page.
 | --- | --- | --- |
 | `$query` | `SuggestQuery` | The query about to run. |
 
-### `solrengine_suggestions`
+### `braintum_search_suggestions`
 
 Filter · since 0.5.0 · `src/Search/SearchService.php:281`
 
@@ -237,7 +237,7 @@ Filters suggestions before they are returned.
 
 ## Integration with WordPress
 
-### `solrengine_instant_search_selector`
+### `braintum_search_instant_search_selector`
 
 Filter · since 0.5.0 · `src/Integration/WordPress/InstantSearch.php:81`
 
@@ -252,14 +252,14 @@ suggestion list and the search popup alike.
 | --- | --- | --- |
 | `$selector` | `string` | A CSS selector. |
 
-### `solrengine_search_modal_args`
+### `braintum_search_modal_args`
 
 Filter · since 1.0.0 · `src/Integration/WordPress/SearchModal.php:233`
 
 Filters what the search popup's template receives.
 
 Change the heading, tagline or placeholder, or opt in to the
-"Powered by SolrEngine" line, without overriding the template.
+"Powered by Braintum Search" line, without overriding the template.
 
 
 }
@@ -268,7 +268,7 @@ Change the heading, tagline or placeholder, or opt in to the
 | --- | --- | --- |
 | `$args` | `array` | { |
 
-### `solrengine_search_modal_triggers`
+### `braintum_search_modal_triggers`
 
 Filter · since 1.0.0 · `src/Integration/WordPress/SearchModal.php:361`
 
@@ -277,13 +277,13 @@ Filters which elements open the search popup when clicked.
 For search icons, menu items and buttons that are not part of a
 search form. The theme's search fields and the buttons that
 submit them are matched separately, through
-`solrengine_instant_search_selector`.
+`braintum_search_instant_search_selector`.
 
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `$selector` | `string` | A CSS selector. |
 
-### `solrengine_search_modal_width`
+### `braintum_search_modal_width`
 
 Filter · since 1.0.0 · `src/Integration/WordPress/SearchModal.php:314`
 
@@ -294,7 +294,7 @@ its layout: return the site container's width, such as `'1200px'`.
 A plain length, a percentage, or calc(), min(), max(), clamp() or
 var() over them; anything else is ignored. Return '' for the
 stylesheet's default. A theme can also set
-`--solrengine-modal-width` in CSS, which wins over this.
+`--braintum-search-modal-width` in CSS, which wins over this.
 
 
                      `$content_width`, as a CSS length, or ''.
@@ -303,11 +303,11 @@ stylesheet's default. A theme can also set
 | --- | --- | --- |
 | `$width` | `string` | The theme's wide size, content size or |
 
-### `solrengine_should_handle_query`
+### `braintum_search_should_handle_query`
 
 Filter · since 0.4.0 · `src/Integration/WordPress/QueryIntegration.php:225`
 
-Filters whether SolrEngine handles a particular query.
+Filters whether Braintum Search handles a particular query.
 
 The escape hatch for a site where another plugin also filters
 posts_pre_query, or where one search form should stay on WordPress.
@@ -317,15 +317,15 @@ posts_pre_query, or where one search form should stay on WordPress.
 | `$eligible` | `bool` | Whether to handle it. |
 | `$query` | `WP_Query` | The query. |
 
-### `solrengine_template`
+### `braintum_search_template`
 
 Filter · since 1.0.0 · `src/Integration/WordPress/Templates.php:75`
 
-Filters the file a SolrEngine template resolves to.
+Filters the file a Braintum Search template resolves to.
 
 For a plugin, rather than a theme, that wants to supply a template:
 a theme needs no hook, because a file at
-`{theme}/solrengine/{name}` is found on its own. Return '' to
+`{theme}/braintum-search/{name}` is found on its own. Return '' to
 suppress a template altogether — a per-post-type card, for instance,
 so that type falls back to the default card.
 
@@ -334,7 +334,7 @@ so that type falls back to the default card.
 | `$path` | `string` | Absolute path found, or '' when none was. |
 | `$name` | `string` | Relative template name. |
 
-### `solrengine_wc_price_bands`
+### `braintum_search_wc_price_bands`
 
 Filter · since 0.7.0 · `src/Integration/WooCommerce/ProductFacets.php:262`
 
@@ -350,13 +350,13 @@ what a catalogue with no priced products gets.
 
 ## Languages
 
-### `solrengine_language_provider`
+### `braintum_search_language_provider`
 
 Filter · since 0.9.0 · `src/Language/Languages.php:95`
 
-Filters which provider SolrEngine reads languages from.
+Filters which provider Braintum Search reads languages from.
 
-The extension point for a multilingual plugin SolrEngine does not know
+The extension point for a multilingual plugin Braintum Search does not know
 about. Return an object implementing the LanguageProvider contract.
 
 | Parameter | Type | Description |
@@ -366,7 +366,7 @@ about. Return an object implementing the LanguageProvider contract.
 
 ## The REST API
 
-### `solrengine_rate_limit_request`
+### `braintum_search_rate_limit_request`
 
 Filter · since 0.4.0 · `src/Rest/RateLimiter.php:110`
 

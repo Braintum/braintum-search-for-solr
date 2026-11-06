@@ -6,19 +6,19 @@
  * cannot reach Solr, and a registered one reaches it only as an escaped value
  * against a field the server chose.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Search\FilterRegistry;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Search\FilterRegistry;
 
 /**
- * @covers \SolrEngine\Search\FilterRegistry
+ * @covers \BraintumSearch\Search\FilterRegistry
  */
 final class FilterRegistryTest extends TestCase {
 
@@ -72,7 +72,7 @@ final class FilterRegistryTest extends TestCase {
 		$this->assertSame( '', $registry->clause_for( 'se_s_visibility', array( 'private' ) ) );
 	}
 
-	public function test_a_field_outside_solrengines_prefix_is_refused(): void {
+	public function test_a_field_outside_the_plugins_prefix_is_refused(): void {
 		$registry = new FilterRegistry();
 
 		// A registry entry pointing at another application's field would make

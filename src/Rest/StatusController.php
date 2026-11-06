@@ -2,17 +2,17 @@
 /**
  * Administrative status endpoint.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Rest;
+namespace BraintumSearch\Rest;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Contracts\IndexStatus;
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Diagnostics\ConnectionDiagnostic;
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Support\Container;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Contracts\IndexStatus;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Diagnostics\ConnectionDiagnostic;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Support\Container;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -102,9 +102,9 @@ final class StatusController {
 
 		return new WP_REST_Response(
 			array(
-				'plugin_version'  => SOLRENGINE_VERSION,
+				'plugin_version'  => BRAINTUM_SEARCH_VERSION,
 				'schema_contract' => array(
-					'required' => SOLRENGINE_SCHEMA_CONTRACT_VERSION,
+					'required' => BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION,
 					'applied'  => $schema,
 				),
 				'connection'      => $diagnostic->run()->to_array(),

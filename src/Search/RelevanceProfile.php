@@ -2,13 +2,13 @@
 /**
  * How results are ranked.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Language\LanguageTag;
 
 /**
  * The knobs that decide which results come first.
