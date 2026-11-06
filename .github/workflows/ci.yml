@@ -326,18 +326,18 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: braintum-search-package
+          name: braintum-search-for-solr-package
           path: |
-            build/braintum-search-*.zip
-            build/braintum-search-*.zip.sha256
-            build/braintum-search-*.manifest.txt
+            build/braintum-search-for-solr-*.zip
+            build/braintum-search-for-solr-*.zip.sha256
+            build/braintum-search-for-solr-*.manifest.txt
           if-no-files-found: error
 
       - uses: wordpress/plugin-check-action@v1
         id: plugin-check
         with:
-          build-dir: ./build/braintum-search
-          slug: braintum-search
+          build-dir: ./build/braintum-search-for-solr
+          slug: braintum-search-for-solr
           strict: true
 
       # The action's own gate is its exit status, and the audit found the

@@ -147,8 +147,8 @@ From a clean checkout of the commit being released:
 ```bash
 npm ci && npm run build                          # assets/build must match assets/src
 bash bin/build-release.sh                        # package, zip, sha256, manifest
-unzip -q build/braintum-search-<version>.zip -d "$SCRATCH"
-wp plugin check "$SCRATCH/braintum-search"            # no ignore-codes; expect 0 and 0
+unzip -q build/braintum-search-for-solr-<version>.zip -d "$SCRATCH"
+wp plugin check "$SCRATCH/braintum-search-for-solr"   # no ignore-codes; expect 0 and 0
 ```
 
 `bin/build-release.sh` checks the versions, copies what `.distignore` allows,

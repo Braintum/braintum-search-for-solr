@@ -118,10 +118,10 @@ Produces, in `build/`:
 
 | | |
 | --- | --- |
-| `braintum-search/` | The package, as WordPress.org will unpack it |
-| `braintum-search-<version>.zip` | The package, with one root directory, `braintum-search/` |
-| `braintum-search-<version>.zip.sha256` | Its checksum, in `sha256sum -c` format |
-| `braintum-search-<version>.manifest.txt` | The commit, whether the tree was clean, the `composer.lock` checksum, and a checksum for every file |
+| `braintum-search-for-solr/` | The package, as WordPress.org will unpack it |
+| `braintum-search-for-solr-<version>.zip` | The package, with one root directory, `braintum-search-for-solr/` |
+| `braintum-search-for-solr-<version>.zip.sha256` | Its checksum, in `sha256sum -c` format |
+| `braintum-search-for-solr-<version>.manifest.txt` | The commit, whether the tree was clean, the `composer.lock` checksum, and a checksum for every file |
 
 What ships is decided by `.distignore`. `vendor/` is never copied from the
 working tree: the script installs it into the package from `composer.lock` with
