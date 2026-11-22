@@ -6,23 +6,23 @@
  * trailing wildcard on an analysed field matches what we expect is not
  * something a unit test can answer.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Backend;
+namespace BraintumSearch\Tests\Backend;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
-use SolrEngine\Search\SuggestTranslator;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
+use BraintumSearch\Search\SuggestTranslator;
 
 /**
- * @covers \SolrEngine\Search\SuggestTranslator
+ * @covers \BraintumSearch\Search\SuggestTranslator
  */
 final class SuggestTest extends TestCase {
 
@@ -65,7 +65,7 @@ final class SuggestTest extends TestCase {
 	private const PRIVATE_TITLE = 'Macbeth confidential board minutes';
 
 	public static function setUpBeforeClass(): void {
-		$base = getenv( 'SOLRENGINE_TEST_SOLR_URL' );
+		$base = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_URL' );
 
 		if ( ! is_string( $base ) || '' === $base ) {
 			return;
@@ -73,7 +73,7 @@ final class SuggestTest extends TestCase {
 
 		self::$base = rtrim( $base, '/' );
 
-		$collection = getenv( 'SOLRENGINE_TEST_SOLR_COLLECTION' );
+		$collection = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_COLLECTION' );
 
 		self::$collection = is_string( $collection ) && '' !== $collection ? $collection : 'wordpress';
 
@@ -88,7 +88,7 @@ final class SuggestTest extends TestCase {
 
 	protected function setUp(): void {
 		if ( '' === self::$base ) {
-			$this->markTestSkipped( 'Set SOLRENGINE_TEST_SOLR_URL to run backend tests.' );
+			$this->markTestSkipped( 'Set BRAINTUM_SEARCH_TEST_SOLR_URL to run backend tests.' );
 		}
 	}
 

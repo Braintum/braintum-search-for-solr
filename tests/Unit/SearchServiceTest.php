@@ -6,29 +6,29 @@
  * WordPress, so the file existing at all is the proof that the service no longer
  * reaches for `is_user_logged_in()`, `wp_cache_get()` or `get_option()`.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\Breaker;
-use SolrEngine\Contracts\Cache;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\Suggestion;
-use SolrEngine\Contracts\Suggestions;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Contracts\Viewer;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Support\NullLogger;
+use BraintumSearch\Contracts\Breaker;
+use BraintumSearch\Contracts\Cache;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\Suggestion;
+use BraintumSearch\Contracts\Suggestions;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Contracts\Viewer;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Support\NullLogger;
 
 /**
- * @covers \SolrEngine\Search\SearchService
+ * @covers \BraintumSearch\Search\SearchService
  */
 final class SearchServiceTest extends TestCase {
 
@@ -228,10 +228,10 @@ final class SearchServiceTest extends TestCase {
 			}
 
 			/**
-			 * @return \SolrEngine\Contracts\Capabilities
+			 * @return \BraintumSearch\Contracts\Capabilities
 			 */
-			public function capabilities(): \SolrEngine\Contracts\Capabilities {
-				return new \SolrEngine\Contracts\Capabilities();
+			public function capabilities(): \BraintumSearch\Contracts\Capabilities {
+				return new \BraintumSearch\Contracts\Capabilities();
 			}
 
 			/**

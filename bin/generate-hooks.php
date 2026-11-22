@@ -22,7 +22,7 @@
  * Runs standalone. No WordPress, no Composer autoloader, because CI runs it
  * before either is guaranteed to be there.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
@@ -38,7 +38,7 @@ if ( 'cli' !== PHP_SAPI ) {
  * WPML's filter API is read this way. Prefixing them would call hooks that do
  * not exist, so they are consumed under their own names and excluded here.
  */
-const SOLRENGINE_OWN_PREFIX = 'solrengine_';
+const BRAINTUM_SEARCH_OWN_PREFIX = 'braintum_search_';
 
 /**
  * Areas a hook is grouped under, keyed by the path fragment that identifies one.
@@ -46,7 +46,7 @@ const SOLRENGINE_OWN_PREFIX = 'solrengine_';
  * Ordered for a reader rather than alphabetically: the order somebody meets
  * these features in.
  */
-const SOLRENGINE_AREAS = array(
+const BRAINTUM_SEARCH_AREAS = array(
 	'Bootstrap.php' => 'Startup',
 	'Documents/'    => 'What gets indexed',
 	'Indexing/'     => 'Indexing',
@@ -62,7 +62,7 @@ const SOLRENGINE_AREAS = array(
  * @param string $root Plugin root directory.
  * @return array<int,array<string,mixed>>
  */
-function solrengine_collect_hooks( string $root ): array {
+function braintum_search_collect_hooks( string $root ): array {
 	$found = array();
 
 	$files = new RecursiveIteratorIterator(
@@ -76,7 +76,7 @@ function solrengine_collect_hooks( string $root ): array {
 
 		$relative = 'src' . substr( (string) $file->getPathname(), strlen( $root . '/src' ) );
 
-		foreach ( solrengine_hooks_in( (string) $file->getPathname(), $relative ) as $hook ) {
+		foreach ( braintum_search_hooks_in( (string) $file->getPathname(), $relative ) as $hook ) {
 			$found[] = $hook;
 		}
 	}
@@ -88,7 +88,7 @@ function solrengine_collect_hooks( string $root ): array {
 		}
 	);
 
-	return solrengine_merge_by_name( $found );
+	return braintum_search_merge_by_name( $found );
 }
 
 /**
@@ -106,7 +106,7 @@ function solrengine_collect_hooks( string $root ): array {
  * @param array<int,array<string,mixed>> $hooks Hooks in name order.
  * @return array<int,array<string,mixed>>
  */
-function solrengine_merge_by_name( array $hooks ): array {
+function braintum_search_merge_by_name( array $hooks ): array {
 	$merged = array();
 
 	foreach ( $hooks as $hook ) {
@@ -150,7 +150,7 @@ function solrengine_merge_by_name( array $hooks ): array {
  * @param string $relative Path to show in the reference.
  * @return array<int,array<string,mixed>>
  */
-function solrengine_hooks_in( string $path, string $relative ): array {
+function braintum_search_hooks_in( string $path, string $relative ): array {
 	$source = (string) file_get_contents( $path );
 	$tokens = token_get_all( $source );
 	$hooks  = array();
@@ -166,9 +166,9 @@ function solrengine_hooks_in( string $path, string $relative ): array {
 			continue;
 		}
 
-		$name = solrengine_hook_name( $tokens, $index );
+		$name = braintum_search_hook_name( $tokens, $index );
 
-		if ( null === $name || 0 !== strpos( $name, SOLRENGINE_OWN_PREFIX ) ) {
+		if ( null === $name || 0 !== strpos( $name, BRAINTUM_SEARCH_OWN_PREFIX ) ) {
 			continue;
 		}
 
@@ -177,9 +177,9 @@ function solrengine_hooks_in( string $path, string $relative ): array {
 			'kind' => $kind,
 			'file' => $relative,
 			'line' => (int) $token[2],
-			'doc'  => solrengine_docblock_before( $tokens, $index ),
-			'area' => solrengine_area_of( $relative ),
-			'args' => solrengine_argument_count( $tokens, $index ),
+			'doc'  => braintum_search_docblock_before( $tokens, $index ),
+			'area' => braintum_search_area_of( $relative ),
+			'args' => braintum_search_argument_count( $tokens, $index ),
 		);
 	}
 
@@ -189,7 +189,7 @@ function solrengine_hooks_in( string $path, string $relative ): array {
 /**
  * The hook name a call names, or null when it is not a literal.
  *
- * A hook assembled from a variable cannot be documented, and SolrEngine does not
+ * A hook assembled from a variable cannot be documented, and Braintum Search does not
  * have one. Returning null rather than guessing means such a hook is reported as
  * undocumented instead of silently omitted.
  *
@@ -197,7 +197,7 @@ function solrengine_hooks_in( string $path, string $relative ): array {
  * @param int              $index  Index of the function name.
  * @return string|null
  */
-function solrengine_hook_name( array $tokens, int $index ): ?string {
+function braintum_search_hook_name( array $tokens, int $index ): ?string {
 	$count = count( $tokens );
 
 	for ( $i = $index + 1; $i < $count; $i++ ) {
@@ -233,7 +233,7 @@ function solrengine_hook_name( array $tokens, int $index ): ?string {
  * @param int              $index  Index of the function name.
  * @return int
  */
-function solrengine_argument_count( array $tokens, int $index ): int {
+function braintum_search_argument_count( array $tokens, int $index ): int {
 	$count = count( $tokens );
 	$depth = 0;
 	$args  = 0;
@@ -283,7 +283,7 @@ function solrengine_argument_count( array $tokens, int $index ): int {
  * @param int              $index  Index of the function name.
  * @return array<string,mixed>|null
  */
-function solrengine_docblock_before( array $tokens, int $index ): ?array {
+function braintum_search_docblock_before( array $tokens, int $index ): ?array {
 	for ( $i = $index - 1; $i >= 0; $i-- ) {
 		$token = $tokens[ $i ];
 
@@ -296,7 +296,7 @@ function solrengine_docblock_before( array $tokens, int $index ): ?array {
 		}
 
 		if ( T_DOC_COMMENT === $token[0] ) {
-			return solrengine_parse_docblock( (string) $token[1] );
+			return braintum_search_parse_docblock( (string) $token[1] );
 		}
 
 		if ( T_COMMENT === $token[0] ) {
@@ -314,7 +314,7 @@ function solrengine_docblock_before( array $tokens, int $index ): ?array {
  * @param string $raw Raw docblock.
  * @return array<string,mixed>
  */
-function solrengine_parse_docblock( string $raw ): array {
+function braintum_search_parse_docblock( string $raw ): array {
 	$lines = preg_split( '/\R/', $raw );
 	$body  = array();
 	$since = '';
@@ -371,8 +371,8 @@ function solrengine_parse_docblock( string $raw ): array {
  * @param string $relative Relative path.
  * @return string
  */
-function solrengine_area_of( string $relative ): string {
-	foreach ( SOLRENGINE_AREAS as $fragment => $area ) {
+function braintum_search_area_of( string $relative ): string {
+	foreach ( BRAINTUM_SEARCH_AREAS as $fragment => $area ) {
 		if ( false !== strpos( $relative, $fragment ) ) {
 			return $area;
 		}
@@ -387,7 +387,7 @@ function solrengine_area_of( string $relative ): string {
  * @param array<int,array<string,mixed>> $hooks Hooks found.
  * @return string[]
  */
-function solrengine_problems( array $hooks ): array {
+function braintum_search_problems( array $hooks ): array {
 	$problems = array();
 
 	foreach ( $hooks as $hook ) {
@@ -440,7 +440,7 @@ function solrengine_problems( array $hooks ): array {
  * @param array<int,array<string,mixed>> $hooks Hooks found.
  * @return string
  */
-function solrengine_render( array $hooks ): string {
+function braintum_search_render( array $hooks ): string {
 	$by_area = array();
 
 	foreach ( $hooks as $hook ) {
@@ -449,7 +449,7 @@ function solrengine_render( array $hooks ): string {
 
 	$ordered = array();
 
-	foreach ( SOLRENGINE_AREAS as $area ) {
+	foreach ( BRAINTUM_SEARCH_AREAS as $area ) {
 		if ( isset( $by_area[ $area ] ) ) {
 			$ordered[ $area ] = $by_area[ $area ];
 		}
@@ -464,7 +464,7 @@ function solrengine_render( array $hooks ): string {
 	$out = array(
 		'# Hooks',
 		'',
-		'Every action and filter SolrEngine fires, with its signature and the release',
+		'Every action and filter Braintum Search fires, with its signature and the release',
 		'it arrived in. Each one is public API from 1.0.',
 		'',
 		'<!--',
@@ -477,7 +477,7 @@ function solrengine_render( array $hooks ): string {
 		'      php bin/generate-hooks.php',
 		'-->',
 		'',
-		sprintf( '%d hooks: %d actions and %d filters.', count( $hooks ), solrengine_count( $hooks, 'action' ), solrengine_count( $hooks, 'filter' ) ),
+		sprintf( '%d hooks: %d actions and %d filters.', count( $hooks ), braintum_search_count( $hooks, 'action' ), braintum_search_count( $hooks, 'filter' ) ),
 		'',
 	);
 
@@ -542,7 +542,7 @@ function solrengine_render( array $hooks ): string {
  * @param string                         $kind  "action" or "filter".
  * @return int
  */
-function solrengine_count( array $hooks, string $kind ): int {
+function braintum_search_count( array $hooks, string $kind ): int {
 	$count = 0;
 
 	foreach ( $hooks as $hook ) {
@@ -554,43 +554,43 @@ function solrengine_count( array $hooks, string $kind ): int {
 	return $count;
 }
 
-$solrengine_root   = dirname( __DIR__ );
-$solrengine_target = $solrengine_root . '/docs/hooks.md';
-$solrengine_check  = in_array( '--check', $argv, true );
-$solrengine_hooks  = solrengine_collect_hooks( $solrengine_root );
+$braintum_search_root   = dirname( __DIR__ );
+$braintum_search_target = $braintum_search_root . '/docs/hooks.md';
+$braintum_search_check  = in_array( '--check', $argv, true );
+$braintum_search_hooks  = braintum_search_collect_hooks( $braintum_search_root );
 
-if ( array() === $solrengine_hooks ) {
+if ( array() === $braintum_search_hooks ) {
 	fwrite( STDERR, "No hooks found. That is almost certainly a bug in this script.\n" );
 	exit( 1 );
 }
 
-$solrengine_problems = solrengine_problems( $solrengine_hooks );
+$braintum_search_problems = braintum_search_problems( $braintum_search_hooks );
 
-if ( array() !== $solrengine_problems ) {
+if ( array() !== $braintum_search_problems ) {
 	fwrite( STDERR, "Hooks are not fully documented:\n\n" );
 
-	foreach ( $solrengine_problems as $solrengine_problem ) {
-		fwrite( STDERR, '  - ' . $solrengine_problem . "\n" );
+	foreach ( $braintum_search_problems as $braintum_search_problem ) {
+		fwrite( STDERR, '  - ' . $braintum_search_problem . "\n" );
 	}
 
 	fwrite( STDERR, "\nFix the docblocks rather than this script: the reference is generated from them.\n" );
 	exit( 1 );
 }
 
-$solrengine_rendered = solrengine_render( $solrengine_hooks );
+$braintum_search_rendered = braintum_search_render( $braintum_search_hooks );
 
-if ( $solrengine_check ) {
-	$solrengine_current = is_readable( $solrengine_target ) ? (string) file_get_contents( $solrengine_target ) : '';
+if ( $braintum_search_check ) {
+	$braintum_search_current = is_readable( $braintum_search_target ) ? (string) file_get_contents( $braintum_search_target ) : '';
 
-	if ( $solrengine_current !== $solrengine_rendered ) {
+	if ( $braintum_search_current !== $braintum_search_rendered ) {
 		fwrite( STDERR, "docs/hooks.md is out of date. Run: php bin/generate-hooks.php\n" );
 		exit( 1 );
 	}
 
-	fwrite( STDOUT, sprintf( "docs/hooks.md is current (%d hooks).\n", count( $solrengine_hooks ) ) );
+	fwrite( STDOUT, sprintf( "docs/hooks.md is current (%d hooks).\n", count( $braintum_search_hooks ) ) );
 	exit( 0 );
 }
 
-file_put_contents( $solrengine_target, $solrengine_rendered );
+file_put_contents( $braintum_search_target, $braintum_search_rendered );
 
-fwrite( STDOUT, sprintf( "Wrote docs/hooks.md from %d hooks.\n", count( $solrengine_hooks ) ) );
+fwrite( STDOUT, sprintf( "Wrote docs/hooks.md from %d hooks.\n", count( $braintum_search_hooks ) ) );

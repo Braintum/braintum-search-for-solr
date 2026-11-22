@@ -6,23 +6,23 @@
  * syntax, so these are the unit-level security tests. The companion backend
  * suite proves Solr agrees with what is asserted here.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
 
 /**
- * @covers \SolrEngine\Search\QueryTranslator
- * @covers \SolrEngine\Search\RelevanceProfile
+ * @covers \BraintumSearch\Search\QueryTranslator
+ * @covers \BraintumSearch\Search\RelevanceProfile
  */
 final class QueryTranslatorTest extends TestCase {
 

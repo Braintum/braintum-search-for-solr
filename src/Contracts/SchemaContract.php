@@ -1,11 +1,11 @@
 <?php
 /**
- * The schema SolrEngine requires.
+ * The schema Braintum Search requires.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What the index must provide for a given contract version.

@@ -2,10 +2,10 @@
 /**
  * Background job queue contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Defers work out of the current request.
@@ -48,7 +48,7 @@ interface JobQueue {
 	 * @since 0.1.0
 	 *
 	 * @param string                  $hook Hook name to fire. Must be prefixed
-	 *                                      "solrengine_".
+	 *                                      "braintum_search_".
 	 * @param array<int|string,mixed> $args Arguments passed to the hook. Must be
 	 *                                      scalars or arrays of scalars, because
 	 *                                      drivers serialise them.
@@ -87,7 +87,7 @@ interface JobQueue {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $hook Optional hook name. Empty counts every SolrEngine job.
+	 * @param string $hook Optional hook name. Empty counts every Braintum Search job.
 	 * @return int
 	 */
 	public function pending_count( string $hook = '' ): int;

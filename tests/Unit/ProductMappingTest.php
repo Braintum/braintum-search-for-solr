@@ -8,24 +8,24 @@
  * facet's bands fall — all of which are arguments worth settling in a test
  * rather than in a shop.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Integration\WooCommerce\CatalogContext;
-use SolrEngine\Integration\WooCommerce\PriceBands;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Integration\WooCommerce\StockLevel;
+use BraintumSearch\Integration\WooCommerce\CatalogContext;
+use BraintumSearch\Integration\WooCommerce\PriceBands;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Integration\WooCommerce\StockLevel;
 
 /**
- * @covers \SolrEngine\Integration\WooCommerce\CatalogContext
- * @covers \SolrEngine\Integration\WooCommerce\PriceBands
- * @covers \SolrEngine\Integration\WooCommerce\StockLevel
- * @covers \SolrEngine\Integration\WooCommerce\ProductFields
+ * @covers \BraintumSearch\Integration\WooCommerce\CatalogContext
+ * @covers \BraintumSearch\Integration\WooCommerce\PriceBands
+ * @covers \BraintumSearch\Integration\WooCommerce\StockLevel
+ * @covers \BraintumSearch\Integration\WooCommerce\ProductFields
  */
 final class ProductMappingTest extends TestCase {
 

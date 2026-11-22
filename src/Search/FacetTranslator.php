@@ -2,13 +2,13 @@
 /**
  * Turns requested facet keys into a JSON Facet request.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\SearchQuery;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\SearchQuery;
 
 /**
  * Builds the `json.facet` structure.

@@ -2,13 +2,13 @@
 /**
  * Action Scheduler job queue driver.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing\Queue;
+namespace BraintumSearch\Indexing\Queue;
 
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Contracts\Result;
 
 /**
  * Runs jobs through Action Scheduler.
@@ -33,12 +33,12 @@ use SolrEngine\Contracts\Result;
 final class ActionSchedulerQueue implements JobQueue {
 
 	/**
-	 * Group name, so SolrEngine's jobs are distinguishable in the admin UI and
+	 * Group name, so Braintum Search's jobs are distinguishable in the admin UI and
 	 * cancellable as a set without touching another plugin's work.
 	 *
 	 * @var string
 	 */
-	public const GROUP = 'solrengine';
+	public const GROUP = 'braintum-search';
 
 	/**
 	 * {@inheritDoc}

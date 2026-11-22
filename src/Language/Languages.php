@@ -2,12 +2,12 @@
 /**
  * The site's languages, from whichever plugin provides them.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Language;
+namespace BraintumSearch\Language;
 
-use SolrEngine\Contracts\LanguageProvider;
+use BraintumSearch\Contracts\LanguageProvider;
 
 /**
  * One answer to "what language is this", for everything that needs to ask.
@@ -20,7 +20,7 @@ use SolrEngine\Contracts\LanguageProvider;
  *
  * It holds the providers in preference order and answers from the first that is
  * active. A site with both WPML and Polylang installed is broken in ways
- * SolrEngine cannot fix, but it will at least be consistently wrong rather than
+ * Braintum Search cannot fix, but it will at least be consistently wrong rather than
  * differently wrong on each code path.
  *
  * Every answer is normalised through LanguageTag, so no caller has to know which
@@ -82,9 +82,9 @@ final class Languages {
 		}
 
 		/**
-		 * Filters which provider SolrEngine reads languages from.
+		 * Filters which provider Braintum Search reads languages from.
 		 *
-		 * The extension point for a multilingual plugin SolrEngine does not know
+		 * The extension point for a multilingual plugin Braintum Search does not know
 		 * about. Return an object implementing the LanguageProvider contract.
 		 *
 		 * @since 0.9.0
@@ -92,7 +92,7 @@ final class Languages {
 		 * @param LanguageProvider|null $provider  The provider chosen, or null.
 		 * @param LanguageProvider[]    $available Every provider considered.
 		 */
-		$chosen = apply_filters( 'solrengine_language_provider', $this->active, $this->providers );
+		$chosen = apply_filters( 'braintum_search_language_provider', $this->active, $this->providers );
 
 		if ( $chosen instanceof LanguageProvider ) {
 			$this->active = $chosen;

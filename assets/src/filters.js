@@ -26,28 +26,28 @@ import metadata from '../../blocks/search-filters/block.json';
  * @return {Element} The editor representation.
  */
 function Edit( { attributes, setAttributes } ) {
-	const blockProps = useBlockProps( { className: 'solrengine-filters' } );
+	const blockProps = useBlockProps( { className: 'braintum-search-filters' } );
 	const { heading, showCounts, facets } = attributes;
-	const help = __( 'Comma separated facet keys, or empty for all.', 'solrengine' );
+	const help = __( 'Comma separated facet keys, or empty for all.', 'braintum-search-for-solr' );
 
-	const everything = __( 'Every facet this site offers.', 'solrengine' );
+	const everything = __( 'Every facet this site offers.', 'braintum-search-for-solr' );
 	const summary = facets.length
-		? __( 'Showing: ', 'solrengine' ) + facets.join( ', ' )
+		? __( 'Showing: ', 'braintum-search-for-solr' ) + facets.join( ', ' )
 		: everything;
 
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
-				<PanelBody title={ __( 'Filters', 'solrengine' ) }>
+				<PanelBody title={ __( 'Filters', 'braintum-search-for-solr' ) }>
 					<TextControl
-						label={ __( 'Heading', 'solrengine' ) }
+						label={ __( 'Heading', 'braintum-search-for-solr' ) }
 						value={ heading }
 						onChange={ ( value ) =>
 							setAttributes( { heading: value } )
 						}
 					/>
 					<TextControl
-						label={ __( 'Facets', 'solrengine' ) }
+						label={ __( 'Facets', 'braintum-search-for-solr' ) }
 						help={ help }
 						value={ facets.join( ', ' ) }
 						onChange={ ( value ) =>
@@ -60,7 +60,7 @@ function Edit( { attributes, setAttributes } ) {
 						}
 					/>
 					<ToggleControl
-						label={ __( 'Show counts', 'solrengine' ) }
+						label={ __( 'Show counts', 'braintum-search-for-solr' ) }
 						checked={ showCounts }
 						onChange={ ( value ) =>
 							setAttributes( { showCounts: value } )
@@ -69,10 +69,10 @@ function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 
-			<p className="solrengine-filters__placeholder">
-				{ heading || __( 'SolrEngine search filters', 'solrengine' ) }
+			<p className="braintum-search-filters__placeholder">
+				{ heading || __( 'Braintum Search search filters', 'braintum-search-for-solr' ) }
 			</p>
-			<p className="solrengine-filters__placeholder-note">{ summary }</p>
+			<p className="braintum-search-filters__placeholder-note">{ summary }</p>
 		</div>
 	);
 }

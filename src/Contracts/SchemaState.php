@@ -2,15 +2,15 @@
 /**
  * What the live schema actually contains.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A snapshot of the index's current schema.
  *
- * Only what SolrEngine needs in order to diff. The full Solr schema carries far
+ * Only what Braintum Search needs in order to diff. The full Solr schema carries far
  * more, and reproducing it here would make this type a mirror of somebody
  * else's data model rather than a description of our requirements.
  *
@@ -159,7 +159,7 @@ final class SchemaState {
 	}
 
 	/**
-	 * Names of every field SolrEngine owns that already exists.
+	 * Names of every field Braintum Search owns that already exists.
 	 *
 	 * Used to fingerprint the applied contract and to identify our own fields
 	 * during a migration, without ever touching a field outside the namespace.

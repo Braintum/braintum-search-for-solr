@@ -3,22 +3,22 @@
  *
  * Usage:
  *
- *     SOLRENGINE_A11Y_URL=http://example.test/ npm run test:a11y
+ *     BRAINTUM_SEARCH_A11Y_URL=http://example.test/ npm run test:a11y
  *
  * Optional environment:
  *
- * - SOLRENGINE_A11Y_QUERY   text to search for; needs results in two or more
+ * - BRAINTUM_SEARCH_A11Y_QUERY   text to search for; needs results in two or more
  *                           types (default "qu")
- * - SOLRENGINE_A11Y_COOKIE  "name=value", for a site that shows logged-out
+ * - BRAINTUM_SEARCH_A11Y_COOKIE  "name=value", for a site that shows logged-out
  *                           visitors a maintenance or coming-soon page
- * - SOLRENGINE_A11Y_CHANNEL browser channel (default "chrome", the installed
+ * - BRAINTUM_SEARCH_A11Y_CHANNEL browser channel (default "chrome", the installed
  *                           Chrome; "" for Playwright's own Chromium)
  *
  * Playwright and axe-core come with @wordpress/scripts. Exits non-zero when a
  * check fails. Not run by `composer check`: it needs a running site with
- * results to find. See .claude/skills/solrengine-accessibility/SKILL.md.
+ * results to find. See .claude/skills/braintum-search-accessibility/SKILL.md.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 /* eslint-disable no-console */
@@ -27,10 +27,10 @@ const fs = require( 'fs' );
 const { chromium } = require( 'playwright' );
 
 const AXE = fs.readFileSync( require.resolve( 'axe-core/axe.min.js' ), 'utf8' );
-const BASE = process.env.SOLRENGINE_A11Y_URL || '';
-const QUERY = process.env.SOLRENGINE_A11Y_QUERY || 'qu';
-const COOKIE = process.env.SOLRENGINE_A11Y_COOKIE || '';
-const CHANNEL = process.env.SOLRENGINE_A11Y_CHANNEL ?? 'chrome';
+const BASE = process.env.BRAINTUM_SEARCH_A11Y_URL || '';
+const QUERY = process.env.BRAINTUM_SEARCH_A11Y_QUERY || 'qu';
+const COOKIE = process.env.BRAINTUM_SEARCH_A11Y_COOKIE || '';
+const CHANNEL = process.env.BRAINTUM_SEARCH_A11Y_CHANNEL ?? 'chrome';
 const RULES = [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice' ];
 
 const results = [];
@@ -43,8 +43,8 @@ const focused = ( page ) =>
 		const e = document.activeElement;
 
 		return {
-			input: !! e?.matches( '[data-solrengine-input]' ),
-			card: e?.closest( '[data-solrengine-index]' )?.dataset.solrengineIndex ?? null,
+			input: !! e?.matches( '[data-braintum-search-input]' ),
+			card: e?.closest( '[data-braintum-search-index]' )?.dataset.braintumSearchIndex ?? null,
 			name: e?.getAttribute( 'aria-label' ) || e?.textContent.replace( /\s+/g, ' ' ).trim().slice( 0, 40 ),
 		};
 	} );
@@ -52,7 +52,7 @@ const focused = ( page ) =>
 /** axe violations inside the popup. */
 const axe = ( page ) =>
 	page.evaluate( async ( rules ) => {
-		const report = await window.axe.run( document.querySelector( '[data-solrengine-modal]' ), {
+		const report = await window.axe.run( document.querySelector( '[data-braintum-search-modal]' ), {
 			runOnly: rules,
 		} );
 
@@ -65,7 +65,7 @@ const axe = ( page ) =>
 const settled = ( page ) =>
 	page.waitForFunction(
 		() => {
-			const d = document.querySelector( '[data-solrengine-modal]' );
+			const d = document.querySelector( '[data-braintum-search-modal]' );
 
 			return d && d.open && ! d.classList.contains( 'is-loading' );
 		},
@@ -75,7 +75,7 @@ const settled = ( page ) =>
 
 async function main() {
 	if ( ! BASE ) {
-		console.error( 'Set SOLRENGINE_A11Y_URL to the site to audit.' );
+		console.error( 'Set BRAINTUM_SEARCH_A11Y_URL to the site to audit.' );
 		process.exit( 2 );
 	}
 
@@ -125,7 +125,7 @@ async function main() {
 	await page.goto( BASE, { waitUntil: 'networkidle' } );
 
 	const field = page
-		.locator( 'input[name="s"]:not([data-solrengine-input]):visible, input[type="search"]:not([data-solrengine-input]):visible' )
+		.locator( 'input[name="s"]:not([data-braintum-search-input]):visible, input[type="search"]:not([data-braintum-search-input]):visible' )
 		.first();
 
 	if ( ! ( await field.count() ) ) {
@@ -135,10 +135,10 @@ async function main() {
 
 	// Opening: focus alone must not, typing must.
 	await field.focus();
-	check( 'focus alone does not open the popup', ! ( await page.evaluate( () => document.querySelector( '[data-solrengine-modal]' ).open ) ) );
+	check( 'focus alone does not open the popup', ! ( await page.evaluate( () => document.querySelector( '[data-braintum-search-modal]' ).open ) ) );
 	await page.keyboard.type( QUERY );
 	await settled( page );
-	await page.waitForSelector( '[data-solrengine-index]' );
+	await page.waitForSelector( '[data-braintum-search-index]' );
 
 	const opened = await focused( page );
 
@@ -146,7 +146,7 @@ async function main() {
 
 	// Markup.
 	const cards = await page.evaluate( () =>
-		[ ...document.querySelectorAll( '[data-solrengine-index]:not([hidden])' ) ].map( ( card ) => {
+		[ ...document.querySelectorAll( '[data-braintum-search-index]:not([hidden])' ) ].map( ( card ) => {
 			const link = card.querySelector( 'a[href]' );
 
 			return {
@@ -168,7 +168,7 @@ async function main() {
 	check( 'card links are described', cards.every( ( c ) => c.described ), cards[ 0 ]?.described );
 
 	const panel = await page.evaluate( () => {
-		const r = document.querySelector( '[data-solrengine-results]' );
+		const r = document.querySelector( '[data-braintum-search-results]' );
 
 		return {
 			role: r.getAttribute( 'role' ),
@@ -181,7 +181,7 @@ async function main() {
 	// Tab order.
 	const order = [];
 
-	await page.locator( '[data-solrengine-input]' ).focus();
+	await page.locator( '[data-braintum-search-input]' ).focus();
 
 	for ( let i = 0; i < 10; i++ ) {
 		await page.keyboard.press( 'Tab' );
@@ -194,7 +194,7 @@ async function main() {
 	check( 'Tab reaches the cards', order.some( ( o ) => o.startsWith( 'card' ) ), order.join( ' → ' ) );
 
 	// Arrow keys.
-	await page.locator( '[data-solrengine-input]' ).focus();
+	await page.locator( '[data-braintum-search-input]' ).focus();
 	await page.keyboard.press( 'ArrowDown' );
 
 	const first = await focused( page );
@@ -222,12 +222,12 @@ async function main() {
 
 	check( 'End and Home reach the last and first card', '0' === home.card && null !== end.card && '0' !== end.card );
 
-	const before = await page.locator( '[data-solrengine-input]' ).inputValue();
+	const before = await page.locator( '[data-braintum-search-input]' ).inputValue();
 
 	await page.keyboard.type( 'x' );
 
 	const typed = await focused( page );
-	const after = await page.locator( '[data-solrengine-input]' ).inputValue();
+	const after = await page.locator( '[data-braintum-search-input]' ).inputValue();
 
 	check( 'typing on a card continues in the field', typed.input && after === before + 'x' );
 	await page.keyboard.press( 'Backspace' );
@@ -240,20 +240,20 @@ async function main() {
 	check( 'axe: no violations on All', 0 === allViolations.length, allViolations.join( ' | ' ) );
 
 	// A type tab: paging by keyboard.
-	pagedType = await page.evaluate( () => document.querySelector( '[data-solrengine-tab]:not([data-solrengine-tab=""])' )?.dataset.solrengineTab || '' );
+	pagedType = await page.evaluate( () => document.querySelector( '[data-braintum-search-tab]:not([data-braintum-search-tab=""])' )?.dataset.braintumSearchTab || '' );
 
 	if ( pagedType ) {
-		await page.locator( `[data-solrengine-tab="${ pagedType }"]` ).focus();
+		await page.locator( `[data-braintum-search-tab="${ pagedType }"]` ).focus();
 		await page.keyboard.press( 'Enter' );
 		await settled( page );
 
-		const count = await page.locator( '[data-solrengine-index]' ).count();
+		const count = await page.locator( '[data-braintum-search-index]' ).count();
 
-		await page.locator( '[data-solrengine-input]' ).focus();
+		await page.locator( '[data-braintum-search-input]' ).focus();
 		await page.keyboard.press( 'ArrowDown' );
 		await page.keyboard.press( 'End' );
 		await page.keyboard.press( 'ArrowDown' );
-		await page.waitForFunction( ( n ) => document.querySelectorAll( '[data-solrengine-index]' ).length > n, count, { timeout: 15000 } );
+		await page.waitForFunction( ( n ) => document.querySelectorAll( '[data-braintum-search-index]' ).length > n, count, { timeout: 15000 } );
 
 		const paged = await focused( page );
 
@@ -268,8 +268,8 @@ async function main() {
 	await page.keyboard.press( 'Escape' );
 
 	const closed = await page.evaluate( () => ( {
-		open: document.querySelector( '[data-solrengine-modal]' ).open,
-		inPopup: !! document.activeElement?.closest( '[data-solrengine-modal]' ),
+		open: document.querySelector( '[data-braintum-search-modal]' ).open,
+		inPopup: !! document.activeElement?.closest( '[data-braintum-search-modal]' ),
 		body: document.activeElement === document.body,
 	} ) );
 

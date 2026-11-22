@@ -2,28 +2,28 @@
 /**
  * Schema planning tests.
  *
- * The planner decides what SolrEngine would do to somebody else's Solr, so its
+ * The planner decides what Braintum Search would do to somebody else's Solr, so its
  * rules matter more than most. Pure logic, so no Solr is needed here.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\CopyFieldRule;
-use SolrEngine\Contracts\SchemaContract;
-use SolrEngine\Contracts\SchemaField;
-use SolrEngine\Contracts\SchemaState;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
+use BraintumSearch\Contracts\CopyFieldRule;
+use BraintumSearch\Contracts\SchemaContract;
+use BraintumSearch\Contracts\SchemaField;
+use BraintumSearch\Contracts\SchemaState;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
 
 /**
- * @covers \SolrEngine\Schema\SchemaPlanner
- * @covers \SolrEngine\Contracts\SchemaContract
- * @covers \SolrEngine\Contracts\SchemaPlan
+ * @covers \BraintumSearch\Schema\SchemaPlanner
+ * @covers \BraintumSearch\Contracts\SchemaContract
+ * @covers \BraintumSearch\Contracts\SchemaPlan
  */
 final class SchemaPlannerTest extends TestCase {
 
@@ -152,7 +152,7 @@ final class SchemaPlannerTest extends TestCase {
 	}
 
 	public function test_every_operation_is_additive(): void {
-		// SolrEngine must never emit replace-field or delete-field, even for
+		// Braintum Search must never emit replace-field or delete-field, even for
 		// its own fields. ADR-003.
 		$plan = $this->planner()->plan( ( new ContractRegistry() )->current(), $this->state() );
 
@@ -205,7 +205,7 @@ final class SchemaPlannerTest extends TestCase {
 	}
 
 	public function test_a_missing_field_type_blocks_the_plan(): void {
-		// SolrEngine will not create field types. An analyser is a far larger
+		// Braintum Search will not create field types. An analyser is a far larger
 		// commitment than a field and a wrong one is not recoverable.
 		$state = new SchemaState( array(), array(), array(), array( 'string' ), true, 'id' );
 

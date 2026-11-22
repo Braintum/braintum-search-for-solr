@@ -2,13 +2,13 @@
 /**
  * Reading a WooCommerce product query.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Search\FilterRegistry;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Search\FilterRegistry;
 
 /**
  * Turns a product query into a SearchQuery, or declines to.
@@ -16,7 +16,7 @@ use SolrEngine\Search\FilterRegistry;
  * **Declining is the most important thing this class does.** A shop query can
  * carry filters from WooCommerce, from an extension, or from a theme: a rating
  * filter, an AND-mode attribute filter, a meta query, a hand-picked list of
- * product identifiers. If SolrEngine answered a query whose constraints it only
+ * product identifiers. If Braintum Search answered a query whose constraints it only
  * partly understood, a shopper would get a page that looks filtered and is not
  * — products the merchant excluded, at prices the shopper filtered out.
  *
@@ -357,7 +357,7 @@ final class ShopQuery {
 			$taxonomy = (string) ( $clause['taxonomy'] ?? '' );
 
 			if ( 'product_visibility' === $taxonomy ) {
-				// WooCommerce's own visibility exclusions. SolrEngine applies
+				// WooCommerce's own visibility exclusions. Braintum Search applies
 				// the same rules from indexed fields, so these are recognised
 				// and dropped rather than translated.
 				continue;

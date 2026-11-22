@@ -2,12 +2,12 @@
 /**
  * Which post types this site indexes.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Documents;
+namespace BraintumSearch\Documents;
 
-use SolrEngine\Support\Config;
+use BraintumSearch\Support\Config;
 
 /**
  * One answer to "what is indexed here", for everything that needs to ask.
@@ -46,7 +46,7 @@ final class IndexedTypes {
 		 *
 		 * @param string[] $types Configured post types.
 		 */
-		$types = array_map( 'strval', (array) apply_filters( 'solrengine_indexable_post_types', $types ) );
+		$types = array_map( 'strval', (array) apply_filters( 'braintum_search_indexable_post_types', $types ) );
 
 		return array_values( array_unique( array_filter( $types ) ) );
 	}

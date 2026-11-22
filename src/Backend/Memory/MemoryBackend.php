@@ -2,35 +2,35 @@
 /**
  * An in-memory backend.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Memory;
+namespace BraintumSearch\Backend\Memory;
 
-use SolrEngine\Contracts\Capabilities;
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\FacetBucket;
-use SolrEngine\Contracts\FacetResult;
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Contracts\IndexStatus;
-use SolrEngine\Contracts\LifecycleBackend;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\SchemaBackend;
-use SolrEngine\Contracts\SchemaContract;
-use SolrEngine\Contracts\SchemaPlan;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Contracts\SearchHit;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\Selector;
-use SolrEngine\Contracts\Suggestion;
-use SolrEngine\Contracts\Suggestions;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Contracts\WriteResult;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
+use BraintumSearch\Contracts\Capabilities;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\FacetBucket;
+use BraintumSearch\Contracts\FacetResult;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Contracts\IndexStatus;
+use BraintumSearch\Contracts\LifecycleBackend;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\SchemaBackend;
+use BraintumSearch\Contracts\SchemaContract;
+use BraintumSearch\Contracts\SchemaPlan;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Contracts\SearchHit;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\Selector;
+use BraintumSearch\Contracts\Suggestion;
+use BraintumSearch\Contracts\Suggestions;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Contracts\WriteResult;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
 
 /**
  * The second adapter, and the reason there is one.
@@ -280,7 +280,7 @@ final class MemoryBackend implements SearchBackend, IndexBackend, SchemaBackend,
 				// Whatever contract this build declares. A managed backend is by
 				// definition never behind: it accepts what the document model
 				// produces, so the version it satisfies is the one being written.
-				(int) ( defined( 'SOLRENGINE_SCHEMA_CONTRACT_VERSION' ) ? SOLRENGINE_SCHEMA_CONTRACT_VERSION : 0 ),
+				(int) ( defined( 'BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION' ) ? BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION : 0 ),
 				array( 'collection' => 'memory' )
 			)
 		);
@@ -391,7 +391,7 @@ final class MemoryBackend implements SearchBackend, IndexBackend, SchemaBackend,
 	 */
 	public function applied_version(): Result {
 		return Result::success(
-			(int) ( defined( 'SOLRENGINE_SCHEMA_CONTRACT_VERSION' ) ? SOLRENGINE_SCHEMA_CONTRACT_VERSION : 0 )
+			(int) ( defined( 'BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION' ) ? BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION : 0 )
 		);
 	}
 

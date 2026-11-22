@@ -2,17 +2,17 @@
 /**
  * Walks the whole site into the index.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Support\Config;
 
 /**
  * Indexes every eligible object, one batch at a time.
@@ -46,14 +46,14 @@ final class FullSync {
 	 *
 	 * @var string
 	 */
-	public const HOOK = 'solrengine_full_sync_batch';
+	public const HOOK = 'braintum_search_full_sync_batch';
 
 	/**
 	 * Option holding the current run.
 	 *
 	 * @var string
 	 */
-	public const OPTION = 'solrengine_sync_run';
+	public const OPTION = 'braintum_search_sync_run';
 
 	/**
 	 * Seconds a batch aims to take.
@@ -202,10 +202,10 @@ final class FullSync {
 		$existing = $this->state();
 
 		if ( null !== $existing && 'running' === $existing['state'] ) {
-			return Result::failure( 'already_running', __( 'A synchronisation is already running.', 'solrengine' ) );
+			return Result::failure( 'already_running', __( 'A synchronisation is already running.', 'braintum-search-for-solr' ) );
 		}
 
-		// An explicit list — `wp solrengine index --post-type=product` — is
+		// An explicit list — `wp braintum-search index --post-type=product` — is
 		// honoured as given, because somebody asked for it by name. Otherwise
 		// the site's own answer, which is the same answer the save listeners
 		// use: when those two disagree, content reaches the index when it is
@@ -213,7 +213,7 @@ final class FullSync {
 		$types = array() !== $post_types ? $post_types : IndexedTypes::all( $this->config );
 
 		if ( array() === $types ) {
-			return Result::failure( 'no_post_types', __( 'No post types are configured for indexing.', 'solrengine' ) );
+			return Result::failure( 'no_post_types', __( 'No post types are configured for indexing.', 'braintum-search-for-solr' ) );
 		}
 
 		$total = $this->count_total( $types );
@@ -302,7 +302,7 @@ final class FullSync {
 			 *
 			 * @param array<string,mixed> $run Final run state.
 			 */
-			do_action( 'solrengine_full_sync_complete', $run );
+			do_action( 'braintum_search_full_sync_complete', $run );
 
 			return Result::success( $run );
 		}
@@ -595,7 +595,7 @@ final class FullSync {
 	 * Statuses that are publicly visible.
 	 *
 	 * Read from WordPress rather than hard-coded, so a plugin registering a
-	 * public custom status is included without SolrEngine knowing about it.
+	 * public custom status is included without Braintum Search knowing about it.
 	 *
 	 * @return string[]
 	 */
@@ -650,7 +650,7 @@ final class FullSync {
 	 *
 	 * Note what this deliberately does not do: call wp_cache_flush(). On a site
 	 * with a persistent object cache that evicts every other plugin's cached
-	 * data too, which is a real and frequently shipped bug. Only SolrEngine's
+	 * data too, which is a real and frequently shipped bug. Only Braintum Search's
 	 * own accumulation is released.
 	 *
 	 * @return void

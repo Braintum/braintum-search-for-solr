@@ -2,17 +2,17 @@
 /**
  * Debug logger.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Logger;
+use BraintumSearch\Contracts\Logger;
 
 /**
  * Writes to the PHP error log, only when debugging is switched on.
  *
- * Selected by the composition root when SOLRENGINE_DEBUG is defined, or when
+ * Selected by the composition root when BRAINTUM_SEARCH_DEBUG is defined, or when
  * WP_DEBUG and WP_DEBUG_LOG are both on. Every context array passes through
  * Credentials::redact() first, so a password cannot reach the log by being
  * attached to an error.
@@ -105,7 +105,7 @@ final class DebugLogger implements Logger {
 			return;
 		}
 
-		$line = sprintf( '[SolrEngine] %s: %s', strtoupper( $level ), $message );
+		$line = sprintf( '[Braintum Search] %s: %s', strtoupper( $level ), $message );
 
 		if ( array() !== $context ) {
 			$encoded = wp_json_encode( Credentials::redact( $context ) );

@@ -2,13 +2,13 @@
 /**
  * Translates WordPress events into dirty-set marks.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Documents\MetaAllowlist;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Documents\MetaAllowlist;
 use WP_Post;
 
 /**
@@ -300,7 +300,7 @@ final class HookListeners {
 	private function is_eligible( string $post_type ): bool {
 		// The list is trusted as given, and deliberately not filtered again here.
 		// It arrives from IndexedTypes::all(), which is the one place the
-		// solrengine_indexable_post_types filter is applied — the single source
+		// braintum_search_indexable_post_types filter is applied — the single source
 		// Phase 6 reduced this question to after two copies of it had let content
 		// reach the index on save and vanish on the next full sync.
 		//

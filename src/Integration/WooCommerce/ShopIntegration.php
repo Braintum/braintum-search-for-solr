@@ -2,19 +2,19 @@
 /**
  * Answering shop queries from the index.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\TermPaths;
-use SolrEngine\Integration\WordPress\ResultHydration;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\TermPaths;
+use BraintumSearch\Integration\WordPress\ResultHydration;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Support\Config;
 use WP_Block;
 use WP_Query;
 use WP_Term;
@@ -29,7 +29,7 @@ use WP_Term;
  * 2. `query_loop_block_query_vars` — the Product Collection block, which builds
  *    query variables through the core Query Loop filter and then runs an
  *    ordinary WP_Query with them.
- * 3. `solrengine_search_query` and `solrengine_suggest_query` — every other
+ * 3. `braintum_search_query` and `braintum_search_suggest_query` — every other
  *    path that reads the index, which have to apply the shop's visibility
  *    rules too. A product hidden from search must not surface in the site's
  *    search results, in the REST API, or in an autocomplete dropdown.
@@ -52,7 +52,7 @@ final class ShopIntegration {
 	 *
 	 * @var string
 	 */
-	private const FLAG = 'solrengine_wc_context';
+	private const FLAG = 'braintum_search_wc_context';
 
 	/**
 	 * Builds the search service.
@@ -136,8 +136,8 @@ final class ShopIntegration {
 		// because they are visibility rules rather than a feature: a product
 		// the merchant hid from search must stay hidden on every path that
 		// reads the index.
-		add_filter( 'solrengine_search_query', array( $this, 'narrow_search' ) );
-		add_filter( 'solrengine_suggest_query', array( $this, 'narrow_suggest' ) );
+		add_filter( 'braintum_search_query', array( $this, 'narrow_search' ) );
+		add_filter( 'braintum_search_suggest_query', array( $this, 'narrow_suggest' ) );
 
 		if ( ! $this->config->get_bool( 'search.shop_enabled', false ) || is_admin() ) {
 			return;

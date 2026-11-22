@@ -2,13 +2,13 @@
 /**
  * Which filters a caller may apply.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Documents\DocumentFields;
 
 /**
  * Maps public filter keys onto index fields.
@@ -55,15 +55,15 @@ final class FilterRegistry {
 	public static function defaults( array $taxonomies = array(), array $languages = array() ): self {
 		$registry = new self();
 
-		$registry->register( 'post_type', DocumentFields::POST_TYPE, FieldType::STRING, __( 'Content type', 'solrengine' ) );
-		$registry->register( 'author', DocumentFields::AUTHOR_ID, FieldType::INT, __( 'Author', 'solrengine' ) );
+		$registry->register( 'post_type', DocumentFields::POST_TYPE, FieldType::STRING, __( 'Content type', 'braintum-search-for-solr' ) );
+		$registry->register( 'author', DocumentFields::AUTHOR_ID, FieldType::INT, __( 'Author', 'braintum-search-for-solr' ) );
 
 		if ( count( $languages ) > 1 ) {
 			// A filter as well as the query-level scope, because the two answer
 			// different questions. The scope is "this visitor is reading the
 			// German site"; the filter is "show me the French translations",
 			// which a REST caller building a language switcher needs to ask.
-			$registry->register( 'language', DocumentFields::LANG, FieldType::STRING, __( 'Language', 'solrengine' ) );
+			$registry->register( 'language', DocumentFields::LANG, FieldType::STRING, __( 'Language', 'braintum-search-for-solr' ) );
 		}
 
 		foreach ( $taxonomies as $name => $taxonomy ) {
@@ -99,7 +99,7 @@ final class FilterRegistry {
 		 *
 		 * @param FilterRegistry $registry The registry.
 		 */
-		do_action( 'solrengine_register_filters', $registry );
+		do_action( 'braintum_search_register_filters', $registry );
 
 		return $registry;
 	}
@@ -120,7 +120,7 @@ final class FilterRegistry {
 			return;
 		}
 
-		// Only fields SolrEngine owns. A registry entry pointing at an
+		// Only fields Braintum Search owns. A registry entry pointing at an
 		// arbitrary field would let a caller probe another application's data
 		// in a shared collection.
 		if ( 0 !== strpos( $field, 'se_' ) ) {

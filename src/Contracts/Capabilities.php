@@ -2,15 +2,15 @@
 /**
  * Backend capability report.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What a backend can actually do.
  *
- * SolrEngine gates features on detection rather than on version assumptions
+ * Braintum Search gates features on detection rather than on version assumptions
  * (ADR-011), because Solr installations vary by version, mode, configset and
  * authorisation. A managed backend reports different capabilities again: the
  * Cloud adapter will report schema management as handled server-side, so the

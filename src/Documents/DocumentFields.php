@@ -2,16 +2,16 @@
 /**
  * Field name constants and value coercion.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Documents;
+namespace BraintumSearch\Documents;
 
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Language\LanguageTag;
 
 /**
- * The names SolrEngine writes, and the rules for coercing values into them.
+ * The names Braintum Search writes, and the rules for coercing values into them.
  *
  * One place for both, because a field name and the shape its value must take
  * are the same decision. Splitting them is how a date ends up written in the
@@ -128,7 +128,7 @@ final class DocumentFields {
 	 * @param string $tag  BCP-47 tag or locale.
 	 * @param string $name Logical name, for example "title".
 	 * @return string Field name, for example "se_txten_title". Empty when the
-	 *                language is not one SolrEngine recognises.
+	 *                language is not one Braintum Search recognises.
 	 */
 	public static function analysed( string $tag, string $name ): string {
 		$prefix = LanguageTag::field_prefix( $tag );

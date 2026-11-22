@@ -2,27 +2,27 @@
 /**
  * Public search endpoint.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Rest;
+namespace BraintumSearch\Rest;
 
-use SolrEngine\Contracts\FacetResult;
-use SolrEngine\Contracts\SearchHit;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\Suggestions;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Search\FacetLabeller;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FacetSelection;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Search\SuggestPayload;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\FacetResult;
+use BraintumSearch\Contracts\SearchHit;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\Suggestions;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Search\FacetLabeller;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FacetSelection;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Search\SuggestPayload;
+use BraintumSearch\Support\Config;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -49,7 +49,7 @@ final class SearchController {
 	 *
 	 * @var string
 	 */
-	public const NAMESPACE = 'solrengine/v1';
+	public const NAMESPACE = 'braintum-search/v1';
 
 	/**
 	 * Builds the search service.
@@ -239,8 +239,8 @@ final class SearchController {
 
 		if ( $allowed->is_failure() ) {
 			return new WP_Error(
-				'solrengine_rate_limited',
-				__( 'Too many requests. Please wait a moment.', 'solrengine' ),
+				'braintum_search_rate_limited',
+				__( 'Too many requests. Please wait a moment.', 'braintum-search-for-solr' ),
 				array(
 					'status'      => 429,
 					'retry_after' => (int) ( $allowed->context()['retry_after'] ?? 10 ),
@@ -426,8 +426,8 @@ final class SearchController {
 
 		if ( $allowed->is_failure() ) {
 			return new WP_Error(
-				'solrengine_rate_limited',
-				__( 'Too many searches. Please wait a moment.', 'solrengine' ),
+				'braintum_search_rate_limited',
+				__( 'Too many searches. Please wait a moment.', 'braintum-search-for-solr' ),
 				array(
 					'status'      => 429,
 					'retry_after' => (int) ( $allowed->context()['retry_after'] ?? 10 ),
@@ -473,8 +473,8 @@ final class SearchController {
 			// calling this API expects the search API's behaviour; quietly
 			// serving something else would make the outage invisible to it.
 			return new WP_Error(
-				'solrengine_backend_unavailable',
-				__( 'Search is temporarily unavailable.', 'solrengine' ),
+				'braintum_search_backend_unavailable',
+				__( 'Search is temporarily unavailable.', 'braintum-search-for-solr' ),
 				array(
 					'status'      => 503,
 					'retry_after' => 30,
@@ -501,10 +501,10 @@ final class SearchController {
 				// Rejected, not ignored. Ignoring an unknown key hides a
 				// client bug and makes probing for accepted keys free.
 				return new WP_Error(
-					'solrengine_invalid_filter',
+					'braintum_search_invalid_filter',
 					sprintf(
 						/* translators: %s: the filter key that was rejected. */
-						__( '"%s" is not a filter this site accepts.', 'solrengine' ),
+						__( '"%s" is not a filter this site accepts.', 'braintum-search-for-solr' ),
 						$key
 					),
 					array(
@@ -532,10 +532,10 @@ final class SearchController {
 				// caller would believe a filter was applied, and the counts
 				// beside the results would disagree with the results.
 				return new WP_Error(
-					'solrengine_invalid_filter_value',
+					'braintum_search_invalid_filter_value',
 					sprintf(
 						/* translators: %s: the filter key whose values were rejected. */
-						__( 'The values sent for "%s" do not name anything this site can filter by.', 'solrengine' ),
+						__( 'The values sent for "%s" do not name anything this site can filter by.', 'braintum-search-for-solr' ),
 						$key
 					),
 					array( 'status' => 400 )
@@ -570,10 +570,10 @@ final class SearchController {
 
 			if ( ! $this->facets->has( $key ) ) {
 				return new WP_Error(
-					'solrengine_invalid_facet',
+					'braintum_search_invalid_facet',
 					sprintf(
 						/* translators: %s: the facet key that was rejected. */
-						__( '"%s" is not a facet this site offers.', 'solrengine' ),
+						__( '"%s" is not a facet this site offers.', 'braintum-search-for-solr' ),
 						$key
 					),
 					array(
@@ -630,8 +630,8 @@ final class SearchController {
 
 		if ( $allowed->is_failure() ) {
 			return new WP_Error(
-				'solrengine_rate_limited',
-				__( 'Too many requests. Please wait a moment.', 'solrengine' ),
+				'braintum_search_rate_limited',
+				__( 'Too many requests. Please wait a moment.', 'braintum-search-for-solr' ),
 				array(
 					'status'      => 429,
 					'retry_after' => (int) ( $allowed->context()['retry_after'] ?? 10 ),
@@ -677,8 +677,8 @@ final class SearchController {
 
 		if ( $result->is_failure() ) {
 			return new WP_Error(
-				'solrengine_backend_unavailable',
-				__( 'Search is temporarily unavailable.', 'solrengine' ),
+				'braintum_search_backend_unavailable',
+				__( 'Search is temporarily unavailable.', 'braintum-search-for-solr' ),
 				array(
 					'status'      => 503,
 					'retry_after' => 30,
@@ -690,8 +690,8 @@ final class SearchController {
 
 		if ( ! $results instanceof SearchResults ) {
 			return new WP_Error(
-				'solrengine_backend_unavailable',
-				__( 'Search is temporarily unavailable.', 'solrengine' ),
+				'braintum_search_backend_unavailable',
+				__( 'Search is temporarily unavailable.', 'braintum-search-for-solr' ),
 				array( 'status' => 503 )
 			);
 		}

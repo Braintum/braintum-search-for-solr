@@ -2,14 +2,14 @@
 /**
  * Interprets what a caller selected.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\TermPaths;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\TermPaths;
 use WP_Term;
 
 /**

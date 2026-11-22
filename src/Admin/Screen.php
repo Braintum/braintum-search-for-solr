@@ -2,10 +2,10 @@
 /**
  * Shared behaviour for admin screens.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
 /**
  * The parts of an admin screen that must never differ between screens.
@@ -52,7 +52,7 @@ abstract class Screen {
 	abstract public function render(): void;
 
 	/**
-	 * Add this screen to the SolrEngine menu.
+	 * Add this screen to the Braintum Search menu.
 	 *
 	 * @since 0.8.0
 	 *
@@ -101,7 +101,7 @@ abstract class Screen {
 	 */
 	protected function require_manage(): void {
 		if ( ! $this->can_manage() ) {
-			wp_die( esc_html__( 'You are not allowed to change these settings.', 'solrengine' ), '', array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You are not allowed to change these settings.', 'braintum-search-for-solr' ), '', array( 'response' => 403 ) );
 		}
 	}
 
@@ -123,13 +123,13 @@ abstract class Screen {
 		$args = array( 'page' => $this->slug() );
 
 		if ( '' !== $notice ) {
-			$args['solrengine_notice'] = $notice;
+			$args['braintum_search_notice'] = $notice;
 		}
 
 		if ( '' !== $detail ) {
 			// Carried in the URL rather than in an option, so two administrators
 			// acting at once never read each other's messages.
-			$args['solrengine_detail'] = rawurlencode( $detail );
+			$args['braintum_search_detail'] = rawurlencode( $detail );
 		}
 
 		wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
@@ -146,7 +146,7 @@ abstract class Screen {
 	 */
 	protected function notice_key(): string {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display of a redirect flag, changing nothing.
-		return isset( $_GET['solrengine_notice'] ) ? sanitize_key( wp_unslash( $_GET['solrengine_notice'] ) ) : '';
+		return isset( $_GET['braintum_search_notice'] ) ? sanitize_key( wp_unslash( $_GET['braintum_search_notice'] ) ) : '';
 	}
 
 	/**
@@ -158,12 +158,12 @@ abstract class Screen {
 	 */
 	protected function notice_detail(): string {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display of a redirect flag, changing nothing.
-		if ( ! isset( $_GET['solrengine_detail'] ) ) {
+		if ( ! isset( $_GET['braintum_search_detail'] ) ) {
 			return '';
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display of a redirect flag, changing nothing.
-		$encoded = sanitize_text_field( wp_unslash( $_GET['solrengine_detail'] ) );
+		$encoded = sanitize_text_field( wp_unslash( $_GET['braintum_search_detail'] ) );
 
 		// Sanitised on both sides of the decode. Decoding can reintroduce the
 		// characters the first pass removed, and this value is a message from

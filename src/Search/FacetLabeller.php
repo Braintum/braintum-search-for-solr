@@ -2,15 +2,15 @@
 /**
  * Turns indexed facet values into words a visitor reads.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\FacetBucket;
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FacetResult;
-use SolrEngine\Documents\TermPaths;
+use BraintumSearch\Contracts\FacetBucket;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FacetResult;
+use BraintumSearch\Documents\TermPaths;
 use WP_Term;
 
 /**
@@ -214,7 +214,7 @@ final class FacetLabeller {
 			$out[] = $bucket->with_label(
 				sprintf(
 					/* translators: 1: lower bound of a numeric band, 2: upper bound. */
-					__( '%1$s to %2$s', 'solrengine' ),
+					__( '%1$s to %2$s', 'braintum-search-for-solr' ),
 					number_format_i18n( $start ),
 					number_format_i18n( $start + $definition->gap() )
 				)

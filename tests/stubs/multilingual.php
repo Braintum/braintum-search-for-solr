@@ -13,7 +13,7 @@
  * WPML needs nothing here: it is reached entirely through `apply_filters()`,
  * which is WordPress's own function and already analysable.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound -- these are Polylang's names, not ours.

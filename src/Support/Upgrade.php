@@ -2,10 +2,10 @@
 /**
  * Corrections applied after an update.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
 /**
  * Brings a site's stored data in line with the running version.
@@ -29,7 +29,7 @@ final class Upgrade {
 	 *
 	 * @var string
 	 */
-	public const OPTION_VERSION = 'solrengine_version';
+	public const OPTION_VERSION = 'braintum_search_version';
 
 	/**
 	 * Apply anything this version needs, once.
@@ -41,13 +41,13 @@ final class Upgrade {
 	public static function run(): void {
 		$stored = (string) get_option( self::OPTION_VERSION, '' );
 
-		if ( SOLRENGINE_VERSION === $stored ) {
+		if ( BRAINTUM_SEARCH_VERSION === $stored ) {
 			return;
 		}
 
 		self::mark_config_autoloaded();
 
-		update_option( self::OPTION_VERSION, SOLRENGINE_VERSION, false );
+		update_option( self::OPTION_VERSION, BRAINTUM_SEARCH_VERSION, false );
 	}
 
 	/**

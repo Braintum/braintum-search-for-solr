@@ -2,15 +2,15 @@
 /**
  * Turns a SearchQuery into Solr request parameters.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Language\LanguageTag;
 
 /**
  * Builds Solr parameters from a structured query.

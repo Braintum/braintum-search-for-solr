@@ -2,10 +2,10 @@
 /**
  * One search result.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A single matching object, as the index knows it.

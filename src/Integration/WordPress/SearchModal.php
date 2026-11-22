@@ -2,15 +2,15 @@
 /**
  * The search popup.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Integration\WooCommerce\WooCommerce;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Integration\WooCommerce\WooCommerce;
+use BraintumSearch\Support\Config;
 
 /**
  * Opens a search popup from the theme's own search field and button.
@@ -37,7 +37,7 @@ final class SearchModal {
 	 *
 	 * @var string
 	 */
-	public const HANDLE = 'solrengine-search-modal';
+	public const HANDLE = 'braintum-search-search-modal';
 
 	/**
 	 * Configuration.
@@ -88,7 +88,7 @@ final class SearchModal {
 	 * @return void
 	 */
 	public function enqueue(): void {
-		$asset_file = SOLRENGINE_PLUGIN_DIR . 'assets/build/search-modal.asset.php';
+		$asset_file = BRAINTUM_SEARCH_PLUGIN_DIR . 'assets/build/search-modal.asset.php';
 
 		if ( ! is_readable( $asset_file ) ) {
 			// A source checkout without a build. The theme's search form keeps
@@ -100,9 +100,9 @@ final class SearchModal {
 
 		wp_enqueue_script(
 			self::HANDLE,
-			SOLRENGINE_PLUGIN_URL . 'assets/build/search-modal.js',
+			BRAINTUM_SEARCH_PLUGIN_URL . 'assets/build/search-modal.js',
 			$asset['dependencies'] ?? array(),
-			$asset['version'] ?? SOLRENGINE_VERSION,
+			$asset['version'] ?? BRAINTUM_SEARCH_VERSION,
 			array(
 				'in_footer' => true,
 				'strategy'  => 'defer',
@@ -111,9 +111,9 @@ final class SearchModal {
 
 		wp_enqueue_style(
 			self::HANDLE,
-			SOLRENGINE_PLUGIN_URL . 'assets/build/search-modal.css',
+			BRAINTUM_SEARCH_PLUGIN_URL . 'assets/build/search-modal.css',
 			array(),
-			$asset['version'] ?? SOLRENGINE_VERSION
+			$asset['version'] ?? BRAINTUM_SEARCH_VERSION
 		);
 
 		wp_style_add_data( self::HANDLE, 'rtl', 'replace' );
@@ -121,18 +121,18 @@ final class SearchModal {
 		$width = $this->content_width();
 
 		if ( '' !== $width ) {
-			// A fallback the stylesheet reads beneath --solrengine-modal-width,
+			// A fallback the stylesheet reads beneath --braintum-search-modal-width,
 			// so a theme that sets the documented property still wins.
-			wp_add_inline_style( self::HANDLE, '.solrengine-modal{--solrengine-content-width:' . $width . ';}' );
+			wp_add_inline_style( self::HANDLE, '.braintum-search-modal{--braintum-search-content-width:' . $width . ';}' );
 		}
 
-		wp_set_script_translations( self::HANDLE, 'solrengine' );
+		wp_set_script_translations( self::HANDLE, 'braintum-search-for-solr' );
 
 		// JSON rather than wp_localize_script(), which turns every top-level
 		// number and boolean into a string.
 		wp_add_inline_script(
 			self::HANDLE,
-			'var solrEngineSearchModal = ' . wp_json_encode( $this->settings() ) . ';',
+			'var braintumSearchSearchModal = ' . wp_json_encode( $this->settings() ) . ';',
 			'before'
 		);
 	}
@@ -192,7 +192,7 @@ final class SearchModal {
 		}
 
 		return sprintf(
-			'<template data-solrengine-template="result" data-solrengine-post-type="%1$s">%2$s</template>' . "\n",
+			'<template data-braintum-search-template="result" data-braintum-search-post-type="%1$s">%2$s</template>' . "\n",
 			esc_attr( $post_type ),
 			$card
 		);
@@ -207,7 +207,7 @@ final class SearchModal {
 		$defaults = array(
 			'heading'     => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 			'tagline'     => wp_specialchars_decode( get_bloginfo( 'description' ), ENT_QUOTES ),
-			'placeholder' => __( 'Search…', 'solrengine' ),
+			'placeholder' => __( 'Search…', 'braintum-search-for-solr' ),
 			'search_url'  => home_url( '/' ),
 			// Off. WordPress.org guideline 10: a plugin may not put a credit on
 			// the public site unless the site owner chooses to show it.
@@ -218,7 +218,7 @@ final class SearchModal {
 		 * Filters what the search popup's template receives.
 		 *
 		 * Change the heading, tagline or placeholder, or opt in to the
-		 * "Powered by SolrEngine" line, without overriding the template.
+		 * "Powered by Braintum Search" line, without overriding the template.
 		 *
 		 * @since 1.0.0
 		 *
@@ -227,10 +227,10 @@ final class SearchModal {
 		 *     @type string $tagline     Text at the top right. The site tagline by default.
 		 *     @type string $placeholder Placeholder in the search field.
 		 *     @type string $search_url  The site's search results address.
-		 *     @type bool   $show_credit Whether to show "Powered by SolrEngine". False by default.
+		 *     @type bool   $show_credit Whether to show "Powered by Braintum Search". False by default.
 		 * }
 		 */
-		$args = apply_filters( 'solrengine_search_modal_args', $defaults );
+		$args = apply_filters( 'braintum_search_modal_args', $defaults );
 		$args = is_array( $args ) ? $args : array();
 
 		return array(
@@ -304,14 +304,14 @@ final class SearchModal {
 		 * A plain length, a percentage, or calc(), min(), max(), clamp() or
 		 * var() over them; anything else is ignored. Return '' for the
 		 * stylesheet's default. A theme can also set
-		 * `--solrengine-modal-width` in CSS, which wins over this.
+		 * `--braintum-search-modal-width` in CSS, which wins over this.
 		 *
 		 * @since 1.0.0
 		 *
 		 * @param string $width The theme's wide size, content size or
 		 *                      `$content_width`, as a CSS length, or ''.
 		 */
-		$filtered = apply_filters( 'solrengine_search_modal_width', $width );
+		$filtered = apply_filters( 'braintum_search_modal_width', $width );
 		$filtered = is_string( $filtered ) ? trim( $filtered ) : '';
 
 		return self::is_css_length( $filtered ) ? $filtered : '';
@@ -343,7 +343,7 @@ final class SearchModal {
 	 */
 	private function settings(): array {
 		return array(
-			'endpoint'  => rest_url( 'solrengine/v1/instant' ),
+			'endpoint'  => rest_url( 'braintum-search/v1/instant' ),
 			'minimum'   => SuggestQuery::MIN_LENGTH,
 			'fields'    => InstantSearch::selector(),
 			/**
@@ -352,15 +352,15 @@ final class SearchModal {
 			 * For search icons, menu items and buttons that are not part of a
 			 * search form. The theme's search fields and the buttons that
 			 * submit them are matched separately, through
-			 * `solrengine_instant_search_selector`.
+			 * `braintum_search_instant_search_selector`.
 			 *
 			 * @since 1.0.0
 			 *
 			 * @param string $selector A CSS selector.
 			 */
 			'triggers'  => (string) apply_filters(
-				'solrengine_search_modal_triggers',
-				'.solrengine-search-trigger, [data-solrengine-search], a[href="#solrengine-search"]'
+				'braintum_search_modal_triggers',
+				'.braintum-search-trigger, [data-braintum-search], a[href="#braintum-search"]'
 			),
 			'searchUrl' => home_url( '/' ),
 			'locale'    => str_replace( '_', '-', determine_locale() ),

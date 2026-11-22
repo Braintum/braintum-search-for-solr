@@ -2,14 +2,14 @@
 /**
  * Per-language analysed fields.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Schema;
+namespace BraintumSearch\Schema;
 
-use SolrEngine\Contracts\SchemaField;
-use SolrEngine\Contracts\SchemaState;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\SchemaField;
+use BraintumSearch\Contracts\SchemaState;
+use BraintumSearch\Language\LanguageTag;
 
 /**
  * The dynamic field patterns a language-aware index needs, and which of them a
@@ -21,12 +21,12 @@ use SolrEngine\Language\LanguageTag;
  * that can be done by the language-neutral analyser, because it has to be right
  * for every site at once.
  *
- * Each language therefore needs its own Solr field type, and **SolrEngine does
+ * Each language therefore needs its own Solr field type, and **Braintum Search does
  * not create field types** — rule 2 of ADR-003, because an analyser is a far
  * larger commitment than a field and a wrong one is not recoverable by adding
  * another field. Solr's own `_default` configset ships `text_general` and
  * `text_en` and nothing else; the full set of language analysers lives in its
- * `sample_techproducts` configset and in SolrEngine's own.
+ * `sample_techproducts` configset and in Braintum Search's own.
  *
  * So the question is not "which languages does this site have" but "which of
  * them can this server analyse", and the answer is read from the live schema.
@@ -156,7 +156,7 @@ final class LanguageFields {
 				),
 				sprintf(
 					/* translators: %s: language subtag, for example "de". */
-					__( 'Text analysed as %s, so searches in that language match stems and compounds.', 'solrengine' ),
+					__( 'Text analysed as %s, so searches in that language match stems and compounds.', 'braintum-search-for-solr' ),
 					$primary
 				)
 			);

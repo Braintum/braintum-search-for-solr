@@ -2,10 +2,10 @@
 /**
  * A list of autocomplete suggestions.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What an autocomplete request found.

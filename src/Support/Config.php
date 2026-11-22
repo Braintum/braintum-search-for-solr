@@ -2,12 +2,12 @@
 /**
  * Configuration reader.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Multisite\NetworkConfig;
+use BraintumSearch\Multisite\NetworkConfig;
 
 /**
  * Reads configuration from defaults, network options, stored options and PHP
@@ -34,8 +34,8 @@ use SolrEngine\Multisite\NetworkConfig;
  * Two deliberate departures from the 0.1.0 prototype:
  *
  * - It reads the same option the settings screen writes. The prototype read
- *   `solrengine_solr_endpoint` while the settings page wrote
- *   `solrengine_settings`, so saving the endpoint had no effect at all.
+ *   `braintum_search_solr_endpoint` while the settings page wrote
+ *   `braintum_search_settings`, so saving the endpoint had no effect at all.
  * - It reads no environment variables. The prototype honoured
  *   `WPSOLR_SOLR_ENDPOINT`, a competing plugin's namespace, and getenv() is an
  *   unauditable input on shared hosting. Constants are visible in the file the
@@ -52,21 +52,21 @@ final class Config {
 	 *
 	 * @var string
 	 */
-	public const OPTION_CONNECTION = 'solrengine_connection';
+	public const OPTION_CONNECTION = 'braintum_search_connection';
 
 	/**
 	 * Option name holding index configuration. Never autoloaded.
 	 *
 	 * @var string
 	 */
-	public const OPTION_INDEX = 'solrengine_index_config';
+	public const OPTION_INDEX = 'braintum_search_index_config';
 
 	/**
 	 * Option name holding runtime state. Never autoloaded.
 	 *
 	 * @var string
 	 */
-	public const OPTION_STATE = 'solrengine_state';
+	public const OPTION_STATE = 'braintum_search_state';
 
 	/**
 	 * Packaged defaults, keyed by dot path.
@@ -186,9 +186,9 @@ final class Config {
 
 		$this->constants = array_merge(
 			array(
-				'connection.endpoint'   => 'SOLRENGINE_SOLR_ENDPOINT',
-				'connection.collection' => 'SOLRENGINE_SOLR_COLLECTION',
-				'runtime.debug'         => 'SOLRENGINE_DEBUG',
+				'connection.endpoint'   => 'BRAINTUM_SEARCH_SOLR_ENDPOINT',
+				'connection.collection' => 'BRAINTUM_SEARCH_SOLR_COLLECTION',
+				'runtime.debug'         => 'BRAINTUM_SEARCH_DEBUG',
 			),
 			$constants
 		);

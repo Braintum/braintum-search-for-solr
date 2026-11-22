@@ -2,10 +2,10 @@
 /**
  * Language tag normalisation.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Language;
+namespace BraintumSearch\Language;
 
 /**
  * Turns the many ways a language is spelled into one.
@@ -125,7 +125,7 @@ final class LanguageTag {
 	}
 
 	/**
-	 * Whether a tag names a language SolrEngine can work with.
+	 * Whether a tag names a language Braintum Search can work with.
 	 *
 	 * @since 0.9.0
 	 *

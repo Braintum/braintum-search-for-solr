@@ -6,19 +6,19 @@
  * key a post had, including private ones, which puts licence keys, API tokens
  * and personal data into a search index.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Documents\MetaAllowlist;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Documents\MetaAllowlist;
 
 /**
- * @covers \SolrEngine\Documents\MetaAllowlist
+ * @covers \BraintumSearch\Documents\MetaAllowlist
  */
 final class MetaAllowlistTest extends TestCase {
 

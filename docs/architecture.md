@@ -1,6 +1,6 @@
 # Architecture
 
-The reasoning lives in [the plan](../.claude/plans/solrengine-plan.md) and
+The reasoning lives in [the plan](../.claude/plans/braintum-search-plan.md) and
 [the ADRs](../.claude/plans/adr/). This file describes what exists in the code
 today.
 
@@ -65,11 +65,11 @@ was deliberately placed:
 ## What the code contains
 
 ```
-solrengine.php               Plugin entry point and requirement gate. Parses on
+braintum-search-for-solr.php               Plugin entry point and requirement gate. Parses on
                              PHP 5.6 by necessity: it is what reports that PHP
                              is too old
 templates/                   Front-end templates a theme overrides from
-                             yourtheme/solrengine/. Today: the search popup
+                             yourtheme/braintum-search/. Today: the search popup
 constants.php                Version, paths and schema contract version, in
                              their own file so no entry point redefines them
 src/Bootstrap.php            Composition root. The only class that knows how
@@ -156,7 +156,7 @@ Hooking the query layer rather than the template layer is what keeps themes,
 block themes, page builders and WooCommerce loops working — none of them can tell
 the difference.
 
-**Autocomplete** goes through `GET /solrengine/v1/suggest`.
+**Autocomplete** goes through `GET /braintum-search/v1/suggest`.
 
 ```
 theme search field
@@ -170,7 +170,7 @@ theme search field
   -> Search\SuggestPayload           the JSON the field reads
 ```
 
-**The search popup** goes through `GET /solrengine/v1/instant`, which calls
+**The search popup** goes through `GET /braintum-search/v1/instant`, which calls
 `Search\InstantResults::answer()`. That class builds an ordinary `SearchQuery`
 and owns the response shape, so the route holds no search logic. Its markup is
 PHP templates rendered once per page — on a full boot, where the theme can
@@ -238,10 +238,10 @@ The four worth knowing before reading anything else:
 
 | Hook | Type | Purpose |
 | --- | --- | --- |
-| `solrengine_booted` | action | Register a backend, facet or admin screen. Receives the container, before anything is constructed |
-| `solrengine_document` | filter | The primary customisation point: a document immediately before it is queued |
-| `solrengine_register_filters` | action | Register a filter a caller may narrow by |
-| `solrengine_facet_definitions` | filter | Register a facet a caller may count by |
+| `braintum_search_booted` | action | Register a backend, facet or admin screen. Receives the container, before anything is constructed |
+| `braintum_search_document` | filter | The primary customisation point: a document immediately before it is queued |
+| `braintum_search_register_filters` | action | Register a filter a caller may narrow by |
+| `braintum_search_facet_definitions` | filter | Register a facet a caller may count by |
 
 Two hooks that will deliberately never exist: anything exposing a raw backend
 request, and anything letting a third party inject query syntax. Both would make
@@ -252,7 +252,7 @@ public API.
 
 Preference order, per ADR-009:
 
-1. `SOLRENGINE_SOLR_USER` and `SOLRENGINE_SOLR_PASSWORD` in `wp-config.php`.
+1. `BRAINTUM_SEARCH_SOLR_USER` and `BRAINTUM_SEARCH_SOLR_PASSWORD` in `wp-config.php`.
 2. An encrypted, non-autoloaded option.
 3. Never plaintext, never returned to the browser, never logged.
 

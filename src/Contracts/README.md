@@ -1,7 +1,7 @@
 # Contracts
 
 Public API. Everything in this directory is what add-on plugins and the future
-SolrEngine Cloud adapter bind to, which is why it lives apart from the rest of
+Braintum Search Cloud adapter bind to, which is why it lives apart from the rest of
 `src/`: "is this a breaking change?" should be answerable by reading one
 directory's diff.
 

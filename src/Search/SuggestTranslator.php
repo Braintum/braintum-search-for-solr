@@ -2,24 +2,24 @@
 /**
  * Turns a SuggestQuery into Solr request parameters.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\DocumentFields;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\DocumentFields;
 
 /**
  * Builds a prefix query for autocomplete.
  *
  * **Why not Solr's Suggester component.** The Suggester needs a
- * `searchComponent` and a request handler in `solrconfig.xml`, and SolrEngine
+ * `searchComponent` and a request handler in `solrconfig.xml`, and Braintum Search
  * cannot apply those: the Schema API reaches fields, not configuration, and
  * changing a configset means uploading and reloading it. Measured against a
  * stock Solr 10, the default configset has no `/suggest` handler at all, so a
  * Suggester-based autocomplete would work only for customers who created their
- * collection from SolrEngine's own configset — a minority, and silently broken
+ * collection from Braintum Search's own configset — a minority, and silently broken
  * for everyone else.
  *
  * A prefix query needs no configuration whatsoever and works on any collection

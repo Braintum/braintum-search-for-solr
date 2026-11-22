@@ -2,21 +2,21 @@
 /**
  * Connection diagnostic.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Diagnostics;
+namespace BraintumSearch\Diagnostics;
 
-use SolrEngine\Backend\Solr\Endpoint;
-use SolrEngine\Backend\Solr\EndpointValidator;
-use SolrEngine\Backend\Solr\HttpTransport;
-use SolrEngine\Backend\Solr\SolrBackend;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaExporter;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\Credentials;
+use BraintumSearch\Backend\Solr\Endpoint;
+use BraintumSearch\Backend\Solr\EndpointValidator;
+use BraintumSearch\Backend\Solr\HttpTransport;
+use BraintumSearch\Backend\Solr\SolrBackend;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaExporter;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\Credentials;
 
 /**
  * Answers "is this working?" with a list of independent facts.
@@ -132,7 +132,7 @@ final class ConnectionDiagnostic {
 		if ( $endpoint->is_failure() ) {
 			$report->fail(
 				'address',
-				__( 'Address', 'solrengine' ),
+				__( 'Address', 'braintum-search-for-solr' ),
 				$endpoint->message(),
 				$endpoint->code(),
 				$endpoint->context()
@@ -145,10 +145,10 @@ final class ConnectionDiagnostic {
 
 		$report->pass(
 			'address',
-			__( 'Address', 'solrengine' ),
+			__( 'Address', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: %s: the normalised Solr base URL. */
-				__( 'Valid. SolrEngine will use %s', 'solrengine' ),
+				__( 'Valid. Braintum Search will use %s', 'braintum-search-for-solr' ),
 				$target->describe()
 			)
 		);
@@ -156,8 +156,8 @@ final class ConnectionDiagnostic {
 		if ( ! $target->is_secure() ) {
 			$report->warn(
 				'transport',
-				__( 'Transport security', 'solrengine' ),
-				__( 'This connection is not encrypted. That is acceptable on the same machine, but credentials and content would travel in plain text over any network.', 'solrengine' )
+				__( 'Transport security', 'braintum-search-for-solr' ),
+				__( 'This connection is not encrypted. That is acceptable on the same machine, but credentials and content would travel in plain text over any network.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -168,8 +168,8 @@ final class ConnectionDiagnostic {
 		if ( '' === $reachable->version() ) {
 			$report->fail(
 				'reachable',
-				__( 'Server', 'solrengine' ),
-				__( 'No Solr server answered at that address. Check that it is running, and that a firewall is not in the way.', 'solrengine' ),
+				__( 'Server', 'braintum-search-for-solr' ),
+				__( 'No Solr server answered at that address. Check that it is running, and that a firewall is not in the way.', 'braintum-search-for-solr' ),
 				'unreachable'
 			);
 
@@ -178,10 +178,10 @@ final class ConnectionDiagnostic {
 
 		$report->pass(
 			'reachable',
-			__( 'Server', 'solrengine' ),
+			__( 'Server', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: 1: Solr version, 2: deployment mode. */
-				__( 'Solr %1$s, %2$s mode', 'solrengine' ),
+				__( 'Solr %1$s, %2$s mode', 'braintum-search-for-solr' ),
 				$reachable->version(),
 				$reachable->mode()
 			)
@@ -191,21 +191,21 @@ final class ConnectionDiagnostic {
 
 		$report->pass(
 			'authentication',
-			__( 'Authentication', 'solrengine' ),
+			__( 'Authentication', 'braintum-search-for-solr' ),
 			$this->credentials->has_password()
 				? sprintf(
 					/* translators: %s: where the credentials come from. */
-					__( 'Accepted. Credentials: %s', 'solrengine' ),
+					__( 'Accepted. Credentials: %s', 'braintum-search-for-solr' ),
 					$this->credentials->describe()
 				)
-				: __( 'The server did not ask for credentials.', 'solrengine' )
+				: __( 'The server did not ask for credentials.', 'braintum-search-for-solr' )
 		);
 
 		if ( '' === $target->collection() ) {
 			$report->fail(
 				'collection',
-				__( 'Collection', 'solrengine' ),
-				__( 'No collection or core name is configured.', 'solrengine' ),
+				__( 'Collection', 'braintum-search-for-solr' ),
+				__( 'No collection or core name is configured.', 'braintum-search-for-solr' ),
 				'no_collection'
 			);
 
@@ -217,11 +217,11 @@ final class ConnectionDiagnostic {
 		if ( $ping->is_failure() ) {
 			$report->fail(
 				'collection',
-				__( 'Collection', 'solrengine' ),
+				__( 'Collection', 'braintum-search-for-solr' ),
 				'not_found' === $ping->code()
 					? sprintf(
 						/* translators: %s: collection name. */
-						__( 'The collection "%s" does not exist on this server. Create it, or correct the name.', 'solrengine' ),
+						__( 'The collection "%s" does not exist on this server. Create it, or correct the name.', 'braintum-search-for-solr' ),
 						$target->collection()
 					)
 					: $ping->message(),
@@ -233,10 +233,10 @@ final class ConnectionDiagnostic {
 
 		$report->pass(
 			'collection',
-			__( 'Collection', 'solrengine' ),
+			__( 'Collection', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: %s: collection name. */
-				__( '"%s" exists and is responding.', 'solrengine' ),
+				__( '"%s" exists and is responding.', 'braintum-search-for-solr' ),
 				$target->collection()
 			)
 		);
@@ -245,10 +245,10 @@ final class ConnectionDiagnostic {
 
 		$report->pass(
 			'facets',
-			__( 'Faceted search', 'solrengine' ),
+			__( 'Faceted search', 'braintum-search-for-solr' ),
 			$reachable->supports( 'json_facets' )
-				? __( 'The JSON Facet API is available.', 'solrengine' )
-				: __( 'Not detected. Faceted search will be unavailable.', 'solrengine' )
+				? __( 'The JSON Facet API is available.', 'braintum-search-for-solr' )
+				: __( 'Not detected. Faceted search will be unavailable.', 'braintum-search-for-solr' )
 		);
 
 		return $report;
@@ -271,8 +271,8 @@ final class ConnectionDiagnostic {
 		if ( version_compare( $version, '9.10', '>=' ) ) {
 			$report->warn(
 				'version',
-				__( 'Solr version', 'solrengine' ),
-				__( 'Supported. Solr 10 is recommended, and is what SolrEngine is primarily tested against.', 'solrengine' )
+				__( 'Solr version', 'braintum-search-for-solr' ),
+				__( 'Supported. Solr 10 is recommended, and is what Braintum Search is primarily tested against.', 'braintum-search-for-solr' )
 			);
 
 			return;
@@ -280,10 +280,10 @@ final class ConnectionDiagnostic {
 
 		$report->warn(
 			'version',
-			__( 'Solr version', 'solrengine' ),
+			__( 'Solr version', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: %s: the detected Solr version. */
-				__( 'Solr %s is past end of life upstream and receives no security fixes. SolrEngine will still try to work with it, but please upgrade to 9.10 or 10.', 'solrengine' ),
+				__( 'Solr %s is past end of life upstream and receives no security fixes. Braintum Search will still try to work with it, but please upgrade to 9.10 or 10.', 'braintum-search-for-solr' ),
 				$version
 			)
 		);
@@ -303,8 +303,8 @@ final class ConnectionDiagnostic {
 		if ( $plan->is_failure() ) {
 			$report->fail(
 				'schema',
-				__( 'Schema', 'solrengine' ),
-				__( 'The schema could not be read.', 'solrengine' ),
+				__( 'Schema', 'braintum-search-for-solr' ),
+				__( 'The schema could not be read.', 'braintum-search-for-solr' ),
 				$plan->code()
 			);
 
@@ -316,10 +316,10 @@ final class ConnectionDiagnostic {
 		if ( $schema_plan->is_empty() && array() === $schema_plan->blockers() ) {
 			$report->pass(
 				'schema',
-				__( 'Schema', 'solrengine' ),
+				__( 'Schema', 'braintum-search-for-solr' ),
 				sprintf(
 					/* translators: %d: schema contract version. */
-					__( 'Ready. Contract version %d is satisfied.', 'solrengine' ),
+					__( 'Ready. Contract version %d is satisfied.', 'braintum-search-for-solr' ),
 					$schema_plan->target_version()
 				)
 			);
@@ -330,7 +330,7 @@ final class ConnectionDiagnostic {
 		if ( array() !== $schema_plan->blockers() ) {
 			$report->fail(
 				'schema',
-				__( 'Schema', 'solrengine' ),
+				__( 'Schema', 'braintum-search-for-solr' ),
 				implode( ' ', $schema_plan->blockers() ),
 				'schema_blocked',
 				array( 'can_export' => true )
@@ -341,14 +341,14 @@ final class ConnectionDiagnostic {
 
 		$report->warn(
 			'schema',
-			__( 'Schema', 'solrengine' ),
+			__( 'Schema', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: %d: number of pending schema changes. */
 				_n(
 					'%d change is needed before indexing can start.',
 					'%d changes are needed before indexing can start.',
 					count( $schema_plan->operations() ),
-					'solrengine'
+					'braintum-search-for-solr'
 				),
 				count( $schema_plan->operations() )
 			),

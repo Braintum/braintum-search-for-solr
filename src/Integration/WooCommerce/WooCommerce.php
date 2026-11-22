@@ -2,13 +2,13 @@
 /**
  * The WooCommerce integration, as one switch.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Indexing\DirtySet;
-use SolrEngine\Support\Config;
+use BraintumSearch\Indexing\DirtySet;
+use BraintumSearch\Support\Config;
 
 /**
  * Detects WooCommerce and wires the pieces that depend on it.
@@ -63,7 +63,7 @@ final class WooCommerce {
 		// configuration, so the save listeners and a full sync reach the same
 		// answer: a shop that installs a search plugin means its products.
 		add_filter(
-			'solrengine_indexable_post_types',
+			'braintum_search_indexable_post_types',
 			static function ( $types ): array {
 				$types = array_map( 'strval', (array) $types );
 

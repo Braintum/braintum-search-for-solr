@@ -2,14 +2,14 @@
 /**
  * Network administration.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
-use SolrEngine\Multisite\NetworkConfig;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\Credentials;
+use BraintumSearch\Multisite\NetworkConfig;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\Credentials;
 
 /**
  * One Solr, many sites, one place to say so.
@@ -31,7 +31,7 @@ use SolrEngine\Support\Credentials;
  * once, and the checkbox beside each field decides which it is.
  *
  * **Topology is a deployment choice.** One collection per site or one shared
- * collection is a decision about the Solr cluster, not about SolrEngine: every
+ * collection is a decision about the Solr cluster, not about Braintum Search: every
  * document already carries its site identifier and every query already filters on
  * it, so the choice changes a collection name and nothing else.
  *
@@ -44,14 +44,14 @@ final class NetworkScreen {
 	 *
 	 * @var string
 	 */
-	public const SLUG = 'solrengine-network';
+	public const SLUG = 'braintum-search-network';
 
 	/**
 	 * Form action, handled through network_admin_edit_.
 	 *
 	 * @var string
 	 */
-	public const ACTION = 'solrengine_save_network';
+	public const ACTION = 'braintum_search_save_network';
 
 	/**
 	 * Paths this screen offers to set for the whole network.
@@ -118,8 +118,8 @@ final class NetworkScreen {
 	public function add_menu(): void {
 		add_submenu_page(
 			'settings.php',
-			__( 'SolrEngine', 'solrengine' ),
-			__( 'SolrEngine', 'solrengine' ),
+			__( 'Braintum Search', 'braintum-search-for-solr' ),
+			__( 'Braintum Search', 'braintum-search-for-solr' ),
 			'manage_network_options',
 			self::SLUG,
 			array( $this, 'render' )
@@ -140,7 +140,7 @@ final class NetworkScreen {
 	 */
 	public function handle_save(): void {
 		if ( ! current_user_can( 'manage_network_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to change these settings.', 'solrengine' ), '', array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You are not allowed to change these settings.', 'braintum-search-for-solr' ), '', array( 'response' => 403 ) );
 		}
 
 		check_admin_referer( self::ACTION );
@@ -198,8 +198,8 @@ final class NetworkScreen {
 		wp_safe_redirect(
 			add_query_arg(
 				array(
-					'page'              => self::SLUG,
-					'solrengine_notice' => $notice,
+					'page'                   => self::SLUG,
+					'braintum_search_notice' => $notice,
 				),
 				network_admin_url( 'settings.php' )
 			)
@@ -222,44 +222,44 @@ final class NetworkScreen {
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'SolrEngine', 'solrengine' ); ?></h1>
+			<h1><?php esc_html_e( 'Braintum Search', 'braintum-search-for-solr' ); ?></h1>
 
 			<?php $this->render_notice(); ?>
 
 			<p>
-				<?php esc_html_e( 'Settings here apply to every site in the network. A site can change any of them for itself unless you lock it.', 'solrengine' ); ?>
+				<?php esc_html_e( 'Settings here apply to every site in the network. A site can change any of them for itself unless you lock it.', 'braintum-search-for-solr' ); ?>
 			</p>
 
 			<form method="post" action="<?php echo esc_url( network_admin_url( 'edit.php?action=' . self::ACTION ) ); ?>">
 				<?php wp_nonce_field( self::ACTION ); ?>
 
-				<h2><?php esc_html_e( 'Connection', 'solrengine' ); ?></h2>
+				<h2><?php esc_html_e( 'Connection', 'braintum-search-for-solr' ); ?></h2>
 
 				<table class="form-table" role="presentation">
 					<?php
 					$this->text_row(
 						'endpoint',
 						'connection.endpoint',
-						__( 'Solr address', 'solrengine' ),
-						__( 'The base address of your Solr server, ending in /solr.', 'solrengine' )
+						__( 'Solr address', 'braintum-search-for-solr' ),
+						__( 'The base address of your Solr server, ending in /solr.', 'braintum-search-for-solr' )
 					);
 
 					$this->text_row(
 						'collection',
 						'connection.collection',
-						__( 'Collection or core', 'solrengine' ),
-						__( 'Used as-is under a shared collection. Under one collection per site it is the fallback for a site with no pattern.', 'solrengine' )
+						__( 'Collection or core', 'braintum-search-for-solr' ),
+						__( 'Used as-is under a shared collection. Under one collection per site it is the fallback for a site with no pattern.', 'braintum-search-for-solr' )
 					);
 					?>
 
 					<tr>
 						<th scope="row">
-							<label for="solrengine-network-username"><?php esc_html_e( 'Username', 'solrengine' ); ?></label>
+							<label for="braintum-search-network-username"><?php esc_html_e( 'Username', 'braintum-search-for-solr' ); ?></label>
 						</th>
 						<td>
 							<input
 								type="text"
-								id="solrengine-network-username"
+								id="braintum-search-network-username"
 								name="username"
 								class="regular-text"
 								autocomplete="off"
@@ -270,41 +270,41 @@ final class NetworkScreen {
 
 					<tr>
 						<th scope="row">
-							<label for="solrengine-network-password"><?php esc_html_e( 'Password', 'solrengine' ); ?></label>
+							<label for="braintum-search-network-password"><?php esc_html_e( 'Password', 'braintum-search-for-solr' ); ?></label>
 						</th>
 						<td>
 							<?php if ( 'constant' === $this->credentials->source() ) : ?>
-								<p><strong><?php esc_html_e( 'Set in wp-config.php, which is the most secure option and applies to every site already.', 'solrengine' ); ?></strong></p>
+								<p><strong><?php esc_html_e( 'Set in wp-config.php, which is the most secure option and applies to every site already.', 'braintum-search-for-solr' ); ?></strong></p>
 							<?php else : ?>
 								<input
 									type="password"
-									id="solrengine-network-password"
+									id="braintum-search-network-password"
 									name="password"
 									class="regular-text"
 									autocomplete="new-password"
-									placeholder="<?php echo esc_attr( $this->credentials->has_network_password() ? __( 'Saved. Type to replace.', 'solrengine' ) : __( 'Not set', 'solrengine' ) ); ?>"
+									placeholder="<?php echo esc_attr( $this->credentials->has_network_password() ? __( 'Saved. Type to replace.', 'braintum-search-for-solr' ) : __( 'Not set', 'braintum-search-for-solr' ) ); ?>"
 								/>
 								<?php if ( $this->credentials->has_network_password() ) : ?>
 									<p>
 										<label>
 											<input type="checkbox" name="clear_password" value="1"/>
-											<?php esc_html_e( 'Remove the network password', 'solrengine' ); ?>
+											<?php esc_html_e( 'Remove the network password', 'braintum-search-for-solr' ); ?>
 										</label>
 									</p>
 								<?php endif; ?>
 								<p class="description">
-									<?php esc_html_e( 'Stored encrypted, once, and readable by every site because a network shares the keys in wp-config.php. A site that has entered its own credentials keeps them.', 'solrengine' ); ?>
+									<?php esc_html_e( 'Stored encrypted, once, and readable by every site because a network shares the keys in wp-config.php. A site that has entered its own credentials keeps them.', 'braintum-search-for-solr' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
 					</tr>
 
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Network', 'solrengine' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Network', 'braintum-search-for-solr' ); ?></th>
 						<td>
 							<?php
-							$this->checkbox( 'allow_private_ip', 'connection.allow_private_ip', __( 'Solr is on this machine or a private network', 'solrengine' ) );
-							$this->checkbox( 'verify_tls', 'connection.verify_tls', __( 'Verify TLS certificates', 'solrengine' ), true );
+							$this->checkbox( 'allow_private_ip', 'connection.allow_private_ip', __( 'Solr is on this machine or a private network', 'braintum-search-for-solr' ) );
+							$this->checkbox( 'verify_tls', 'connection.verify_tls', __( 'Verify TLS certificates', 'braintum-search-for-solr' ), true );
 							?>
 						</td>
 					</tr>
@@ -313,7 +313,7 @@ final class NetworkScreen {
 				<?php $this->render_topology(); ?>
 				<?php $this->render_sites(); ?>
 
-				<?php submit_button( __( 'Save network settings', 'solrengine' ) ); ?>
+				<?php submit_button( __( 'Save network settings', 'braintum-search-for-solr' ) ); ?>
 			</form>
 		</div>
 		<?php
@@ -328,11 +328,11 @@ final class NetworkScreen {
 		$topology = $this->network->topology();
 
 		?>
-		<h2><?php esc_html_e( 'Collections', 'solrengine' ); ?></h2>
+		<h2><?php esc_html_e( 'Collections', 'braintum-search-for-solr' ); ?></h2>
 
 		<table class="form-table" role="presentation">
 			<tr>
-				<th scope="row"><?php esc_html_e( 'How many', 'solrengine' ); ?></th>
+				<th scope="row"><?php esc_html_e( 'How many', 'braintum-search-for-solr' ); ?></th>
 				<td>
 					<p>
 						<label>
@@ -342,11 +342,11 @@ final class NetworkScreen {
 								value="<?php echo esc_attr( NetworkConfig::TOPOLOGY_PER_SITE ); ?>"
 								<?php checked( NetworkConfig::TOPOLOGY_PER_SITE === $topology ); ?>
 							/>
-							<?php esc_html_e( 'One collection per site', 'solrengine' ); ?>
+							<?php esc_html_e( 'One collection per site', 'braintum-search-for-solr' ); ?>
 						</label>
 						<br/>
 						<span class="description">
-							<?php esc_html_e( 'Isolated relevance and configuration, and deleting a site is dropping a collection. A network of several hundred sites means several hundred collections, which strains SolrCloud cluster state.', 'solrengine' ); ?>
+							<?php esc_html_e( 'Isolated relevance and configuration, and deleting a site is dropping a collection. A network of several hundred sites means several hundred collections, which strains SolrCloud cluster state.', 'braintum-search-for-solr' ); ?>
 						</span>
 					</p>
 
@@ -358,11 +358,11 @@ final class NetworkScreen {
 								value="<?php echo esc_attr( NetworkConfig::TOPOLOGY_SHARED ); ?>"
 								<?php checked( NetworkConfig::TOPOLOGY_SHARED === $topology ); ?>
 							/>
-							<?php esc_html_e( 'One collection for the whole network', 'solrengine' ); ?>
+							<?php esc_html_e( 'One collection for the whole network', 'braintum-search-for-solr' ); ?>
 						</label>
 						<br/>
 						<span class="description">
-							<?php esc_html_e( 'One schema to manage and efficient for many small sites. Sites share relevance statistics, and one site reindexing affects the others. Every document already carries its site, and every query already filters on it, so results never cross between sites.', 'solrengine' ); ?>
+							<?php esc_html_e( 'One schema to manage and efficient for many small sites. Sites share relevance statistics, and one site reindexing affects the others. Every document already carries its site, and every query already filters on it, so results never cross between sites.', 'braintum-search-for-solr' ); ?>
 						</span>
 					</p>
 				</td>
@@ -370,12 +370,12 @@ final class NetworkScreen {
 
 			<tr>
 				<th scope="row">
-					<label for="solrengine-pattern"><?php esc_html_e( 'Naming pattern', 'solrengine' ); ?></label>
+					<label for="braintum-search-pattern"><?php esc_html_e( 'Naming pattern', 'braintum-search-for-solr' ); ?></label>
 				</th>
 				<td>
 					<input
 						type="text"
-						id="solrengine-pattern"
+						id="braintum-search-pattern"
 						name="pattern"
 						class="regular-text code"
 						placeholder="wordpress_%d"
@@ -385,13 +385,13 @@ final class NetworkScreen {
 						<?php
 						printf(
 							/* translators: 1: the literal token %d, 2: an example pattern. */
-							esc_html__( 'Used only for one collection per site. %1$s becomes the site ID, so %2$s makes site 7 use wordpress_7. Leave it empty to let each site name its own.', 'solrengine' ),
+							esc_html__( 'Used only for one collection per site. %1$s becomes the site ID, so %2$s makes site 7 use wordpress_7. Leave it empty to let each site name its own.', 'braintum-search-for-solr' ),
 							'<code>%d</code>',
 							'<code>wordpress_%d</code>'
 						);
 						?>
 						<br/>
-						<?php esc_html_e( 'SolrEngine does not create collections here. Create them on your Solr first.', 'solrengine' ); ?>
+						<?php esc_html_e( 'Braintum Search does not create collections here. Create them on your Solr first.', 'braintum-search-for-solr' ); ?>
 					</p>
 				</td>
 			</tr>
@@ -415,24 +415,24 @@ final class NetworkScreen {
 		);
 
 		?>
-		<h2><?php esc_html_e( 'Sites', 'solrengine' ); ?></h2>
+		<h2><?php esc_html_e( 'Sites', 'braintum-search-for-solr' ); ?></h2>
 
 		<p>
-			<?php esc_html_e( 'SolrEngine does nothing on a site until you switch it on here. That is deliberate: switching on four hundred sites at once would start four hundred full indexes against one Solr server. Switch them on in batches, and index each one before moving to the next.', 'solrengine' ); ?>
+			<?php esc_html_e( 'Braintum Search does nothing on a site until you switch it on here. That is deliberate: switching on four hundred sites at once would start four hundred full indexes against one Solr server. Switch them on in batches, and index each one before moving to the next.', 'braintum-search-for-solr' ); ?>
 		</p>
 
 		<?php if ( count( $sites ) >= 500 ) : ?>
 			<p class="description">
-				<?php esc_html_e( 'Showing the first 500 sites. On a larger network, use "wp solrengine network enable" from the command line.', 'solrengine' ); ?>
+				<?php esc_html_e( 'Showing the first 500 sites. On a larger network, use "wp braintum-search network enable" from the command line.', 'braintum-search-for-solr' ); ?>
 			</p>
 		<?php endif; ?>
 
 		<table class="widefat striped" style="max-width:820px">
 			<thead>
 				<tr>
-					<th scope="col" style="width:5em"><?php esc_html_e( 'On', 'solrengine' ); ?></th>
-					<th scope="col" style="width:5em"><?php esc_html_e( 'ID', 'solrengine' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Site', 'solrengine' ); ?></th>
+					<th scope="col" style="width:5em"><?php esc_html_e( 'On', 'braintum-search-for-solr' ); ?></th>
+					<th scope="col" style="width:5em"><?php esc_html_e( 'ID', 'braintum-search-for-solr' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Site', 'braintum-search-for-solr' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -447,7 +447,7 @@ final class NetworkScreen {
 									value="<?php echo esc_attr( (string) $id ); ?>"
 									<?php checked( in_array( $id, $enabled, true ) ); ?>
 								/>
-								<span class="screen-reader-text"><?php esc_html_e( 'Use SolrEngine on this site', 'solrengine' ); ?></span>
+								<span class="screen-reader-text"><?php esc_html_e( 'Use Braintum Search on this site', 'braintum-search-for-solr' ); ?></span>
 							</label>
 						</td>
 						<td><?php echo esc_html( (string) $id ); ?></td>
@@ -477,12 +477,12 @@ final class NetworkScreen {
 		?>
 		<tr>
 			<th scope="row">
-				<label for="solrengine-network-<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?></label>
+				<label for="braintum-search-network-<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?></label>
 			</th>
 			<td>
 				<input
 					type="text"
-					id="solrengine-network-<?php echo esc_attr( $name ); ?>"
+					id="braintum-search-network-<?php echo esc_attr( $name ); ?>"
 					name="<?php echo esc_attr( $name ); ?>"
 					class="regular-text code"
 					value="<?php echo esc_attr( is_scalar( $value ) ? (string) $value : '' ); ?>"
@@ -492,7 +492,7 @@ final class NetworkScreen {
 				<p class="description">
 					<?php echo esc_html( $description ); ?>
 					<?php if ( $constant ) : ?>
-						<br/><strong><?php esc_html_e( 'Set in wp-config.php, which overrides this and every site.', 'solrengine' ); ?></strong>
+						<br/><strong><?php esc_html_e( 'Set in wp-config.php, which overrides this and every site.', 'braintum-search-for-solr' ); ?></strong>
 					<?php endif; ?>
 				</p>
 			</td>
@@ -545,7 +545,7 @@ final class NetworkScreen {
 				<?php checked( $this->network->is_pinned( $path ) ); ?>
 				<?php disabled( $constant ); ?>
 			/>
-			<?php esc_html_e( 'Sites cannot change this', 'solrengine' ); ?>
+			<?php esc_html_e( 'Sites cannot change this', 'braintum-search-for-solr' ); ?>
 		</label>
 		<?php
 	}
@@ -557,11 +557,11 @@ final class NetworkScreen {
 	 */
 	private function render_notice(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only display of a redirect flag.
-		$notice = isset( $_GET['solrengine_notice'] ) ? sanitize_key( wp_unslash( $_GET['solrengine_notice'] ) ) : '';
+		$notice = isset( $_GET['braintum_search_notice'] ) ? sanitize_key( wp_unslash( $_GET['braintum_search_notice'] ) ) : '';
 
 		if ( 'saved' === $notice ) {
 			echo '<div class="notice notice-success is-dismissible"><p>'
-				. esc_html__( 'Network settings saved.', 'solrengine' )
+				. esc_html__( 'Network settings saved.', 'braintum-search-for-solr' )
 				. '</p></div>';
 
 			return;
@@ -569,7 +569,7 @@ final class NetworkScreen {
 
 		if ( 'credentials_failed' === $notice ) {
 			echo '<div class="notice notice-error is-dismissible"><p>'
-				. esc_html__( 'The settings were saved, but the password could not be stored securely. Set SOLRENGINE_SOLR_USER and SOLRENGINE_SOLR_PASSWORD in wp-config.php instead.', 'solrengine' )
+				. esc_html__( 'The settings were saved, but the password could not be stored securely. Set BRAINTUM_SEARCH_SOLR_USER and BRAINTUM_SEARCH_SOLR_PASSWORD in wp-config.php instead.', 'braintum-search-for-solr' )
 				. '</p></div>';
 		}
 	}

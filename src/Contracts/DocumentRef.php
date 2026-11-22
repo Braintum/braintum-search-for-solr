@@ -2,10 +2,10 @@
 /**
  * Stable reference to one indexed object.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Identifies one indexable object without carrying its content.

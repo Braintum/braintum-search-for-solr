@@ -2,12 +2,12 @@
 /**
  * Request-scoped set of objects that need reindexing.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Contracts\DocumentRef;
+use BraintumSearch\Contracts\DocumentRef;
 
 /**
  * Collects what changed during this request, once per object.

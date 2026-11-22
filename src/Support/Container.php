@@ -2,10 +2,10 @@
 /**
  * Service container.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
 use RuntimeException;
 
@@ -52,7 +52,7 @@ final class Container {
 	 *
 	 * The factory runs at most once, on first resolution. Registering does not
 	 * construct anything, which is what keeps a page load that never touches
-	 * SolrEngine free of SolrEngine's cost.
+	 * Braintum Search free of Braintum Search's cost.
 	 *
 	 * @since 0.1.0
 	 *
@@ -108,13 +108,13 @@ final class Container {
 		// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Internal developer diagnostic, never rendered; the container must not need WordPress loaded.
 		if ( ! isset( $this->factories[ $id ] ) ) {
 			throw new RuntimeException(
-				sprintf( 'SolrEngine: no service registered for "%s".', $id )
+				sprintf( 'Braintum Search: no service registered for "%s".', $id )
 			);
 		}
 
 		if ( isset( $this->resolving[ $id ] ) ) {
 			throw new RuntimeException(
-				sprintf( 'SolrEngine: circular dependency while resolving "%s".', $id )
+				sprintf( 'Braintum Search: circular dependency while resolving "%s".', $id )
 			);
 		}
 		// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped

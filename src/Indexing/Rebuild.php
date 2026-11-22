@@ -2,17 +2,17 @@
 /**
  * Zero-downtime index rebuild.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Backend\Solr\CollectionName;
-use SolrEngine\Contracts\LifecycleBackend;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Support\Config;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Backend\Solr\CollectionName;
+use BraintumSearch\Contracts\LifecycleBackend;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Support\Config;
 
 /**
  * Builds a replacement index beside the live one, then switches to it.
@@ -49,7 +49,7 @@ final class Rebuild {
 	 *
 	 * @var string
 	 */
-	public const OPTION = 'solrengine_rebuild';
+	public const OPTION = 'braintum_search_rebuild';
 
 	/**
 	 * Channel the rebuild's synchronisation runs on.
@@ -156,7 +156,7 @@ final class Rebuild {
 		if ( null === $lifecycle ) {
 			return Result::failure(
 				'unsupported',
-				__( 'This backend cannot build a replacement index. Use a full reindex instead.', 'solrengine' )
+				__( 'This backend cannot build a replacement index. Use a full reindex instead.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -165,7 +165,7 @@ final class Rebuild {
 		if ( LifecycleBackend::STYLE_NONE === $style ) {
 			return Result::failure(
 				'unsupported',
-				__( 'SolrEngine could not work out how to build a replacement index on this server. Use a full reindex instead.', 'solrengine' )
+				__( 'Braintum Search could not work out how to build a replacement index on this server. Use a full reindex instead.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -185,7 +185,7 @@ final class Rebuild {
 				// cluster are ordinary, and a failed listing must not be read
 				// as "there are no indexes".
 				'listed'     => $existing->is_ok(),
-				// Whether SolrEngine can make the index itself, or has to be
+				// Whether Braintum Search can make the index itself, or has to be
 				// given the name of one that exists. The admin screen asks a
 				// different question in each case.
 				'can_create' => $lifecycle->can_create_indexes(),
@@ -208,7 +208,7 @@ final class Rebuild {
 		if ( null !== $state && in_array( $state['state'], array( 'building', 'ready' ), true ) ) {
 			return Result::failure(
 				'already_running',
-				__( 'A rebuild is already under way. Finish or discard it first.', 'solrengine' )
+				__( 'A rebuild is already under way. Finish or discard it first.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -222,7 +222,7 @@ final class Rebuild {
 		$lifecycle = $this->backends->lifecycle();
 
 		if ( null === $lifecycle ) {
-			return Result::failure( 'unsupported', __( 'This backend cannot build a replacement index.', 'solrengine' ) );
+			return Result::failure( 'unsupported', __( 'This backend cannot build a replacement index.', 'braintum-search-for-solr' ) );
 		}
 
 		if ( LifecycleBackend::STYLE_POINTER === $plan['style'] && (bool) $plan['pinned'] ) {
@@ -232,7 +232,7 @@ final class Rebuild {
 			// run for an hour and then have nowhere to go.
 			return Result::failure(
 				'pinned',
-				__( 'Your collection name is set in wp-config.php, and on this server switching over means changing it. Remove SOLRENGINE_SOLR_COLLECTION, or switch by editing that file once the new index is built.', 'solrengine' )
+				__( 'Your collection name is set in wp-config.php, and on this server switching over means changing it. Remove BRAINTUM_SEARCH_SOLR_COLLECTION, or switch by editing that file once the new index is built.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -246,15 +246,15 @@ final class Rebuild {
 				// would index into something somebody may still be reading.
 				return Result::failure(
 					'cannot_list',
-					__( 'SolrEngine could not list the indexes on your Solr, so it cannot choose a safe name for a new one. Name one yourself, or give SolrEngine credentials that can read the cluster.', 'solrengine' )
+					__( 'Braintum Search could not list the indexes on your Solr, so it cannot choose a safe name for a new one. Name one yourself, or give Braintum Search credentials that can read the cluster.', 'braintum-search-for-solr' )
 				);
 			}
 		} elseif ( ! CollectionName::is_valid( $target ) ) {
-			return Result::failure( 'invalid_target', __( 'That is not a usable index name.', 'solrengine' ) );
+			return Result::failure( 'invalid_target', __( 'That is not a usable index name.', 'braintum-search-for-solr' ) );
 		} elseif ( $target === (string) $plan['resolved'] || $target === (string) $plan['live'] ) {
 			return Result::failure(
 				'target_is_live',
-				__( 'That is the index already serving searches. A rebuild has to write somewhere else — that is what makes it safe.', 'solrengine' )
+				__( 'That is the index already serving searches. A rebuild has to write somewhere else — that is what makes it safe.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -270,7 +270,7 @@ final class Rebuild {
 					'no_such_index',
 					sprintf(
 						/* translators: %s: index name. */
-						__( 'There is no core called "%s" on your Solr, and SolrEngine cannot create one on a server that is not running SolrCloud. Create it there first.', 'solrengine' ),
+						__( 'There is no core called "%s" on your Solr, and Braintum Search cannot create one on a server that is not running SolrCloud. Create it there first.', 'braintum-search-for-solr' ),
 						$target
 					)
 				);
@@ -284,7 +284,7 @@ final class Rebuild {
 					$made->code(),
 					sprintf(
 						/* translators: 1: index name, 2: reason from the server. */
-						__( 'SolrEngine could not create "%1$s". %2$s', 'solrengine' ),
+						__( 'Braintum Search could not create "%1$s". %2$s', 'braintum-search-for-solr' ),
 						$target,
 						$made->message()
 					)
@@ -297,7 +297,7 @@ final class Rebuild {
 		if ( ! $sync instanceof FullSync ) {
 			return Result::failure(
 				'no_backend',
-				__( 'SolrEngine could not reach that index. Check the name and the connection.', 'solrengine' )
+				__( 'Braintum Search could not reach that index. Check the name and the connection.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -382,13 +382,13 @@ final class Rebuild {
 		$state = $this->state();
 
 		if ( null === $state ) {
-			return Result::failure( 'no_rebuild', __( 'No rebuild is in progress.', 'solrengine' ) );
+			return Result::failure( 'no_rebuild', __( 'No rebuild is in progress.', 'braintum-search-for-solr' ) );
 		}
 
 		$sync = ( $this->sync_factory )( (string) $state['target'] );
 
 		if ( ! $sync instanceof FullSync ) {
-			return Result::failure( 'no_backend', __( 'SolrEngine cannot reach the new index.', 'solrengine' ) );
+			return Result::failure( 'no_backend', __( 'Braintum Search cannot reach the new index.', 'braintum-search-for-solr' ) );
 		}
 
 		$run = $sync->state();
@@ -396,10 +396,10 @@ final class Rebuild {
 		if ( null === $run || 'complete' !== $run['state'] ) {
 			$state['state']   = 'building';
 			$state['message'] = null === $run
-				? __( 'Indexing has not started.', 'solrengine' )
+				? __( 'Indexing has not started.', 'braintum-search-for-solr' )
 				: sprintf(
 					/* translators: 1: run state, 2: processed count. */
-					__( 'Indexing is %1$s — %2$s objects so far.', 'solrengine' ),
+					__( 'Indexing is %1$s — %2$s objects so far.', 'braintum-search-for-solr' ),
 					(string) $run['state'],
 					number_format_i18n( (int) $run['processed'] )
 				);
@@ -412,7 +412,7 @@ final class Rebuild {
 		$lifecycle = $this->backends->lifecycle();
 
 		if ( null === $lifecycle ) {
-			return Result::failure( 'unsupported', __( 'This backend cannot verify a replacement index.', 'solrengine' ) );
+			return Result::failure( 'unsupported', __( 'This backend cannot verify a replacement index.', 'braintum-search-for-solr' ) );
 		}
 
 		$counted = $lifecycle->count_documents( (string) $state['target'] );
@@ -435,7 +435,7 @@ final class Rebuild {
 			$state['state']   = 'building';
 			$state['message'] = sprintf(
 				/* translators: 1: documents found, 2: documents expected. */
-				__( 'The new index holds %1$s documents and should hold about %2$s. Solr makes writes visible about a minute after they are sent, so check again shortly; if the number stays low, look at the failures in the run history.', 'solrengine' ),
+				__( 'The new index holds %1$s documents and should hold about %2$s. Solr makes writes visible about a minute after they are sent, so check again shortly; if the number stays low, look at the failures in the run history.', 'braintum-search-for-solr' ),
 				number_format_i18n( $actual ),
 				number_format_i18n( $expected )
 			);
@@ -457,7 +457,7 @@ final class Rebuild {
 		$state = $this->state();
 
 		if ( null === $state ) {
-			return Result::failure( 'no_rebuild', __( 'No rebuild is in progress.', 'solrengine' ) );
+			return Result::failure( 'no_rebuild', __( 'No rebuild is in progress.', 'braintum-search-for-solr' ) );
 		}
 
 		if ( 'ready' !== $state['state'] ) {
@@ -466,7 +466,7 @@ final class Rebuild {
 			// mechanism exists to prevent.
 			return Result::failure(
 				'not_verified',
-				__( 'The new index has not been verified yet. Check it first — switching an incomplete index is exactly what building alongside is meant to avoid.', 'solrengine' )
+				__( 'The new index has not been verified yet. Check it first — switching an incomplete index is exactly what building alongside is meant to avoid.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -476,7 +476,7 @@ final class Rebuild {
 			$lifecycle = $this->backends->lifecycle();
 
 			if ( null === $lifecycle ) {
-				return Result::failure( 'unsupported', __( 'This backend cannot switch indexes.', 'solrengine' ) );
+				return Result::failure( 'unsupported', __( 'This backend cannot switch indexes.', 'braintum-search-for-solr' ) );
 			}
 
 			$pointed = $lifecycle->point_index( (string) $state['live'], $target );
@@ -485,13 +485,13 @@ final class Rebuild {
 				return $pointed;
 			}
 		} elseif ( ! $this->config->set( 'connection.collection', $target ) ) {
-			// The pointer strategy: SolrEngine changes which collection it is
+			// The pointer strategy: Braintum Search changes which collection it is
 			// configured with. Reversible from WordPress, and it avoids a Solr
 			// operation whose safety varies by deployment mode. It can only fail
 			// one way, which is the collection being pinned in wp-config.php.
 			return Result::failure(
 				'pinned',
-				__( 'The collection name could not be changed, because it is set in wp-config.php.', 'solrengine' )
+				__( 'The collection name could not be changed, because it is set in wp-config.php.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -521,7 +521,7 @@ final class Rebuild {
 		 * @param string              $target   Index now serving searches.
 		 * @param array<string,mixed> $state    Final rebuild state.
 		 */
-		do_action( 'solrengine_rebuild_switched', $target, $state );
+		do_action( 'braintum_search_rebuild_switched', $target, $state );
 
 		return Result::success( $state );
 	}
@@ -529,7 +529,7 @@ final class Rebuild {
 	/**
 	 * Abandon a rebuild.
 	 *
-	 * Deletes the replacement index only when SolrEngine created it and it is
+	 * Deletes the replacement index only when Braintum Search created it and it is
 	 * not serving searches. An index an administrator named is theirs, and one
 	 * this plugin made is rubbish it should clear up — but neither judgement is
 	 * worth making about an index somebody might be looking at.
@@ -542,13 +542,13 @@ final class Rebuild {
 		$state = $this->state();
 
 		if ( null === $state ) {
-			return Result::failure( 'no_rebuild', __( 'No rebuild is in progress.', 'solrengine' ) );
+			return Result::failure( 'no_rebuild', __( 'No rebuild is in progress.', 'braintum-search-for-solr' ) );
 		}
 
 		if ( 'switched' === $state['state'] ) {
 			return Result::failure(
 				'already_switched',
-				__( 'That rebuild is already serving searches. It cannot be discarded.', 'solrengine' )
+				__( 'That rebuild is already serving searches. It cannot be discarded.', 'braintum-search-for-solr' )
 			);
 		}
 
@@ -578,7 +578,7 @@ final class Rebuild {
 				'orphaned',
 				sprintf(
 					/* translators: 1: index name, 2: reason from the server. */
-					__( 'The rebuild was discarded, but "%1$s" could not be deleted and is still on your server. %2$s', 'solrengine' ),
+					__( 'The rebuild was discarded, but "%1$s" could not be deleted and is still on your server. %2$s', 'braintum-search-for-solr' ),
 					(string) $state['target'],
 					$dropped->message()
 				)
@@ -605,19 +605,19 @@ final class Rebuild {
 		$state = $this->state();
 
 		if ( null === $state || 'switched' !== $state['state'] ) {
-			return Result::failure( 'nothing_to_drop', __( 'There is no previous index to remove.', 'solrengine' ) );
+			return Result::failure( 'nothing_to_drop', __( 'There is no previous index to remove.', 'braintum-search-for-solr' ) );
 		}
 
 		$previous = (string) $state['previous'];
 
 		if ( '' === $previous || $previous === (string) $state['target'] ) {
-			return Result::failure( 'nothing_to_drop', __( 'There is no previous index to remove.', 'solrengine' ) );
+			return Result::failure( 'nothing_to_drop', __( 'There is no previous index to remove.', 'braintum-search-for-solr' ) );
 		}
 
 		$lifecycle = $this->backends->lifecycle();
 
 		if ( null === $lifecycle ) {
-			return Result::failure( 'unsupported', __( 'This backend cannot delete indexes.', 'solrengine' ) );
+			return Result::failure( 'unsupported', __( 'This backend cannot delete indexes.', 'braintum-search-for-solr' ) );
 		}
 
 		$dropped = $lifecycle->drop_index( $previous );

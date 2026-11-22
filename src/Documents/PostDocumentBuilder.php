@@ -2,17 +2,17 @@
 /**
  * Builds documents from WordPress posts.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Documents;
+namespace BraintumSearch\Documents;
 
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Language\Languages;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Language\Languages;
+use BraintumSearch\Language\LanguageTag;
 use WP_Post;
 use WP_Term;
 
@@ -112,7 +112,7 @@ final class PostDocumentBuilder {
 		 * @param Result  $verdict Whether to index, and why not if not.
 		 * @param WP_Post $post    The post being considered.
 		 */
-		$verdict = apply_filters( 'solrengine_should_index_object', $verdict, $post );
+		$verdict = apply_filters( 'braintum_search_should_index_object', $verdict, $post );
 
 		return $verdict instanceof Result ? $verdict : Result::success();
 	}
@@ -170,7 +170,7 @@ final class PostDocumentBuilder {
 		$this->add_taxonomies( $fields, $post );
 		$this->add_meta( $fields, $post );
 
-		$this->set( $fields, DocumentFields::SCHEMA_VERSION, FieldType::INT, SOLRENGINE_SCHEMA_CONTRACT_VERSION );
+		$this->set( $fields, DocumentFields::SCHEMA_VERSION, FieldType::INT, BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION );
 		$this->set( $fields, DocumentFields::INDEXED_AT, FieldType::DATE, time() );
 
 		$document = new Document( $ref, $fields );
@@ -178,7 +178,7 @@ final class PostDocumentBuilder {
 		/**
 		 * Filters a document immediately before it is queued for indexing.
 		 *
-		 * The primary customisation point. Field names must follow SolrEngine's
+		 * The primary customisation point. Field names must follow Braintum Search's
 		 * conventions, since anything else has no dynamic field to land in and
 		 * will be rejected by the backend.
 		 *
@@ -187,11 +187,11 @@ final class PostDocumentBuilder {
 		 * @param Document $document The built document.
 		 * @param WP_Post  $post     The post it was built from.
 		 */
-		$document = apply_filters( 'solrengine_document', $document, $post );
+		$document = apply_filters( 'braintum_search_document', $document, $post );
 
 		return $document instanceof Document
 			? Result::success( $document )
-			: Result::failure( 'filter_returned_non_document', 'A solrengine_document filter returned something that is not a Document.' );
+			: Result::failure( 'filter_returned_non_document', 'A braintum_search_document filter returned something that is not a Document.' );
 	}
 
 	/**

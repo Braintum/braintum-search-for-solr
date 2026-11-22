@@ -2,8 +2,8 @@
 /**
  * Verify that every declared version agrees.
  *
- * Five declarations must agree: the plugin header in solrengine.php, the
- * SOLRENGINE_VERSION constant in constants.php, the readme.txt stable tag, and
+ * Five declarations must agree: the plugin header in braintum-search-for-solr.php, the
+ * BRAINTUM_SEARCH_VERSION constant in constants.php, the readme.txt stable tag, and
  * the version in package.json and at the root of package-lock.json. The last
  * two do not ship, but a build stamped with a stale version is how a release
  * ends up described as something it is not.
@@ -17,14 +17,14 @@
  *
  * Usage: php bin/check-version.php
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
 $root = dirname( __DIR__ );
 
-$plugin_src = (string) file_get_contents( $root . '/solrengine.php' );
+$plugin_src = (string) file_get_contents( $root . '/braintum-search-for-solr.php' );
 $constants  = (string) file_get_contents( $root . '/constants.php' );
 $readme     = (string) file_get_contents( $root . '/readme.txt' );
 $package    = json_decode( (string) file_get_contents( $root . '/package.json' ), true );
@@ -36,8 +36,8 @@ if ( preg_match( '/^\s*\*\s*Version:\s*(\S+)\s*$/m', $plugin_src, $m ) ) {
 	$found['plugin header'] = $m[1];
 }
 
-if ( preg_match( "/define\(\s*'SOLRENGINE_VERSION',\s*'([^']+)'\s*\)/", $constants, $m ) ) {
-	$found['SOLRENGINE_VERSION'] = $m[1];
+if ( preg_match( "/define\(\s*'BRAINTUM_SEARCH_VERSION',\s*'([^']+)'\s*\)/", $constants, $m ) ) {
+	$found['BRAINTUM_SEARCH_VERSION'] = $m[1];
 }
 
 if ( preg_match( '/^Stable tag:\s*(\S+)\s*$/m', $readme, $m ) ) {
@@ -52,7 +52,7 @@ if ( is_array( $lock ) && isset( $lock['version'] ) ) {
 	$found['package-lock.json'] = (string) $lock['version'];
 }
 
-$expected = array( 'plugin header', 'SOLRENGINE_VERSION', 'readme stable tag', 'package.json', 'package-lock.json' );
+$expected = array( 'plugin header', 'BRAINTUM_SEARCH_VERSION', 'readme stable tag', 'package.json', 'package-lock.json' );
 $missing  = array_diff( $expected, array_keys( $found ) );
 
 if ( array() !== $missing ) {

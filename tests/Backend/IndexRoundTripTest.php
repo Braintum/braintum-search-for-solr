@@ -11,25 +11,25 @@
  * posts, because what is under test here is the contract between the document
  * shape and the index, not WordPress's data model.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Backend;
+namespace BraintumSearch\Tests\Backend;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
 
 /**
- * @covers \SolrEngine\Contracts\Document
- * @covers \SolrEngine\Documents\DocumentFields
+ * @covers \BraintumSearch\Contracts\Document
+ * @covers \BraintumSearch\Documents\DocumentFields
  */
 final class IndexRoundTripTest extends TestCase {
 
@@ -48,7 +48,7 @@ final class IndexRoundTripTest extends TestCase {
 	private static $collection = '';
 
 	public static function setUpBeforeClass(): void {
-		$base = getenv( 'SOLRENGINE_TEST_SOLR_URL' );
+		$base = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_URL' );
 
 		if ( ! is_string( $base ) || '' === $base ) {
 			return;
@@ -56,7 +56,7 @@ final class IndexRoundTripTest extends TestCase {
 
 		self::$base = rtrim( $base, '/' );
 
-		$collection = getenv( 'SOLRENGINE_TEST_SOLR_COLLECTION' );
+		$collection = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_COLLECTION' );
 
 		self::$collection = is_string( $collection ) && '' !== $collection ? $collection : 'wordpress';
 
@@ -72,7 +72,7 @@ final class IndexRoundTripTest extends TestCase {
 
 	protected function setUp(): void {
 		if ( '' === self::$base ) {
-			$this->markTestSkipped( 'Set SOLRENGINE_TEST_SOLR_URL to run backend tests.' );
+			$this->markTestSkipped( 'Set BRAINTUM_SEARCH_TEST_SOLR_URL to run backend tests.' );
 		}
 	}
 

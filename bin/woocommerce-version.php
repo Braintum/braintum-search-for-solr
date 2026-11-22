@@ -10,7 +10,7 @@
  *
  * Usage: php bin/woocommerce-version.php latest|previous
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
@@ -43,7 +43,7 @@ if ( 'latest' === $which ) {
  * @param string $version Version.
  * @return string
  */
-function solrengine_minor( string $version ): string {
+function braintum_search_minor( string $version ): string {
 	return implode( '.', array_slice( explode( '.', $version ), 0, 2 ) );
 }
 
@@ -52,7 +52,7 @@ $earlier = array_filter(
 	static function ( string $version ) use ( $latest ): bool {
 		// Stable releases only: no betas, release candidates or "trunk".
 		return 1 === preg_match( '/^\d+\.\d+\.\d+$/', $version )
-			&& version_compare( solrengine_minor( $version ), solrengine_minor( $latest ), '<' );
+			&& version_compare( braintum_search_minor( $version ), braintum_search_minor( $latest ), '<' );
 	}
 );
 

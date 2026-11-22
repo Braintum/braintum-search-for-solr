@@ -33,7 +33,7 @@ the same language packs as the PHP strings.
 
 Its markup is not in the script. `templates/` holds PHP templates a theme can
 override; they are rendered into `<template>` elements once per page and the
-script fills copies. Change a `data-solrengine-*` attribute in one and the script
+script fills copies. Change a `data-braintum-search-*` attribute in one and the script
 must change with it — those attributes are public API.
 
 ### Formatting

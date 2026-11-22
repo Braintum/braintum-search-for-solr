@@ -16,11 +16,11 @@
 # point is that the next edit fixes it. Anything outside the plugin, and
 # anything vendored or built, is ignored.
 #
-# Set SOLRENGINE_HOOK_SKIP=1 in the environment to switch it off.
+# Set BRAINTUM_SEARCH_HOOK_SKIP=1 in the environment to switch it off.
 
 set -u
 
-[ "${SOLRENGINE_HOOK_SKIP:-}" = "1" ] && exit 0
+[ "${BRAINTUM_SEARCH_HOOK_SKIP:-}" = "1" ] && exit 0
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd -P)"
 
@@ -81,19 +81,19 @@ case "$rel" in
 
 		# phpcs.xml.dist lists the checked paths; a file outside them is not linted.
 		case "$rel" in
-			solrengine.php | uninstall.php | src/* | templates/* | tests/* | bin/*)
+			braintum-search-for-solr.php | uninstall.php | src/* | templates/* | tests/* | bin/*)
 				run "phpcs" vendor/bin/phpcs -q --report=emacs "$rel"
 				;;
 		esac
 
 		case "$rel" in
-			solrengine.php | uninstall.php | src/* | templates/*)
+			braintum-search-for-solr.php | uninstall.php | src/* | templates/*)
 				run "direct-access guard" php bin/check-direct-access.php
 				;;
 		esac
 
 		case "$rel" in
-			solrengine.php | uninstall.php | src/*)
+			braintum-search-for-solr.php | uninstall.php | src/*)
 				run "phpstan" vendor/bin/phpstan analyse --no-progress --error-format=raw --memory-limit=1G "$rel"
 				run "unit tests" unit_tests
 				run "hook reference (run: composer hooks)" php bin/generate-hooks.php --check

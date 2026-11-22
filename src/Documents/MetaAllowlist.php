@@ -2,13 +2,13 @@
 /**
  * Which post meta keys may be indexed.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Documents;
+namespace BraintumSearch\Documents;
 
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\Result;
 
 /**
  * The set of meta keys an administrator has chosen to index, with their types.
@@ -77,7 +77,7 @@ final class MetaAllowlist {
 		$key = trim( $key );
 
 		if ( '' === $key ) {
-			return Result::failure( 'empty_key', __( 'A meta key cannot be empty.', 'solrengine' ) );
+			return Result::failure( 'empty_key', __( 'A meta key cannot be empty.', 'braintum-search-for-solr' ) );
 		}
 
 		if ( ! FieldType::is_valid( $type ) ) {
@@ -85,7 +85,7 @@ final class MetaAllowlist {
 				'bad_type',
 				sprintf(
 					/* translators: %s: the type that was given. */
-					__( '"%s" is not a field type SolrEngine understands.', 'solrengine' ),
+					__( '"%s" is not a field type Braintum Search understands.', 'braintum-search-for-solr' ),
 					$type
 				)
 			);
@@ -102,7 +102,7 @@ final class MetaAllowlist {
 				'field_collision',
 				sprintf(
 					/* translators: 1: meta key being added, 2: meta key already present. */
-					__( '"%1$s" would use the same index field as "%2$s". Rename one of them.', 'solrengine' ),
+					__( '"%1$s" would use the same index field as "%2$s". Rename one of them.', 'braintum-search-for-solr' ),
 					$key,
 					$this->by_field[ $field ]
 				)

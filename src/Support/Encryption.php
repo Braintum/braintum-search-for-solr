@@ -2,12 +2,12 @@
 /**
  * Symmetric encryption for stored secrets.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\Result;
 
 /**
  * Encrypts values at rest using a key derived from the site's salts.

@@ -2,10 +2,10 @@
 /**
  * Network-level configuration.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Multisite;
+namespace BraintumSearch\Multisite;
 
 /**
  * Configuration a network administrator sets once for every site.
@@ -40,14 +40,14 @@ final class NetworkConfig {
 	 *
 	 * @var string
 	 */
-	public const OPTION_VALUES = 'solrengine_network_connection';
+	public const OPTION_VALUES = 'braintum_search_network_connection';
 
 	/**
 	 * Network option holding pins, enabled sites and topology.
 	 *
 	 * @var string
 	 */
-	public const OPTION_STATE = 'solrengine_network_state';
+	public const OPTION_STATE = 'braintum_search_network_state';
 
 	/**
 	 * One collection per site. The default, per §10.2.
@@ -200,7 +200,7 @@ final class NetworkConfig {
 	 * cluster.
 	 *
 	 * The opt-in applies only to a **network activation**, which is the thing it
-	 * exists to restrain. A site administrator who activated SolrEngine on their
+	 * exists to restrain. A site administrator who activated Braintum Search on their
 	 * own site has already opted in, by doing that — and requiring a second
 	 * consent from a network screen that only exists for network-activated
 	 * plugins would leave them with a plugin that does nothing and no way to
@@ -225,7 +225,7 @@ final class NetworkConfig {
 	/**
 	 * Whether sites in this network have to be switched on individually.
 	 *
-	 * True only when SolrEngine is activated for the whole network.
+	 * True only when Braintum Search is activated for the whole network.
 	 *
 	 * Read from the network option rather than through
 	 * `is_plugin_active_for_network()`, which lives in wp-admin and is not loaded
@@ -246,7 +246,7 @@ final class NetworkConfig {
 			return false;
 		}
 
-		return isset( $active[ plugin_basename( SOLRENGINE_PLUGIN_FILE ) ] );
+		return isset( $active[ plugin_basename( BRAINTUM_SEARCH_PLUGIN_FILE ) ] );
 	}
 
 	/**

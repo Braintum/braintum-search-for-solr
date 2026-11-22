@@ -2,10 +2,10 @@
 /**
  * A validated Solr endpoint.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Solr;
+namespace BraintumSearch\Backend\Solr;
 
 /**
  * Where Solr is, in a form that cannot be malformed.

@@ -2,12 +2,12 @@
 /**
  * Sends Solr requests through the WordPress HTTP API.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Solr;
+namespace BraintumSearch\Backend\Solr;
 
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\Result;
 
 /**
  * The default sender, and the one to prefer wherever it is available.

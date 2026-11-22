@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  SolrEngine managed schema.
+  Braintum Search managed schema.
 
   GENERATED FILE. The field definitions below come from
-  SolrEngine\Schema\ContractRegistry, which is the same source that drives the
+  BraintumSearch\Schema\ContractRegistry, which is the same source that drives the
   Schema API plan and the export shown in wp-admin. Regenerate with:
 
-      wp solrengine schema export
+      wp braintum-search schema export
 
   Editing this by hand is fine for your own additions, but changes to the "se_"
   fields will be reported as drift by the connection diagnostic.
@@ -14,7 +14,7 @@
   Licensed under the Apache License, Version 2.0, matching Apache Solr's own
   example configsets from which the field types below are taken.
 -->
-<schema name="solrengine" version="1.6">
+<schema name="braintum-search-for-solr" version="1.6">
 
   <uniqueKey>id</uniqueKey>
 
@@ -54,7 +54,7 @@
   <!-- =====================================================================
        Language analysers.
 
-       One per language, used by SolrEngine's per-language analysed fields
+       One per language, used by Braintum Search's per-language analysed fields
        (se_txten_*, se_txtde_*, and so on). A language listed here can be
        analysed properly: German compounds are normalised, English words are
        stemmed, Turkish is lower-cased by the rules Turkish actually uses
@@ -62,8 +62,8 @@
 
        These are field TYPES only. The fields that use them are added per site,
        because which languages a site publishes in is that site's business:
-       enable them under SolrEngine -> Search, or run
-       "wp solrengine schema apply". A language with no type here is still
+       enable them under Braintum Search -> Search, or run
+       "wp braintum-search schema apply". A language with no type here is still
        indexed and still searchable through the language-neutral fields; the
        only thing it loses is stemming.
 
@@ -301,11 +301,11 @@
   </fieldType>
 
   <!-- =====================================================================
-       SolrEngine fields.
+       Braintum Search fields.
        ===================================================================== -->
 
   <!--
-    SolrEngine schema contract version 1.
+    Braintum Search schema contract version 1.
   
     Paste these into your managed-schema or schema.xml, inside <schema>.
     Every name is prefixed "se_" so nothing here can collide with fields

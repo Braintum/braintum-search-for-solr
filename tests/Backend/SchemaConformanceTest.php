@@ -11,27 +11,27 @@
  * scheme was built on that gap and was unimplementable. A test that applies the
  * real contract to a real server is what stops that recurring.
  *
- * Needs no WordPress. Skips unless SOLRENGINE_TEST_SOLR_URL is set:
+ * Needs no WordPress. Skips unless BRAINTUM_SEARCH_TEST_SOLR_URL is set:
  *
  *     docker run --rm -p 8983:8983 solr:10 solr-precreate conformance
- *     SOLRENGINE_TEST_SOLR_URL=http://127.0.0.1:8983/solr \
- *     SOLRENGINE_TEST_SUITE=backend vendor/bin/phpunit --testsuite backend
+ *     BRAINTUM_SEARCH_TEST_SOLR_URL=http://127.0.0.1:8983/solr \
+ *     BRAINTUM_SEARCH_TEST_SUITE=backend vendor/bin/phpunit --testsuite backend
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Backend;
+namespace BraintumSearch\Tests\Backend;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
 
 /**
- * @covers \SolrEngine\Schema\ContractRegistry
- * @covers \SolrEngine\Contracts\SchemaContract
+ * @covers \BraintumSearch\Schema\ContractRegistry
+ * @covers \BraintumSearch\Contracts\SchemaContract
  */
 final class SchemaConformanceTest extends TestCase {
 
@@ -50,7 +50,7 @@ final class SchemaConformanceTest extends TestCase {
 	private static $collection = '';
 
 	public static function setUpBeforeClass(): void {
-		$base = getenv( 'SOLRENGINE_TEST_SOLR_URL' );
+		$base = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_URL' );
 
 		if ( ! is_string( $base ) || '' === $base ) {
 			return;
@@ -65,14 +65,14 @@ final class SchemaConformanceTest extends TestCase {
 		 * root does not see. Precreating is the documented way to start Solr
 		 * anyway, so the test asks for a core rather than inventing one.
 		 */
-		$collection = getenv( 'SOLRENGINE_TEST_SOLR_COLLECTION' );
+		$collection = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_COLLECTION' );
 
 		self::$collection = is_string( $collection ) && '' !== $collection ? $collection : 'wordpress';
 	}
 
 	protected function setUp(): void {
 		if ( '' === self::$base ) {
-			$this->markTestSkipped( 'Set SOLRENGINE_TEST_SOLR_URL to run backend tests.' );
+			$this->markTestSkipped( 'Set BRAINTUM_SEARCH_TEST_SOLR_URL to run backend tests.' );
 		}
 	}
 
@@ -134,7 +134,7 @@ final class SchemaConformanceTest extends TestCase {
 	/**
 	 * Read the live schema through the same parser production uses.
 	 */
-	private function live_state(): \SolrEngine\Contracts\SchemaState {
+	private function live_state(): \BraintumSearch\Contracts\SchemaState {
 		return ( new SchemaStateFactory() )->from_response( $this->get( '/schema' ), true );
 	}
 

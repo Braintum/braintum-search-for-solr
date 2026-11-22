@@ -6,39 +6,39 @@
  * returns, so these tests are the contract the browser relies on: the shape of
  * the body, which tab counts appear, and what a price means.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\Breaker;
-use SolrEngine\Contracts\Cache;
-use SolrEngine\Contracts\Capabilities;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\FacetBucket;
-use SolrEngine\Contracts\FacetResult;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Contracts\SearchHit;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Contracts\Viewer;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\InstantResults;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Support\NullLogger;
+use BraintumSearch\Contracts\Breaker;
+use BraintumSearch\Contracts\Cache;
+use BraintumSearch\Contracts\Capabilities;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\FacetBucket;
+use BraintumSearch\Contracts\FacetResult;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Contracts\SearchHit;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Contracts\Viewer;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\InstantResults;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Support\NullLogger;
 
 /**
- * @covers \SolrEngine\Search\InstantResults
+ * @covers \BraintumSearch\Search\InstantResults
  */
 final class InstantResultsTest extends TestCase {
 

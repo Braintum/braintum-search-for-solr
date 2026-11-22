@@ -6,18 +6,18 @@
  * "somebody changed it last week". Without that distinction the first symptom of
  * an edited schema is indexing failing for reasons no error message explains.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Schema\AppliedSchema;
+use BraintumSearch\Schema\AppliedSchema;
 
 /**
- * @covers \SolrEngine\Schema\AppliedSchema
+ * @covers \BraintumSearch\Schema\AppliedSchema
  */
 final class AppliedSchemaTest extends TestCase {
 

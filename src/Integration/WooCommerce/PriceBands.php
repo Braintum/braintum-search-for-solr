@@ -2,10 +2,10 @@
 /**
  * Choosing the bands a price facet offers.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
 /**
  * Derives price bands from what a catalogue actually costs.

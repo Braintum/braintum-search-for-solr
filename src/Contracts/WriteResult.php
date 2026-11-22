@@ -2,10 +2,10 @@
 /**
  * Outcome of a batch write.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What happened to a batch of documents.

@@ -2,10 +2,10 @@
 /**
  * Result of a diagnostic run.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Diagnostics;
+namespace BraintumSearch\Diagnostics;
 
 /**
  * A list of independent checks and how each one went.

@@ -5,21 +5,21 @@
  * The suggest path carries visitor text on every keystroke, so it gets the same
  * scrutiny as the search path rather than being treated as a lesser feature.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Search\SuggestTranslator;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Search\SuggestTranslator;
 
 /**
- * @covers \SolrEngine\Search\SuggestTranslator
- * @covers \SolrEngine\Contracts\SuggestQuery
+ * @covers \BraintumSearch\Search\SuggestTranslator
+ * @covers \BraintumSearch\Contracts\SuggestQuery
  */
 final class SuggestTranslatorTest extends TestCase {
 

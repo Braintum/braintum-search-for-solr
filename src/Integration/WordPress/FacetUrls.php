@@ -2,10 +2,10 @@
 /**
  * The query-string convention for selected filters.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
 /**
  * Reads and writes the filter selection carried in a URL.

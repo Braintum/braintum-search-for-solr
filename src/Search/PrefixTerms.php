@@ -2,10 +2,10 @@
 /**
  * Prefix matching for text that is still being typed.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
 /**
  * Which word of typed text may be matched as a prefix, and how.

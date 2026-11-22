@@ -2,34 +2,34 @@
 /**
  * Apache Solr backend.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Solr;
+namespace BraintumSearch\Backend\Solr;
 
-use SolrEngine\Contracts\Capabilities;
-use SolrEngine\Contracts\Document;
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Contracts\IndexStatus;
-use SolrEngine\Contracts\LifecycleBackend;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\SchemaBackend;
-use SolrEngine\Contracts\SchemaContract;
-use SolrEngine\Contracts\SchemaPlan;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\Suggestions;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Contracts\Selector;
-use SolrEngine\Contracts\WriteResult;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\SuggestionParser;
-use SolrEngine\Search\SuggestTranslator;
-use SolrEngine\Search\ResponseParser;
-use SolrEngine\Schema\SchemaExporter;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
+use BraintumSearch\Contracts\Capabilities;
+use BraintumSearch\Contracts\Document;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Contracts\IndexStatus;
+use BraintumSearch\Contracts\LifecycleBackend;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\SchemaBackend;
+use BraintumSearch\Contracts\SchemaContract;
+use BraintumSearch\Contracts\SchemaPlan;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\Suggestions;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Contracts\Selector;
+use BraintumSearch\Contracts\WriteResult;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\SuggestionParser;
+use BraintumSearch\Search\SuggestTranslator;
+use BraintumSearch\Search\ResponseParser;
+use BraintumSearch\Schema\SchemaExporter;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
 
 /**
  * Talks to a customer-managed Apache Solr.
@@ -141,8 +141,8 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 		$this->exporter         = $exporter;
 		$this->commit_within_ms = max( 0, $commit_within_ms );
 		$this->translator       = $translator ?? new QueryTranslator(
-			new \SolrEngine\Search\RelevanceProfile(),
-			\SolrEngine\Search\FilterRegistry::defaults()
+			new \BraintumSearch\Search\RelevanceProfile(),
+			\BraintumSearch\Search\FilterRegistry::defaults()
 		);
 		$this->parser           = $parser ?? new ResponseParser();
 		$this->suggester        = $suggester ?? new SuggestTranslator();
@@ -218,7 +218,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 				'json_request'    => $major >= 9,
 				'schema_api'      => $schema->is_ok() && $schema->value()->is_mutable(),
 				// Aliases are a SolrCloud feature. In user-managed mode a
-				// zero-downtime reindex switches SolrEngine's own configured
+				// zero-downtime reindex switches Braintum Search's own configured
 				// core instead, which avoids CoreAdmin SWAP entirely.
 				'aliases'         => 'solrcloud' === strtolower( $mode ),
 				'collections_api' => 'solrcloud' === strtolower( $mode ),
@@ -561,7 +561,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 			// it re-checks rather than trusting its caller.
 			return Result::failure(
 				'not_additive',
-				'The plan contains a command SolrEngine is not permitted to issue.'
+				'The plan contains a command Braintum Search is not permitted to issue.'
 			);
 		}
 
@@ -645,7 +645,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 		}
 
 		if ( ! $this->capabilities()->supports( 'aliases' ) ) {
-			// A user-managed server. Switching the core SolrEngine is
+			// A user-managed server. Switching the core Braintum Search is
 			// configured with is the strategy the plan chooses here, in
 			// preference to a CoreAdmin SWAP whose safety varies by mode.
 			$this->rebuild_style = self::STYLE_POINTER;
@@ -723,7 +723,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 		if ( ! $this->can_create_indexes() ) {
 			return Result::failure(
 				'unsupported',
-				'This Solr is not running in SolrCloud mode, so SolrEngine cannot create a core for you. Create one on the server and name it here.'
+				'This Solr is not running in SolrCloud mode, so Braintum Search cannot create a core for you. Create one on the server and name it here.'
 			);
 		}
 
@@ -746,7 +746,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 			// rather than guessed.
 			return Result::failure(
 				'unknown_config',
-				'SolrEngine could not read which configset your collection uses, and will not create a replacement on a different one.'
+				'Braintum Search could not read which configset your collection uses, and will not create a replacement on a different one.'
 			);
 		}
 
@@ -792,7 +792,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 			return Result::success( $name );
 		}
 
-		// An alias may list several collections. SolrEngine only ever creates
+		// An alias may list several collections. Braintum Search only ever creates
 		// single-target aliases, so the first is the one it put there; a
 		// multi-target alias somebody else made is reported as its first
 		// member rather than pretended to be understood.
@@ -816,7 +816,7 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 		if ( ! $this->capabilities()->supports( 'aliases' ) ) {
 			return Result::failure(
 				'unsupported',
-				'Aliases are a SolrCloud feature. On this server SolrEngine switches the collection it is configured with instead.'
+				'Aliases are a SolrCloud feature. On this server Braintum Search switches the collection it is configured with instead.'
 			);
 		}
 
@@ -844,13 +844,13 @@ final class SolrBackend implements SearchBackend, IndexBackend, SchemaBackend, L
 		if ( $name === $this->http->endpoint()->collection() ) {
 			// The last line of defence. Everything above this refuses to offer
 			// the live index for deletion, and this refuses to do it anyway.
-			return Result::failure( 'is_live', 'That is the collection SolrEngine is using. It will not delete it.' );
+			return Result::failure( 'is_live', 'That is the collection Braintum Search is using. It will not delete it.' );
 		}
 
 		if ( ! $this->capabilities()->supports( 'collections_api' ) ) {
 			return Result::failure(
 				'unsupported',
-				'SolrEngine does not delete cores on a user-managed Solr. Remove it on the server when you no longer need it.'
+				'Braintum Search does not delete cores on a user-managed Solr. Remove it on the server when you no longer need it.'
 			);
 		}
 

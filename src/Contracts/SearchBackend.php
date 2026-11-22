@@ -2,10 +2,10 @@
 /**
  * Search backend contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Reads from a search index.

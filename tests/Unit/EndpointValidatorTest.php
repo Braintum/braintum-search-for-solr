@@ -9,20 +9,20 @@
  * DNS is injected, so every address range is exercised without touching a
  * network.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Backend\Solr\Endpoint;
-use SolrEngine\Backend\Solr\EndpointValidator;
+use BraintumSearch\Backend\Solr\Endpoint;
+use BraintumSearch\Backend\Solr\EndpointValidator;
 
 /**
- * @covers \SolrEngine\Backend\Solr\EndpointValidator
- * @covers \SolrEngine\Backend\Solr\Endpoint
+ * @covers \BraintumSearch\Backend\Solr\EndpointValidator
+ * @covers \BraintumSearch\Backend\Solr\Endpoint
  */
 final class EndpointValidatorTest extends TestCase {
 

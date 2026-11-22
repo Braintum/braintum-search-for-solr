@@ -11,18 +11,18 @@
  * fails to survive it is a property two different queries can share a cache
  * entry over.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchQuery;
 
 /**
- * @covers \SolrEngine\Contracts\SearchQuery
+ * @covers \BraintumSearch\Contracts\SearchQuery
  */
 final class SearchQuerySerialisationTest extends TestCase {
 

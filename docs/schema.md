@@ -1,12 +1,12 @@
 # Schema
 
-SolrEngine needs a small set of fields in your Solr schema. It can add them for
+Braintum Search needs a small set of fields in your Solr schema. It can add them for
 you, show you what to add by hand, or tell you why it will not touch anything.
 This document explains which, and why the answer is never "it applied silently".
 
 ## The contract
 
-The fields SolrEngine needs are a *contract*, with a version number of its own:
+The fields Braintum Search needs are a *contract*, with a version number of its own:
 
 ```
 plugin 0.8.0  ──declares──►  schema contract v1
@@ -39,12 +39,12 @@ for — `se_txten_*`, `se_txtde_*` — each using that language's analyser. See
 match `se_txt_en_title`, so a per-language field spelled that way would land
 silently in the language-neutral field type whenever its own pattern was absent.
 
-Every name begins with `se_`. SolrEngine reads, plans against and writes nothing
+Every name begins with `se_`. Braintum Search reads, plans against and writes nothing
 outside that namespace, so it can share a collection with another application.
 
 ## The three rules
 
-1. **Additive only.** SolrEngine emits `add-field`, `add-dynamic-field` and
+1. **Additive only.** Braintum Search emits `add-field`, `add-dynamic-field` and
    `add-copy-field`, and nothing else. It never replaces or deletes a field —
    not even one of its own. A field that already exists and is wrong is reported
    for a human to resolve, because replacing it would discard whatever you
@@ -59,14 +59,14 @@ outside that namespace, so it can share a collection with another application.
 
 ## Checking and applying
 
-**SolrEngine → Tools** shows the comparison, and one of four verdicts:
+**Braintum Search → Tools** shows the comparison, and one of four verdicts:
 
 | Verdict | Means |
 | --- | --- |
-| Up to date | The schema has what is needed and is unchanged since SolrEngine last looked |
+| Up to date | The schema has what is needed and is unchanged since Braintum Search last looked |
 | Not yet complete | Fields are missing. The plan below lists exactly which |
 | Applied elsewhere | The schema is adequate, but this site did not apply it — by hand, or before the plugin was installed |
-| Changed | The fields SolrEngine owns are not the ones it last saw |
+| Changed | The fields Braintum Search owns are not the ones it last saw |
 
 That last one is why a fingerprint is stored alongside the version. A version
 number alone cannot tell "as we left it" from "somebody deleted a field last
@@ -76,12 +76,12 @@ error messages do not explain.
 From the command line:
 
 ```bash
-wp solrengine schema          # show the comparison
-wp solrengine schema apply    # apply it, with a confirmation
-wp solrengine schema export   # print the XML and change nothing
+wp braintum-search schema          # show the comparison
+wp braintum-search schema apply    # apply it, with a confirmation
+wp braintum-search schema export   # print the XML and change nothing
 ```
 
-## When SolrEngine will not apply it
+## When Braintum Search will not apply it
 
 Two honest cases, and both leave you a route:
 
@@ -91,7 +91,7 @@ Two honest cases, and both leave you a route:
 - **A field type is missing.** See rule 2.
 
 In both, the Tools screen shows the exact XML to paste into your
-`managed-schema` file. It is the same set of changes SolrEngine would have made.
+`managed-schema` file. It is the same set of changes Braintum Search would have made.
 
 ## After a schema change
 
@@ -99,7 +99,7 @@ In both, the Tools screen shows the exact XML to paste into your
 does not populate it in a document written yesterday; a new `copyField` rule
 stays empty until each document is written again.
 
-SolrEngine says so rather than letting the setting look as though it took
+Braintum Search says so rather than letting the setting look as though it took
 effect. Applying a plan that needs one records an outstanding reindex, shown on
 the Tools and Content screens until a full run finishes.
 
@@ -126,7 +126,7 @@ languages, used by the per-language fields above. Each normalises and stems and
 nothing more: Solr's own language configsets reference a stopword file such as
 `lang/stopwords_de.txt`, and a schema referencing a file that is not there does
 not degrade — the core fails to load. Rather than ship two dozen third-party word
-lists, SolrEngine ships the stemming, which is the larger half of the benefit.
+lists, Braintum Search ships the stemming, which is the larger half of the benefit.
 
 Languages needing a Solr module that is not loaded by default — Japanese,
 Chinese, Korean, Thai — are absent rather than half-configured, for the same

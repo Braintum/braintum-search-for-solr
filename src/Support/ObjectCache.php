@@ -2,12 +2,12 @@
 /**
  * WordPress object cache.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Cache;
+use BraintumSearch\Contracts\Cache;
 
 /**
  * Stores values in WordPress's object cache.
@@ -33,7 +33,7 @@ final class ObjectCache implements Cache {
 	 *
 	 * @param string $group Cache group.
 	 */
-	public function __construct( string $group = 'solrengine' ) {
+	public function __construct( string $group = 'braintum-search' ) {
 		$this->group = $group;
 	}
 

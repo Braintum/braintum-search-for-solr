@@ -2,20 +2,20 @@
 /**
  * Schema, reindexing and history.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
-use SolrEngine\Contracts\LifecycleBackend;
-use SolrEngine\Contracts\SchemaPlan;
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Indexing\Rebuild;
-use SolrEngine\Indexing\ReindexNotice;
-use SolrEngine\Indexing\RunHistory;
-use SolrEngine\Schema\AppliedSchema;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\Container;
+use BraintumSearch\Contracts\LifecycleBackend;
+use BraintumSearch\Contracts\SchemaPlan;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Indexing\Rebuild;
+use BraintumSearch\Indexing\ReindexNotice;
+use BraintumSearch\Indexing\RunHistory;
+use BraintumSearch\Schema\AppliedSchema;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\Container;
 
 /**
  * The screen for the things that change the index rather than the settings.
@@ -24,7 +24,7 @@ use SolrEngine\Support\Container;
  * angles: what the schema needs, how content gets into the index, and what
  * happened the last fifty times it did.
  *
- * The schema section is the one with teeth. SolrEngine can modify a customer's
+ * The schema section is the one with teeth. Braintum Search can modify a customer's
  * Solr schema, and ADR-003 turns on the distinction between having that
  * capability and having consent for it: the plan is computed, shown in full,
  * and applied only when somebody presses the button. Blockers are shown as
@@ -44,28 +44,28 @@ final class ToolsScreen extends Screen {
 	 *
 	 * @var string
 	 */
-	public const SLUG = 'solrengine-tools';
+	public const SLUG = 'braintum-search-tools';
 
 	/**
 	 * Schema apply action.
 	 *
 	 * @var string
 	 */
-	public const ACTION_SCHEMA = 'solrengine_apply_schema';
+	public const ACTION_SCHEMA = 'braintum_search_apply_schema';
 
 	/**
 	 * Indexing action.
 	 *
 	 * @var string
 	 */
-	public const ACTION_INDEX = 'solrengine_run_index';
+	public const ACTION_INDEX = 'braintum_search_run_index';
 
 	/**
 	 * Rebuild action.
 	 *
 	 * @var string
 	 */
-	public const ACTION_REBUILD = 'solrengine_run_rebuild';
+	public const ACTION_REBUILD = 'braintum_search_run_rebuild';
 
 	/**
 	 * Service container.
@@ -98,7 +98,7 @@ final class ToolsScreen extends Screen {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'Tools', 'solrengine' );
+		return __( 'Tools', 'braintum-search-for-solr' );
 	}
 
 	/**
@@ -142,7 +142,7 @@ final class ToolsScreen extends Screen {
 			// A new field or copy rule holds nothing until each document is
 			// written again. Solr does not backfill, so saying the schema is
 			// up to date without saying this would be half the truth.
-			$this->reindex_notice()->require_reindex( __( 'the Solr schema gained fields that existing documents do not have', 'solrengine' ) );
+			$this->reindex_notice()->require_reindex( __( 'the Solr schema gained fields that existing documents do not have', 'braintum-search-for-solr' ) );
 		}
 
 		$this->back( 'schema_applied' );
@@ -250,25 +250,25 @@ final class ToolsScreen extends Screen {
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Tools', 'solrengine' ); ?></h1>
+			<h1><?php esc_html_e( 'Tools', 'braintum-search-for-solr' ); ?></h1>
 
 			<?php
 			$this->render_notice(
 				array(
-					'schema_applied'     => array( 'success', __( 'The schema was updated.', 'solrengine' ) ),
-					'schema_failed'      => array( 'error', __( 'The schema could not be updated.', 'solrengine' ) ),
-					'schema_unavailable' => array( 'error', __( 'This backend does not expose schema management.', 'solrengine' ) ),
-					'index_started'      => array( 'success', __( 'Indexing has started. It continues in the background; you can leave this page.', 'solrengine' ) ),
-					'index_cancelled'    => array( 'success', __( 'Indexing was cancelled. What has already been indexed stays in the index.', 'solrengine' ) ),
-					'index_failed'       => array( 'error', __( 'Indexing could not start.', 'solrengine' ) ),
-					'no_backend'         => array( 'error', __( 'Solr is not reachable. Check the connection settings.', 'solrengine' ) ),
-					'rebuild_started'    => array( 'success', __( 'The replacement index is being built. Searches are still answered by the current one.', 'solrengine' ) ),
-					'rebuild_verify'     => array( 'success', __( 'Checked.', 'solrengine' ) ),
-					'rebuild_switch'     => array( 'success', __( 'Searches are now answered by the new index. The previous one is still there if you need to go back.', 'solrengine' ) ),
-					'rebuild_discard'    => array( 'success', __( 'The rebuild was discarded.', 'solrengine' ) ),
-					'rebuild_drop'       => array( 'success', __( 'The previous index was deleted.', 'solrengine' ) ),
-					'rebuild_dismissed'  => array( 'success', __( 'Dismissed.', 'solrengine' ) ),
-					'rebuild_failed'     => array( 'error', __( 'The rebuild could not continue.', 'solrengine' ) ),
+					'schema_applied'     => array( 'success', __( 'The schema was updated.', 'braintum-search-for-solr' ) ),
+					'schema_failed'      => array( 'error', __( 'The schema could not be updated.', 'braintum-search-for-solr' ) ),
+					'schema_unavailable' => array( 'error', __( 'This backend does not expose schema management.', 'braintum-search-for-solr' ) ),
+					'index_started'      => array( 'success', __( 'Indexing has started. It continues in the background; you can leave this page.', 'braintum-search-for-solr' ) ),
+					'index_cancelled'    => array( 'success', __( 'Indexing was cancelled. What has already been indexed stays in the index.', 'braintum-search-for-solr' ) ),
+					'index_failed'       => array( 'error', __( 'Indexing could not start.', 'braintum-search-for-solr' ) ),
+					'no_backend'         => array( 'error', __( 'Solr is not reachable. Check the connection settings.', 'braintum-search-for-solr' ) ),
+					'rebuild_started'    => array( 'success', __( 'The replacement index is being built. Searches are still answered by the current one.', 'braintum-search-for-solr' ) ),
+					'rebuild_verify'     => array( 'success', __( 'Checked.', 'braintum-search-for-solr' ) ),
+					'rebuild_switch'     => array( 'success', __( 'Searches are now answered by the new index. The previous one is still there if you need to go back.', 'braintum-search-for-solr' ) ),
+					'rebuild_discard'    => array( 'success', __( 'The rebuild was discarded.', 'braintum-search-for-solr' ) ),
+					'rebuild_drop'       => array( 'success', __( 'The previous index was deleted.', 'braintum-search-for-solr' ) ),
+					'rebuild_dismissed'  => array( 'success', __( 'Dismissed.', 'braintum-search-for-solr' ) ),
+					'rebuild_failed'     => array( 'error', __( 'The rebuild could not continue.', 'braintum-search-for-solr' ) ),
 				)
 			);
 			?>
@@ -292,10 +292,10 @@ final class ToolsScreen extends Screen {
 		$contract  = $contracts->current();
 		$backend   = $this->container->get( 'backends' )->schema();
 
-		echo '<h2>' . esc_html__( 'Schema', 'solrengine' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Schema', 'braintum-search-for-solr' ) . '</h2>';
 
 		if ( null === $backend ) {
-			echo '<p>' . esc_html__( 'Solr is not reachable, so its schema cannot be compared. The configuration SolrEngine needs is below.', 'solrengine' ) . '</p>';
+			echo '<p>' . esc_html__( 'Solr is not reachable, so its schema cannot be compared. The configuration Braintum Search needs is below.', 'braintum-search-for-solr' ) . '</p>';
 			$this->render_schema_export( $exporter->to_xml( $contract ) );
 
 			return;
@@ -311,7 +311,7 @@ final class ToolsScreen extends Screen {
 			// as prose in a contract. A second adapter is what made it real.
 			printf(
 				'<div class="notice notice-info inline"><p>%s</p></div>',
-				esc_html__( 'This backend manages its own schema. There is nothing to check or apply from here, and nothing you need to do.', 'solrengine' )
+				esc_html__( 'This backend manages its own schema. There is nothing to check or apply from here, and nothing you need to do.', 'braintum-search-for-solr' )
 			);
 
 			return;
@@ -325,7 +325,7 @@ final class ToolsScreen extends Screen {
 				esc_html(
 					sprintf(
 						/* translators: %s: reason from the server. */
-						__( 'The schema could not be read: %s', 'solrengine' ),
+						__( 'The schema could not be read: %s', 'braintum-search-for-solr' ),
 						$planned->message()
 					)
 				)
@@ -342,7 +342,7 @@ final class ToolsScreen extends Screen {
 
 		if ( array() !== $plan->blockers() ) {
 			echo '<div class="notice notice-warning inline"><p><strong>'
-				. esc_html__( 'SolrEngine will not apply these changes itself:', 'solrengine' )
+				. esc_html__( 'Braintum Search will not apply these changes itself:', 'braintum-search-for-solr' )
 				. '</strong></p><ul style="list-style:disc;margin:0 0 1em 2em">';
 
 			foreach ( $plan->blockers() as $blocker ) {
@@ -353,7 +353,7 @@ final class ToolsScreen extends Screen {
 		}
 
 		if ( ! $plan->is_empty() ) {
-			echo '<p>' . esc_html__( 'The following would be added. Nothing is changed or removed — SolrEngine only ever adds fields, and never replaces one it did not create.', 'solrengine' ) . '</p>';
+			echo '<p>' . esc_html__( 'The following would be added. Nothing is changed or removed — Braintum Search only ever adds fields, and never replaces one it did not create.', 'braintum-search-for-solr' ) . '</p>';
 			echo '<ul style="list-style:disc;margin:0 0 1em 2em">';
 
 			foreach ( $plan->describe() as $line ) {
@@ -371,7 +371,7 @@ final class ToolsScreen extends Screen {
 				esc_html(
 					sprintf(
 						/* translators: %d: number of changes. */
-						_n( 'Apply %d change', 'Apply %d changes', count( $plan->operations() ), 'solrengine' ),
+						_n( 'Apply %d change', 'Apply %d changes', count( $plan->operations() ), 'braintum-search-for-solr' ),
 						count( $plan->operations() )
 					)
 				)
@@ -395,7 +395,7 @@ final class ToolsScreen extends Screen {
 		$live    = null === $backend ? null : $backend->applied_version();
 
 		$verdict = $applied->compare(
-			SOLRENGINE_SCHEMA_CONTRACT_VERSION,
+			BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION,
 			null !== $live && $live->is_ok() ? (int) $live->value( 0 ) : 0,
 			$this->live_fingerprint()
 		);
@@ -403,19 +403,19 @@ final class ToolsScreen extends Screen {
 		$messages = array(
 			AppliedSchema::CURRENT    => array(
 				'notice-success',
-				__( 'The schema is up to date and unchanged since SolrEngine last checked it.', 'solrengine' ),
+				__( 'The schema is up to date and unchanged since Braintum Search last checked it.', 'braintum-search-for-solr' ),
 			),
 			AppliedSchema::BEHIND     => array(
 				'notice-warning',
-				__( 'The schema does not yet have everything this version of SolrEngine needs.', 'solrengine' ),
+				__( 'The schema does not yet have everything this version of Braintum Search needs.', 'braintum-search-for-solr' ),
 			),
 			AppliedSchema::UNRECORDED => array(
 				'notice-info',
-				__( 'The schema has what SolrEngine needs, but SolrEngine did not put it there — it was applied by hand, or the collection was prepared before the plugin was installed. That is fine; there is simply nothing to compare future changes against yet.', 'solrengine' ),
+				__( 'The schema has what Braintum Search needs, but Braintum Search did not put it there — it was applied by hand, or the collection was prepared before the plugin was installed. That is fine; there is simply nothing to compare future changes against yet.', 'braintum-search-for-solr' ),
 			),
 			AppliedSchema::ALTERED    => array(
 				'notice-warning',
-				__( 'The fields SolrEngine owns are not the ones it last saw. Somebody has changed the schema. Indexing may fail in ways the error messages do not explain.', 'solrengine' ),
+				__( 'The fields Braintum Search owns are not the ones it last saw. Somebody has changed the schema. Indexing may fail in ways the error messages do not explain.', 'braintum-search-for-solr' ),
 			),
 		);
 
@@ -432,22 +432,22 @@ final class ToolsScreen extends Screen {
 			esc_html(
 				sprintf(
 					/* translators: 1: required contract version, 2: when it was last verified. */
-					__( 'Contract version %1$d required. %2$s', 'solrengine' ),
-					SOLRENGINE_SCHEMA_CONTRACT_VERSION,
+					__( 'Contract version %1$d required. %2$s', 'braintum-search-for-solr' ),
+					BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION,
 					$applied->verified_at() > 0
 						? sprintf(
 							/* translators: %s: human time difference. */
-							__( 'Last verified %s ago.', 'solrengine' ),
+							__( 'Last verified %s ago.', 'braintum-search-for-solr' ),
 							human_time_diff( $applied->verified_at() )
 						)
-						: __( 'Never verified from this site.', 'solrengine' )
+						: __( 'Never verified from this site.', 'braintum-search-for-solr' )
 				)
 			)
 		);
 
 		if ( $plan->requires_reindex() && ! $plan->is_empty() ) {
 			echo '<p class="description">'
-				. esc_html__( 'Applying these changes will need a reindex afterwards: Solr never rewrites documents that are already indexed, so a field added today stays empty until each document is written again.', 'solrengine' )
+				. esc_html__( 'Applying these changes will need a reindex afterwards: Solr never rewrites documents that are already indexed, so a field added today stays empty until each document is written again.', 'braintum-search-for-solr' )
 				. '</p>';
 		}
 	}
@@ -460,9 +460,9 @@ final class ToolsScreen extends Screen {
 	 */
 	private function render_schema_export( string $xml ): void {
 		?>
-		<h3><?php esc_html_e( 'Apply it yourself', 'solrengine' ); ?></h3>
+		<h3><?php esc_html_e( 'Apply it yourself', 'braintum-search-for-solr' ); ?></h3>
 		<p>
-			<?php esc_html_e( 'If SolrEngine cannot change your schema, or you would rather do it by hand, add the following to your managed-schema file. These are the same changes it would make.', 'solrengine' ); ?>
+			<?php esc_html_e( 'If Braintum Search cannot change your schema, or you would rather do it by hand, add the following to your managed-schema file. These are the same changes it would make.', 'braintum-search-for-solr' ); ?>
 		</p>
 		<textarea readonly rows="12" class="large-text code" onclick="this.select()"><?php echo esc_textarea( $xml ); ?></textarea>
 		<?php
@@ -477,7 +477,7 @@ final class ToolsScreen extends Screen {
 		$sync   = $this->container->get( 'indexing.full_sync' );
 		$notice = $this->reindex_notice();
 
-		echo '<h2>' . esc_html__( 'Reindex', 'solrengine' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Reindex', 'braintum-search-for-solr' ) . '</h2>';
 
 		if ( $notice->is_required() ) {
 			printf(
@@ -485,7 +485,7 @@ final class ToolsScreen extends Screen {
 				esc_html(
 					sprintf(
 						/* translators: 1: reason, 2: human time difference. */
-						__( 'A reindex is outstanding: %1$s, %2$s ago.', 'solrengine' ),
+						__( 'A reindex is outstanding: %1$s, %2$s ago.', 'braintum-search-for-solr' ),
 						$notice->reason(),
 						human_time_diff( $notice->since() )
 					)
@@ -494,7 +494,7 @@ final class ToolsScreen extends Screen {
 		}
 
 		if ( ! $sync instanceof FullSync ) {
-			echo '<p>' . esc_html__( 'Solr is not reachable, so indexing cannot start.', 'solrengine' ) . '</p>';
+			echo '<p>' . esc_html__( 'Solr is not reachable, so indexing cannot start.', 'braintum-search-for-solr' ) . '</p>';
 
 			return;
 		}
@@ -507,7 +507,7 @@ final class ToolsScreen extends Screen {
 				esc_html(
 					sprintf(
 						/* translators: 1: run state, 2: processed count, 3: expected total, 4: failure count. */
-						__( 'Last run: %1$s — %2$s of about %3$s objects, %4$s failed.', 'solrengine' ),
+						__( 'Last run: %1$s — %2$s of about %3$s objects, %4$s failed.', 'braintum-search-for-solr' ),
 						(string) $run['state'],
 						number_format_i18n( (int) $run['processed'] ),
 						number_format_i18n( (int) $run['total'] ),
@@ -523,13 +523,13 @@ final class ToolsScreen extends Screen {
 
 		if ( $running ) {
 			echo '<input type="hidden" name="mode" value="cancel"/>';
-			submit_button( __( 'Stop indexing', 'solrengine' ), 'secondary', 'submit', false );
+			submit_button( __( 'Stop indexing', 'braintum-search-for-solr' ), 'secondary', 'submit', false );
 		} else {
 			printf( '<input type="hidden" name="mode" value="%s"/>', esc_attr( null !== $run && 'complete' !== $run['state'] ? 'resume' : 'start' ) );
 			submit_button(
 				null !== $run && 'complete' !== $run['state']
-					? __( 'Resume indexing', 'solrengine' )
-					: __( 'Index everything now', 'solrengine' ),
+					? __( 'Resume indexing', 'braintum-search-for-solr' )
+					: __( 'Index everything now', 'braintum-search-for-solr' ),
 				'secondary',
 				'submit',
 				false
@@ -539,12 +539,12 @@ final class ToolsScreen extends Screen {
 		echo '</form>';
 
 		echo '<p class="description" style="margin-top:1em">'
-			. esc_html__( 'A reindex writes over the live index while it runs, so searches are answered from a partly rebuilt index until it finishes. On a large site, build a replacement index instead.', 'solrengine' )
+			. esc_html__( 'A reindex writes over the live index while it runs, so searches are answered from a partly rebuilt index until it finishes. On a large site, build a replacement index instead.', 'braintum-search-for-solr' )
 			. '</p>';
 
 		echo '<p class="description">'
-			. esc_html__( 'On the command line, where there is no web-server timeout to fight:', 'solrengine' )
-			. '</p><pre class="code" style="padding:1em;background:#f6f7f7;max-width:820px"><code>wp solrengine index</code></pre>';
+			. esc_html__( 'On the command line, where there is no web-server timeout to fight:', 'braintum-search-for-solr' )
+			. '</p><pre class="code" style="padding:1em;background:#f6f7f7;max-width:820px"><code>wp braintum-search index</code></pre>';
 	}
 
 	/**
@@ -555,10 +555,10 @@ final class ToolsScreen extends Screen {
 	private function render_rebuild_section(): void {
 		$rebuild = $this->container->get( 'indexing.rebuild' );
 
-		echo '<h2>' . esc_html__( 'Build a replacement index', 'solrengine' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Build a replacement index', 'braintum-search-for-solr' ) . '</h2>';
 
 		if ( ! $rebuild instanceof Rebuild ) {
-			echo '<p>' . esc_html__( 'Not available: Solr is not reachable.', 'solrengine' ) . '</p>';
+			echo '<p>' . esc_html__( 'Not available: Solr is not reachable.', 'braintum-search-for-solr' ) . '</p>';
 
 			return;
 		}
@@ -581,7 +581,7 @@ final class ToolsScreen extends Screen {
 
 		$plan = (array) $planned->value( array() );
 
-		echo '<p>' . esc_html__( 'Content is indexed into a second index while the current one keeps answering searches. Nothing switches over until the new index has been checked against what WordPress holds, and the old one is kept afterwards so you can go back.', 'solrengine' ) . '</p>';
+		echo '<p>' . esc_html__( 'Content is indexed into a second index while the current one keeps answering searches. Nothing switches over until the new index has been checked against what WordPress holds, and the old one is kept afterwards so you can go back.', 'braintum-search-for-solr' ) . '</p>';
 
 		printf(
 			'<p class="description">%s</p>',
@@ -589,10 +589,10 @@ final class ToolsScreen extends Screen {
 				LifecycleBackend::STYLE_ALIAS === $plan['style']
 					? sprintf(
 						/* translators: %s: alias name. */
-						__( 'Your Solr is in SolrCloud mode and "%s" is an alias, so the switch is one atomic operation on the server and no request sees a half-switched index.', 'solrengine' ),
+						__( 'Your Solr is in SolrCloud mode and "%s" is an alias, so the switch is one atomic operation on the server and no request sees a half-switched index.', 'braintum-search-for-solr' ),
 						(string) $plan['live']
 					)
-					: __( 'SolrEngine will switch the collection it is configured to use. One request may be answered by the old index while the next is answered by the new one — a far shorter window than reindexing in place, and reversible from here.', 'solrengine' )
+					: __( 'Braintum Search will switch the collection it is configured to use. One request may be answered by the old index while the next is answered by the new one — a far shorter window than reindexing in place, and reversible from here.', 'braintum-search-for-solr' )
 			)
 		);
 
@@ -601,14 +601,14 @@ final class ToolsScreen extends Screen {
 		if ( (bool) $plan['can_create'] ) {
 			printf(
 				'<p>%s <code>%s</code></p>',
-				esc_html__( 'SolrEngine will create:', 'solrengine' ),
+				esc_html__( 'Braintum Search will create:', 'braintum-search-for-solr' ),
 				esc_html( (string) $plan['suggested'] )
 			);
 		} else {
 			printf(
-				'<p><label for="solrengine-rebuild-target">%s</label><br/><input type="text" id="solrengine-rebuild-target" name="target" class="regular-text code" required/></p><p class="description">%s</p>',
-				esc_html__( 'Name of an empty core to build into', 'solrengine' ),
-				esc_html__( 'This Solr is not in SolrCloud mode, so SolrEngine cannot create a core for you. Create one on the server with the same configuration as the current one, then name it here.', 'solrengine' )
+				'<p><label for="braintum-search-rebuild-target">%s</label><br/><input type="text" id="braintum-search-rebuild-target" name="target" class="regular-text code" required/></p><p class="description">%s</p>',
+				esc_html__( 'Name of an empty core to build into', 'braintum-search-for-solr' ),
+				esc_html__( 'This Solr is not in SolrCloud mode, so Braintum Search cannot create a core for you. Create one on the server with the same configuration as the current one, then name it here.', 'braintum-search-for-solr' )
 			);
 
 			if ( array() !== (array) $plan['existing'] ) {
@@ -622,13 +622,13 @@ final class ToolsScreen extends Screen {
 
 				printf(
 					'<p class="description">%s %s</p>',
-					esc_html__( 'Cores on this server:', 'solrengine' ),
+					esc_html__( 'Cores on this server:', 'braintum-search-for-solr' ),
 					implode( ', ', $names ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each name escaped above.
 				);
 			}
 		}
 
-		submit_button( __( 'Start building', 'solrengine' ), 'secondary', 'submit', false );
+		submit_button( __( 'Start building', 'braintum-search-for-solr' ), 'secondary', 'submit', false );
 
 		echo '</form>';
 	}
@@ -644,21 +644,21 @@ final class ToolsScreen extends Screen {
 			'<table class="widefat striped" style="max-width:820px"><tbody>%s%s%s</tbody></table>',
 			sprintf(
 				'<tr><td style="width:14em"><strong>%s</strong></td><td><code>%s</code></td></tr>',
-				esc_html__( 'Building into', 'solrengine' ),
+				esc_html__( 'Building into', 'braintum-search-for-solr' ),
 				esc_html( (string) $state['target'] )
 			),
 			sprintf(
 				'<tr><td><strong>%s</strong></td><td>%s</td></tr>',
-				esc_html__( 'State', 'solrengine' ),
+				esc_html__( 'State', 'braintum-search-for-solr' ),
 				esc_html( (string) $state['state'] )
 			),
 			sprintf(
 				'<tr><td><strong>%s</strong></td><td>%s</td></tr>',
-				esc_html__( 'Documents', 'solrengine' ),
+				esc_html__( 'Documents', 'braintum-search-for-solr' ),
 				esc_html(
 					sprintf(
 						/* translators: 1: documents in the new index, 2: documents expected. */
-						__( '%1$s of about %2$s', 'solrengine' ),
+						__( '%1$s of about %2$s', 'braintum-search-for-solr' ),
 						number_format_i18n( (int) $state['actual'] ),
 						number_format_i18n( (int) $state['expected'] )
 					)
@@ -674,25 +674,25 @@ final class ToolsScreen extends Screen {
 
 		if ( 'switched' === $state['state'] ) {
 			if ( '' !== (string) $state['previous'] ) {
-				$this->rebuild_button( 'drop', __( 'Delete the previous index', 'solrengine' ) );
+				$this->rebuild_button( 'drop', __( 'Delete the previous index', 'braintum-search-for-solr' ) );
 			}
 
-			$this->rebuild_button( 'dismiss', __( 'Done', 'solrengine' ) );
+			$this->rebuild_button( 'dismiss', __( 'Done', 'braintum-search-for-solr' ) );
 
 			echo '</p><p class="description">'
-				. esc_html__( 'The previous index is not deleted automatically, and will not be. It is the way back if something turns out to be wrong two days from now, and a plugin deleting a customer\'s index on a timer is not a thing this one does.', 'solrengine' )
+				. esc_html__( 'The previous index is not deleted automatically, and will not be. It is the way back if something turns out to be wrong two days from now, and a plugin deleting a customer\'s index on a timer is not a thing this one does.', 'braintum-search-for-solr' )
 				. '</p>';
 
 			return;
 		}
 
 		if ( 'ready' === $state['state'] ) {
-			$this->rebuild_button( 'switch', __( 'Switch searches to the new index', 'solrengine' ), true );
+			$this->rebuild_button( 'switch', __( 'Switch searches to the new index', 'braintum-search-for-solr' ), true );
 		} else {
-			$this->rebuild_button( 'verify', __( 'Check progress', 'solrengine' ) );
+			$this->rebuild_button( 'verify', __( 'Check progress', 'braintum-search-for-solr' ) );
 		}
 
-		$this->rebuild_button( 'discard', __( 'Discard this rebuild', 'solrengine' ) );
+		$this->rebuild_button( 'discard', __( 'Discard this rebuild', 'braintum-search-for-solr' ) );
 
 		echo '</p>';
 	}
@@ -729,7 +729,7 @@ final class ToolsScreen extends Screen {
 	private function render_history_section(): void {
 		$history = $this->container->get( 'indexing.history' );
 
-		echo '<h2>' . esc_html__( 'History', 'solrengine' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'History', 'braintum-search-for-solr' ) . '</h2>';
 
 		if ( ! $history instanceof RunHistory ) {
 			return;
@@ -738,15 +738,15 @@ final class ToolsScreen extends Screen {
 		$runs = $history->recent( 15 );
 
 		if ( array() === $runs ) {
-			echo '<p>' . esc_html__( 'Nothing has been indexed from this site yet.', 'solrengine' ) . '</p>';
+			echo '<p>' . esc_html__( 'Nothing has been indexed from this site yet.', 'braintum-search-for-solr' ) . '</p>';
 		} else {
 			echo '<table class="widefat striped" style="max-width:1000px"><thead><tr>'
-				. '<th scope="col">' . esc_html__( 'Started', 'solrengine' ) . '</th>'
-				. '<th scope="col">' . esc_html__( 'Kind', 'solrengine' ) . '</th>'
-				. '<th scope="col">' . esc_html__( 'Result', 'solrengine' ) . '</th>'
-				. '<th scope="col">' . esc_html__( 'Indexed', 'solrengine' ) . '</th>'
-				. '<th scope="col">' . esc_html__( 'Failed', 'solrengine' ) . '</th>'
-				. '<th scope="col">' . esc_html__( 'Took', 'solrengine' ) . '</th>'
+				. '<th scope="col">' . esc_html__( 'Started', 'braintum-search-for-solr' ) . '</th>'
+				. '<th scope="col">' . esc_html__( 'Kind', 'braintum-search-for-solr' ) . '</th>'
+				. '<th scope="col">' . esc_html__( 'Result', 'braintum-search-for-solr' ) . '</th>'
+				. '<th scope="col">' . esc_html__( 'Indexed', 'braintum-search-for-solr' ) . '</th>'
+				. '<th scope="col">' . esc_html__( 'Failed', 'braintum-search-for-solr' ) . '</th>'
+				. '<th scope="col">' . esc_html__( 'Took', 'braintum-search-for-solr' ) . '</th>'
 				. '</tr></thead><tbody>';
 
 			foreach ( $runs as $run ) {
@@ -796,7 +796,7 @@ final class ToolsScreen extends Screen {
 			return;
 		}
 
-		echo '<h3>' . esc_html__( 'What failed', 'solrengine' ) . '</h3>';
+		echo '<h3>' . esc_html__( 'What failed', 'braintum-search-for-solr' ) . '</h3>';
 		echo '<table class="widefat striped" style="max-width:1000px"><tbody>';
 
 		foreach ( $failures as $failure ) {
@@ -818,7 +818,7 @@ final class ToolsScreen extends Screen {
 
 		echo '</tbody></table>';
 		echo '<p class="description">'
-			. esc_html__( 'At most a hundred failures are recorded per run. The count in the table above is the real total.', 'solrengine' )
+			. esc_html__( 'At most a hundred failures are recorded per run. The count in the table above is the real total.', 'braintum-search-for-solr' )
 			. '</p>';
 	}
 
@@ -843,7 +843,7 @@ final class ToolsScreen extends Screen {
 	}
 
 	/**
-	 * The fingerprint of the live schema's SolrEngine fields.
+	 * The fingerprint of the live schema's Braintum Search fields.
 	 *
 	 * @return string
 	 */

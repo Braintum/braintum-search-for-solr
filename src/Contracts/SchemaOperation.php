@@ -2,19 +2,19 @@
 /**
  * One schema change.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
- * A single change SolrEngine would make to the schema.
+ * A single change Braintum Search would make to the schema.
  *
  * Exists so that an administrator can be shown exactly what will happen before
  * anything happens. ADR-003 turns on this: the plugin has the capability to
  * mutate a customer's Solr, and consent is a separate thing from capability.
  *
- * Only additive commands are ever produced. SolrEngine does not replace or
+ * Only additive commands are ever produced. Braintum Search does not replace or
  * delete fields, including its own: orphaned "se_" fields cost almost nothing,
  * and deleting a field that a copyField rule references fails in ways that are
  * tedious to unpick.
@@ -54,7 +54,7 @@ final class SchemaOperation {
 	private $requires_reindex;
 
 	/**
-	 * Commands SolrEngine is permitted to issue.
+	 * Commands Braintum Search is permitted to issue.
 	 *
 	 * @var string[]
 	 */
@@ -125,7 +125,7 @@ final class SchemaOperation {
 	}
 
 	/**
-	 * Whether this command is one SolrEngine is allowed to issue.
+	 * Whether this command is one Braintum Search is allowed to issue.
 	 *
 	 * Enforced at apply time as well as here, so that a hook or a future code
 	 * path cannot smuggle a destructive command into a plan.

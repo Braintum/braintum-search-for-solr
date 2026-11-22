@@ -13,7 +13,7 @@
  *
  * Usage: php bin/check-direct-access.php
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
@@ -35,7 +35,7 @@ $always_skip = array( 'vendor', 'node_modules', 'build' );
  * @param string $root Plugin root.
  * @return string[]
  */
-function solrengine_distignored( string $root ): array {
+function braintum_search_distignored( string $root ): array {
 	$lines = (array) file( $root . '/.distignore', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
 	$out   = array();
 
@@ -58,7 +58,7 @@ function solrengine_distignored( string $root ): array {
  * @param string $source File contents.
  * @return bool
  */
-function solrengine_has_guard( string $source ): bool {
+function braintum_search_has_guard( string $source ): bool {
 	return 1 === preg_match(
 		'/if\s*\(\s*!\s*defined\(\s*[\'"](?:ABSPATH|WPINC|WP_UNINSTALL_PLUGIN)[\'"]\s*\)\s*\)\s*\{?\s*(?:exit|die)/',
 		$source
@@ -81,7 +81,7 @@ function solrengine_has_guard( string $source ): bool {
  * @param string $source File contents.
  * @return bool
  */
-function solrengine_is_declaration_only( string $source ): bool {
+function braintum_search_is_declaration_only( string $source ): bool {
 	$executable = array(
 		T_VARIABLE,
 		T_ECHO,
@@ -161,7 +161,7 @@ function solrengine_is_declaration_only( string $source ): bool {
 	return $seen;
 }
 
-$excluded = array_merge( solrengine_distignored( $root ), $always_skip );
+$excluded = array_merge( braintum_search_distignored( $root ), $always_skip );
 $problems = array();
 $checked  = 0;
 
@@ -192,7 +192,7 @@ foreach ( $files as $file ) {
 
 	$source = (string) file_get_contents( (string) $file->getPathname() );
 
-	if ( solrengine_has_guard( $source ) || solrengine_is_declaration_only( $source ) ) {
+	if ( braintum_search_has_guard( $source ) || braintum_search_is_declaration_only( $source ) ) {
 		continue;
 	}
 

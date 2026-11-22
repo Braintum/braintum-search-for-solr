@@ -7,18 +7,18 @@
  * so every search on the site fails until somebody edits the value back. That is
  * why it is validated at save time rather than passed through.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Search\RelevanceSettings;
+use BraintumSearch\Search\RelevanceSettings;
 
 /**
- * @covers \SolrEngine\Search\RelevanceSettings
+ * @covers \BraintumSearch\Search\RelevanceSettings
  */
 final class RelevanceSettingsTest extends TestCase {
 

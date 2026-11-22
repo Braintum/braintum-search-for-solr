@@ -2,18 +2,18 @@
 /**
  * Result value object tests.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\Result;
 
 /**
- * @covers \SolrEngine\Contracts\Result
+ * @covers \BraintumSearch\Contracts\Result
  */
 final class ResultTest extends TestCase {
 

@@ -2,15 +2,15 @@
 /**
  * The facets and filters a shop offers.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WooCommerce;
+namespace BraintumSearch\Integration\WooCommerce;
 
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
 
 /**
  * Registers product facets, and the filters that pair with them.
@@ -33,7 +33,7 @@ final class ProductFacets {
 	 *
 	 * @var string
 	 */
-	private const PRICE_CEILING = 'solrengine_wc_price_ceiling';
+	private const PRICE_CEILING = 'braintum_search_wc_price_ceiling';
 
 	/**
 	 * How long a usable ceiling is trusted, in seconds.
@@ -72,8 +72,8 @@ final class ProductFacets {
 	public function register(): void {
 		// Late, so a shop's attribute facets replace the generic taxonomy ones
 		// the core registry may already have registered for the same keys.
-		add_filter( 'solrengine_facet_definitions', array( $this, 'add_facets' ), 20 );
-		add_action( 'solrengine_register_filters', array( $this, 'add_filters' ), 20 );
+		add_filter( 'braintum_search_facet_definitions', array( $this, 'add_facets' ), 20 );
+		add_action( 'braintum_search_register_filters', array( $this, 'add_filters' ), 20 );
 	}
 
 	/**
@@ -96,7 +96,7 @@ final class ProductFacets {
 				FacetDefinition::range(
 					'price',
 					ProductFields::PRICE_MIN,
-					__( 'Price', 'solrengine' ),
+					__( 'Price', 'braintum-search-for-solr' ),
 					$bands['start'],
 					$bands['end'],
 					$bands['gap']
@@ -108,7 +108,7 @@ final class ProductFacets {
 			FacetDefinition::terms(
 				'stock_status',
 				ProductFields::STOCK_STATUS,
-				__( 'Availability', 'solrengine' ),
+				__( 'Availability', 'braintum-search-for-solr' ),
 				FieldType::STRING
 			)->with_sort( 'index' )
 		);
@@ -117,7 +117,7 @@ final class ProductFacets {
 			FacetDefinition::terms(
 				'on_sale',
 				ProductFields::ON_SALE,
-				__( 'On sale', 'solrengine' ),
+				__( 'On sale', 'braintum-search-for-solr' ),
 				FieldType::BOOL
 			)
 		);
@@ -152,20 +152,20 @@ final class ProductFacets {
 		$bands = $this->price_bands();
 
 		if ( $bands['gap'] > 0.0 ) {
-			$registry->register_bands( 'price', ProductFields::PRICE_MIN, $bands['gap'], __( 'Price', 'solrengine' ) );
+			$registry->register_bands( 'price', ProductFields::PRICE_MIN, $bands['gap'], __( 'Price', 'braintum-search-for-solr' ) );
 		}
 
 		// A second key on the same field, for the slider WooCommerce's own
 		// widgets and blocks produce: they send two numbers, not a band the
 		// server declared, and refusing to answer that query would mean the
 		// merchant's existing filter UI silently stopped working.
-		$registry->register_range( 'price_range', ProductFields::PRICE_MIN, __( 'Price range', 'solrengine' ) );
+		$registry->register_range( 'price_range', ProductFields::PRICE_MIN, __( 'Price range', 'braintum-search-for-solr' ) );
 
-		$registry->register( 'stock_status', ProductFields::STOCK_STATUS, FieldType::STRING, __( 'Availability', 'solrengine' ) );
-		$registry->register( 'on_sale', ProductFields::ON_SALE, FieldType::BOOL, __( 'On sale', 'solrengine' ) );
-		$registry->register( 'featured', ProductFields::FEATURED, FieldType::BOOL, __( 'Featured', 'solrengine' ) );
-		$registry->register( 'product_type', ProductFields::TYPE, FieldType::STRING, __( 'Product type', 'solrengine' ) );
-		$registry->register( 'sku', ProductFields::SKU, FieldType::STRING, __( 'SKU', 'solrengine' ) );
+		$registry->register( 'stock_status', ProductFields::STOCK_STATUS, FieldType::STRING, __( 'Availability', 'braintum-search-for-solr' ) );
+		$registry->register( 'on_sale', ProductFields::ON_SALE, FieldType::BOOL, __( 'On sale', 'braintum-search-for-solr' ) );
+		$registry->register( 'featured', ProductFields::FEATURED, FieldType::BOOL, __( 'Featured', 'braintum-search-for-solr' ) );
+		$registry->register( 'product_type', ProductFields::TYPE, FieldType::STRING, __( 'Product type', 'braintum-search-for-solr' ) );
+		$registry->register( 'sku', ProductFields::SKU, FieldType::STRING, __( 'SKU', 'braintum-search-for-solr' ) );
 
 		// The two rules a shopper never gets to set. Both are exclusions, so
 		// they narrow products without touching posts or pages sharing the
@@ -175,14 +175,14 @@ final class ProductFacets {
 			ShopQuery::CONTEXT_KEY,
 			ProductFields::EXCLUDED,
 			FieldType::STRING,
-			__( 'Catalogue context', 'solrengine' )
+			__( 'Catalogue context', 'braintum-search-for-solr' )
 		);
 
 		$registry->register_excluding(
 			ShopQuery::STOCK_EXCLUSION_KEY,
 			ProductFields::STOCK_STATUS,
 			FieldType::STRING,
-			__( 'Hidden stock statuses', 'solrengine' )
+			__( 'Hidden stock statuses', 'braintum-search-for-solr' )
 		);
 
 		foreach ( array_keys( $this->attribute_taxonomies() ) as $taxonomy ) {
@@ -260,7 +260,7 @@ final class ProductFacets {
 		 * @param float                                  $ceiling The catalogue's highest price.
 		 */
 		return (array) apply_filters(
-			'solrengine_wc_price_bands',
+			'braintum_search_wc_price_bands',
 			PriceBands::for_max( (float) $ceiling ),
 			(float) $ceiling
 		);

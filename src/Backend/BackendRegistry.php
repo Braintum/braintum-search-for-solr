@@ -2,22 +2,22 @@
 /**
  * Backend registry.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend;
+namespace BraintumSearch\Backend;
 
-use SolrEngine\Contracts\IndexBackend;
-use SolrEngine\Contracts\LifecycleBackend;
-use SolrEngine\Contracts\SchemaBackend;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\IndexBackend;
+use BraintumSearch\Contracts\LifecycleBackend;
+use BraintumSearch\Contracts\SchemaBackend;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Support\Config;
 
 /**
  * Holds the available backends and reports which one is selected.
  *
  * Public API from 1.0. The Cloud adapter and every add-on register through
- * this, which is what makes "SolrEngine Cloud" a backend choice rather than a
+ * this, which is what makes "Braintum Search Cloud" a backend choice rather than a
  * paywall — the distinction ADR-010 depends on for WordPress.org compliance.
  *
  * Backends register lazily through factories. Selecting "solr" must not

@@ -2,10 +2,10 @@
 /**
  * Meta key discovery.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Documents;
+namespace BraintumSearch\Documents;
 
 /**
  * Finds the meta keys a site actually uses.
@@ -29,7 +29,7 @@ final class MetaKeys {
 	 *
 	 * @var string
 	 */
-	private const TRANSIENT = 'solrengine_meta_keys';
+	private const TRANSIENT = 'braintum_search_meta_keys';
 
 	/**
 	 * How long the discovery is cached, in seconds.

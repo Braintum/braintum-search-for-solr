@@ -2,22 +2,22 @@
 /**
  * The filter panel, as a block and as a shortcode.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FacetResult;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Search\FacetLabeller;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FacetSelection;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FacetResult;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Search\FacetLabeller;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FacetSelection;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Support\Config;
 
 /**
  * Renders the registered facets as a filter panel.
@@ -48,28 +48,28 @@ final class SearchFilters {
 	 *
 	 * @var string
 	 */
-	public const BLOCK = 'solrengine/search-filters';
+	public const BLOCK = 'braintum-search/search-filters';
 
 	/**
 	 * Shortcode tag.
 	 *
 	 * @var string
 	 */
-	public const SHORTCODE = 'solrengine_filters';
+	public const SHORTCODE = 'braintum_search_filters';
 
 	/**
 	 * Editor script handle, as block.json names it.
 	 *
 	 * @var string
 	 */
-	private const EDITOR_HANDLE = 'solrengine-filters-block';
+	private const EDITOR_HANDLE = 'braintum-search-filters-block';
 
 	/**
 	 * Stylesheet handle, as block.json names it.
 	 *
 	 * @var string
 	 */
-	private const STYLE_HANDLE = 'solrengine-filters';
+	private const STYLE_HANDLE = 'braintum-search-filters';
 
 	/**
 	 * Search service.
@@ -172,14 +172,14 @@ final class SearchFilters {
 	 * @return void
 	 */
 	public static function register_assets(): void {
-		$asset_file = SOLRENGINE_PLUGIN_DIR . 'assets/build/filters.asset.php';
+		$asset_file = BRAINTUM_SEARCH_PLUGIN_DIR . 'assets/build/filters.asset.php';
 		$asset      = is_readable( $asset_file ) ? (array) require $asset_file : array();
-		$version    = (string) ( $asset['version'] ?? SOLRENGINE_VERSION );
+		$version    = (string) ( $asset['version'] ?? BRAINTUM_SEARCH_VERSION );
 
 		if ( array() !== $asset ) {
 			wp_register_script(
 				self::EDITOR_HANDLE,
-				SOLRENGINE_PLUGIN_URL . 'assets/build/filters.js',
+				BRAINTUM_SEARCH_PLUGIN_URL . 'assets/build/filters.js',
 				(array) ( $asset['dependencies'] ?? array() ),
 				$version,
 				true
@@ -188,7 +188,7 @@ final class SearchFilters {
 
 		wp_register_style(
 			self::STYLE_HANDLE,
-			SOLRENGINE_PLUGIN_URL . 'assets/build/filters.css',
+			BRAINTUM_SEARCH_PLUGIN_URL . 'assets/build/filters.css',
 			array(),
 			$version
 		);
@@ -279,7 +279,7 @@ final class SearchFilters {
 		}
 
 		$selected = $this->normalised_selection();
-		$classes  = trim( 'solrengine-filters ' . $class_name );
+		$classes  = trim( 'braintum-search-filters ' . $class_name );
 
 		// Enqueued here rather than on wp_enqueue_scripts, so a page without a
 		// filter panel loads no stylesheet for one. WordPress prints a late
@@ -290,7 +290,7 @@ final class SearchFilters {
 		?>
 		<form class="<?php echo esc_attr( $classes ); ?>" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 			<?php if ( '' !== $heading ) : ?>
-				<h2 class="solrengine-filters__heading"><?php echo esc_html( $heading ); ?></h2>
+				<h2 class="braintum-search-filters__heading"><?php echo esc_html( $heading ); ?></h2>
 			<?php endif; ?>
 
 			<?php
@@ -325,14 +325,14 @@ final class SearchFilters {
 				<?php $this->render_facet( $facet, $selected, $show_counts ); ?>
 			<?php endforeach; ?>
 
-			<p class="solrengine-filters__actions">
-				<button type="submit" class="solrengine-filters__apply">
-					<?php esc_html_e( 'Apply filters', 'solrengine' ); ?>
+			<p class="braintum-search-filters__actions">
+				<button type="submit" class="braintum-search-filters__apply">
+					<?php esc_html_e( 'Apply filters', 'braintum-search-for-solr' ); ?>
 				</button>
 
 				<?php if ( array() !== $selected ) : ?>
-					<a class="solrengine-filters__clear" href="<?php echo esc_url( FacetUrls::clear_url() ); ?>">
-						<?php esc_html_e( 'Clear all', 'solrengine' ); ?>
+					<a class="braintum-search-filters__clear" href="<?php echo esc_url( FacetUrls::clear_url() ); ?>">
+						<?php esc_html_e( 'Clear all', 'braintum-search-for-solr' ); ?>
 					</a>
 				<?php endif; ?>
 			</p>
@@ -357,18 +357,18 @@ final class SearchFilters {
 			return;
 		}
 		?>
-		<fieldset class="solrengine-filters__facet solrengine-filters__facet--<?php echo esc_attr( $facet->type() ); ?>">
-			<legend class="solrengine-filters__legend"><?php echo esc_html( $facet->label() ); ?></legend>
+		<fieldset class="braintum-search-filters__facet braintum-search-filters__facet--<?php echo esc_attr( $facet->type() ); ?>">
+			<legend class="braintum-search-filters__legend"><?php echo esc_html( $facet->label() ); ?></legend>
 
 			<?php if ( FacetDefinition::HIERARCHY === $facet->type() && '' !== $facet->parent() ) : ?>
-				<p class="solrengine-filters__up">
+				<p class="braintum-search-filters__up">
 					<a href="<?php echo esc_url( FacetUrls::toggle_url( $facet->key(), $facet->parent(), $selected ) ); ?>">
-						<?php esc_html_e( 'Back up a level', 'solrengine' ); ?>
+						<?php esc_html_e( 'Back up a level', 'braintum-search-for-solr' ); ?>
 					</a>
 				</p>
 			<?php endif; ?>
 
-			<ul class="solrengine-filters__values">
+			<ul class="braintum-search-filters__values">
 				<?php foreach ( $facet->buckets() as $bucket ) : ?>
 					<?php
 					if ( $bucket->count() < 1 && ! $bucket->is_selected() ) {
@@ -381,7 +381,7 @@ final class SearchFilters {
 
 					$id = 'se-f-' . sanitize_html_class( $facet->key() . '-' . $bucket->value() );
 					?>
-					<li class="solrengine-filters__value">
+					<li class="braintum-search-filters__value">
 						<input
 							type="checkbox"
 							id="<?php echo esc_attr( $id ); ?>"
@@ -392,7 +392,7 @@ final class SearchFilters {
 						<label for="<?php echo esc_attr( $id ); ?>">
 							<?php echo esc_html( $bucket->label() ); ?>
 							<?php if ( $show_counts ) : ?>
-								<span class="solrengine-filters__count"><?php echo esc_html( number_format_i18n( $bucket->count() ) ); ?></span>
+								<span class="braintum-search-filters__count"><?php echo esc_html( number_format_i18n( $bucket->count() ) ); ?></span>
 							<?php endif; ?>
 						</label>
 					</li>

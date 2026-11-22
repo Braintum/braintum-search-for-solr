@@ -2,19 +2,19 @@
 /**
  * Turns a Solr suggest response into suggestions.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\Suggestion;
-use SolrEngine\Contracts\Suggestions;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\Suggestion;
+use BraintumSearch\Contracts\Suggestions;
 
 /**
  * Reads the documents a suggest query returned.
  *
- * Extracted from {@see \SolrEngine\Backend\Solr\SolrBackend::suggest()} so that
+ * Extracted from {@see \BraintumSearch\Backend\Solr\SolrBackend::suggest()} so that
  * anything answering autocomplete reads a reply the same way. There were
  * briefly two parsers by accident — which is the kind of duplication that stays
  * correct until one side gains a field.

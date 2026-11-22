@@ -2,13 +2,13 @@
 /**
  * Index run history.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Support\Tables;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Support\Tables;
 
 /**
  * What has been indexed, when, and what went wrong.

@@ -2,10 +2,10 @@
 /**
  * An autocomplete request.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What a visitor has typed so far.

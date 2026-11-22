@@ -2,18 +2,18 @@
 /**
  * DocumentRef tests.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\DocumentRef;
+use BraintumSearch\Contracts\DocumentRef;
 
 /**
- * @covers \SolrEngine\Contracts\DocumentRef
+ * @covers \BraintumSearch\Contracts\DocumentRef
  */
 final class DocumentRefTest extends TestCase {
 

@@ -2,14 +2,14 @@
 /**
  * Flushes the dirty set and runs queued indexing jobs.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Indexing;
+namespace BraintumSearch\Indexing;
 
-use SolrEngine\Contracts\DocumentRef;
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Contracts\Logger;
+use BraintumSearch\Contracts\DocumentRef;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Contracts\Logger;
 
 /**
  * Connects the dirty set, the queue and the indexer.
@@ -35,14 +35,14 @@ final class QueueWorker {
 	 *
 	 * @var string
 	 */
-	public const INDEX_HOOK = 'solrengine_index_refs';
+	public const INDEX_HOOK = 'braintum_search_index_refs';
 
 	/**
 	 * Hook fired to remove a set of references.
 	 *
 	 * @var string
 	 */
-	public const DELETE_HOOK = 'solrengine_delete_refs';
+	public const DELETE_HOOK = 'braintum_search_delete_refs';
 
 	/**
 	 * How many references one job carries.
@@ -222,7 +222,7 @@ final class QueueWorker {
 		 *
 		 * @since 0.3.0
 		 */
-		do_action( 'solrengine_run_full_sync_batch' );
+		do_action( 'braintum_search_run_full_sync_batch' );
 	}
 
 	/**

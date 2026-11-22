@@ -6,7 +6,7 @@ row of tabs — All, Posts, Pages, Products, whatever the site indexes — each
 carrying its own count. Enter, or "View all results", goes to the theme's normal
 results page.
 
-Enable it under **SolrEngine → Settings → Instant search**, and choose *Search
+Enable it under **Braintum Search → Settings → Instant search**, and choose *Search
 popup*. The other choice, *Suggestion list*, is the dropdown of titles described
 in [search.md](search.md#instant-search). It works whether or not search
 replacement is switched on, like the suggestion list.
@@ -16,8 +16,8 @@ Every piece of markup can be overridden from a theme. See
 
 ## How it opens
 
-SolrEngine does not add a search box. It attaches to the forms the theme already
-renders, matched by `solrengine_instant_search_selector` (by default
+Braintum Search does not add a search box. It attaches to the forms the theme already
+renders, matched by `braintum_search_instant_search_selector` (by default
 `input[type="search"]`, `input[name="s"]` and the block search input).
 
 | The visitor | What happens |
@@ -26,12 +26,12 @@ renders, matched by `solrengine_instant_search_selector` (by default
 | Types or pastes into the field | Opens, carrying over the text |
 | Presses Enter or ↓ in the field | Opens |
 | Presses the form's search button | Opens instead of submitting |
-| Clicks an element matching `solrengine_search_modal_triggers` | Opens empty |
+| Clicks an element matching `braintum_search_modal_triggers` | Opens empty |
 | Tabs onto the field | **Nothing.** Focus alone never opens a dialog (WCAG 3.2.1) |
 
-The default trigger selector is `.solrengine-search-trigger,
-[data-solrengine-search], a[href="#solrengine-search"]`, so a menu item linking to
-`#solrengine-search` opens the popup with no code at all.
+The default trigger selector is `.braintum-search-trigger,
+[data-braintum-search], a[href="#braintum-search"]`, so a menu item linking to
+`#braintum-search` opens the popup with no code at all.
 
 Without JavaScript, or in a browser without `<dialog>`, nothing is attached and
 the theme's form submits as it always did.
@@ -74,10 +74,10 @@ every page.
 ## Where results come from
 
 ```
-GET /wp-json/solrengine/v1/instant?q=lamp&post_type=product&page=2
+GET /wp-json/braintum-search/v1/instant?q=lamp&post_type=product&page=2
 ```
 
-If the route ever answers with something that is not SolrEngine's JSON — a
+If the route ever answers with something that is not Braintum Search's JSON — a
 security plugin's block page, say — the popup shows its error state rather than
 trying to read it.
 
@@ -197,7 +197,7 @@ per type with a match, in the site's order:
   results are the closest matches; the popup says so.
 
 Errors use the REST API's shape on both surfaces: `429` with
-`solrengine_rate_limited`, `503` with `solrengine_backend_unavailable`, `400` for a
+`braintum_search_rate_limited`, `503` with `braintum_search_backend_unavailable`, `400` for a
 `q` that is too long. On a 503 the popup tells the visitor and offers the site's
 own results page, which falls back to WordPress search — "nothing matched" and
 "search is down" are different facts, and only one of them is true.
@@ -210,13 +210,13 @@ Both surfaces are rate limited under the same bucket, `instant`. See
 The popup's markup is three PHP templates, located the way WooCommerce's are:
 
 ```
-yourtheme/solrengine/search-modal.php                    the dialog
-yourtheme/solrengine/search-modal/result.php             a result card
-yourtheme/solrengine/search-modal/result-{post_type}.php a card for one type
+yourtheme/braintum-search/search-modal.php                    the dialog
+yourtheme/braintum-search/search-modal/result.php             a result card
+yourtheme/braintum-search/search-modal/result-{post_type}.php a card for one type
 ```
 
 Copy a file from the plugin's `templates/` directory into the theme, keeping its
-path under `solrengine/`, and edit the copy. A child theme wins over its parent;
+path under `braintum-search/`, and edit the copy. A child theme wins over its parent;
 both win over the plugin. The plugin ships `result-product.php`; any other type
 uses `result.php` unless the theme adds its own.
 
@@ -230,7 +230,7 @@ once per page rather than once per result.
 
 ### The dialog
 
-The script finds each part by its `data-solrengine-*` attribute and never by
+The script finds each part by its `data-braintum-search-*` attribute and never by
 class, so classes and structure are free to change. The attributes are listed at
 the top of `templates/search-modal.php`. Removing one disables the part it names;
 the popup still works without, for example, a clear button or a "View all" link.
@@ -238,34 +238,34 @@ the popup still works without, for example, a clear button or a "View all" link.
 ### Sections
 
 On All, each section is built from the
-`<template data-solrengine-template="section">` in `search-modal.php`. Copy it with
+`<template data-braintum-search-template="section">` in `search-modal.php`. Copy it with
 the dialog and change it freely, keeping these:
 
 | Attribute | Does |
 | --- | --- |
-| `data-solrengine-section-header` | The section's heading. Left out on a type tab, where the tab already names the type. Its `id` is set by the script and used to label the list |
-| `data-solrengine-field="label"` | The type's plural name |
-| `data-solrengine-field="count"` | The type's count, formatted for the site's language |
-| `data-solrengine-see-all` | The button that selects the type's tab. Hidden when every match is already shown |
-| `data-solrengine-field="see_all"` | The button's text, "See all N" |
-| `data-solrengine-section-results` | The list cards are added to. The script gives it `role="list"`, which Safari needs to announce a list styled without bullets |
+| `data-braintum-search-section-header` | The section's heading. Left out on a type tab, where the tab already names the type. Its `id` is set by the script and used to label the list |
+| `data-braintum-search-field="label"` | The type's plural name |
+| `data-braintum-search-field="count"` | The type's count, formatted for the site's language |
+| `data-braintum-search-see-all` | The button that selects the type's tab. Hidden when every match is already shown |
+| `data-braintum-search-field="see_all"` | The button's text, "See all N" |
+| `data-braintum-search-section-results` | The list cards are added to. The script gives it `role="list"`, which Safari needs to announce a list styled without bullets |
 
-Each section carries `data-solrengine-section="<post type>"` and
-`data-solrengine-total`, for styling one type differently. Without the template
+Each section carries `data-braintum-search-section="<post type>"` and
+`data-braintum-search-total`, for styling one type differently. Without the template
 the script builds a plain heading and list, so an older copy of `search-modal.php`
 keeps working; it only looks plainer.
 
-`data-solrengine-results` is now the container the sections go in rather than the
-list itself, and `data-solrengine-more` marks the "Load more results" button. The
+`data-braintum-search-results` is now the container the sections go in rather than the
+list itself, and `data-braintum-search-more` marks the "Load more results" button. The
 script writes "Load more results" or "Could not load more. Try again" into the
-button's `.solrengine-modal__more-label`; without that element the button keeps
+button's `.braintum-search-modal__more-label`; without that element the button keeps
 the text the template gave it. Without the button, scrolling loads nothing more
 and further pages are reached only with ↓ past the last card.
 
 ### Result cards
 
 The outermost element is a list item and must be the template's only root. The
-element with `data-solrengine-href` is the card's link and its only focusable
+element with `data-braintum-search-href` is the card's link and its only focusable
 element: the script names it with the result's title (`aria-label`) and
 describes it with whichever of type, price, date and author the card shows
 (`aria-describedby`), so a screen reader says "Hoodie, link, Product, 42,00 € –
@@ -280,20 +280,20 @@ Slots are attributes:
 
 | Attribute | Fills |
 | --- | --- |
-| `data-solrengine-field="title"` | The title, with searched words wrapped in `<mark class="solrengine-mark">` |
-| `data-solrengine-field="type"` | The post type's singular name |
-| `data-solrengine-field="excerpt"` | The excerpt |
-| `data-solrengine-field="date"` | The date, formatted for the site's language |
-| `data-solrengine-field="author"` | The author's display name |
-| `data-solrengine-field="price"` | The price, marked up as WooCommerce marks one up |
-| `data-solrengine-href="url"` | Sets `href` |
-| `data-solrengine-src="thumbnail"` | Sets `src`, or removes the element when there is none |
-| `data-solrengine-if="<field>"` | Removes the element when that field is empty |
+| `data-braintum-search-field="title"` | The title, with searched words wrapped in `<mark class="braintum-search-mark">` |
+| `data-braintum-search-field="type"` | The post type's singular name |
+| `data-braintum-search-field="excerpt"` | The excerpt |
+| `data-braintum-search-field="date"` | The date, formatted for the site's language |
+| `data-braintum-search-field="author"` | The author's display name |
+| `data-braintum-search-field="price"` | The price, marked up as WooCommerce marks one up |
+| `data-braintum-search-href="url"` | Sets `href` |
+| `data-braintum-search-src="thumbnail"` | Sets `src`, or removes the element when there is none |
+| `data-braintum-search-if="<field>"` | Removes the element when that field is empty |
 
 Values are inserted as text, never as markup, and URLs are accepted only when
 they are `http` or `https`.
 
-The bundled cards put `data-solrengine-if="thumbnail"` on the image box, so a
+The bundled cards put `data-braintum-search-if="thumbnail"` on the image box, so a
 result without an image — most pages — is a text-only card with a longer excerpt
 rather than a card with an empty picture. Keep that attribute in a copy that
 should behave the same way.
@@ -301,7 +301,7 @@ should behave the same way.
 For anything a template cannot express, listen for the card event:
 
 ```js
-document.addEventListener( 'solrengine:result', ( event ) => {
+document.addEventListener( 'braintum-search:result', ( event ) => {
 	const { result, element } = event.detail;
 
 	if ( result.post_type === 'event' ) {
@@ -318,34 +318,34 @@ the rest are in the document with `hidden` set.
 
 | Hook | Use |
 | --- | --- |
-| `solrengine_search_modal_args` | Heading, tagline, placeholder, results URL, and the opt-in "Powered by" line |
-| `solrengine_template` | Supply a template from a plugin, or return `''` to suppress one |
-| `solrengine_search_modal_triggers` | Elements that open the popup when clicked |
-| `solrengine_search_modal_width` | The width the popup grows to, when the theme does not say or says something narrower than its layout |
-| `solrengine_instant_search_selector` | The theme's search fields (shared with the suggestion list) |
+| `braintum_search_modal_args` | Heading, tagline, placeholder, results URL, and the opt-in "Powered by" line |
+| `braintum_search_template` | Supply a template from a plugin, or return `''` to suppress one |
+| `braintum_search_modal_triggers` | Elements that open the popup when clicked |
+| `braintum_search_modal_width` | The width the popup grows to, when the theme does not say or says something narrower than its layout |
+| `braintum_search_instant_search_selector` | The theme's search fields (shared with the suggestion list) |
 
 ```php
-add_filter( 'solrengine_search_modal_args', function ( $args ) {
+add_filter( 'braintum_search_modal_args', function ( $args ) {
 	$args['tagline']     = __( 'Find something good.', 'my-theme' );
 	$args['show_credit'] = true; // Off by default, per WordPress.org guideline 10.
 	return $args;
 } );
 ```
 
-Full signatures are in [hooks.md](hooks.md). `solrengine_search_query` and
-`solrengine_search_results` fire for the popup's queries as for any other
+Full signatures are in [hooks.md](hooks.md). `braintum_search_query` and
+`braintum_search_results` fire for the popup's queries as for any other
 search.
 
 ## Styling
 
 Every colour, radius and size a theme is likely to change is a custom property on
-`.solrengine-modal`:
+`.braintum-search-modal`:
 
 ```css
-.solrengine-modal {
-	--solrengine-modal-accent: #b4232a;
-	--solrengine-modal-radius: 8px;
-	--solrengine-modal-columns: 3;
+.braintum-search-modal {
+	--braintum-search-modal-accent: #b4232a;
+	--braintum-search-modal-radius: 8px;
+	--braintum-search-modal-columns: 3;
 }
 ```
 
@@ -355,8 +355,8 @@ theme's font.
 **Width.** The popup is as wide as the site it opens over, never narrower than
 44rem and never wider than the screen. The width comes from, in order:
 
-1. `--solrengine-modal-width`, if the theme sets it.
-2. `solrengine_search_modal_width`, if something filters it.
+1. `--braintum-search-modal-width`, if the theme sets it.
+2. `braintum_search_modal_width`, if something filters it.
 3. The theme's `theme.json` wide size, then its content size.
 4. A classic theme's `$content_width`, as the theme declared it during
    `after_setup_theme`. Some themes narrow the global later, per page, to the
@@ -364,19 +364,19 @@ theme's font.
    ignored.
 5. 75rem.
 
-Steps 2 to 4 are printed as `--solrengine-content-width` beside the stylesheet,
+Steps 2 to 4 are printed as `--braintum-search-content-width` beside the stylesheet,
 and only when the value is a plain length or `calc()`, `min()`, `max()`,
 `clamp()` or `var()` over lengths; anything else is dropped.
 
 ```php
 // A classic theme with no $content_width.
-add_filter( 'solrengine_search_modal_width', function () {
+add_filter( 'braintum_search_modal_width', function () {
 	return '1140px';
 } );
 ```
 
-**The grid.** Cards are at least `--solrengine-modal-card-min` (15rem) wide, at
-most `--solrengine-modal-columns` (4) to a row, `--solrengine-modal-gap` (1rem)
+**The grid.** Cards are at least `--braintum-search-modal-card-min` (15rem) wide, at
+most `--braintum-search-modal-columns` (4) to a row, `--braintum-search-modal-gap` (1rem)
 apart, and two to a row below 600px. At the default width that is four on a
 desktop and three on a tablet. Its selectors carry two classes, which is enough to win over theme
 rules for bare `button`, `input`, `a` and `mark` without `!important`. Below
@@ -425,7 +425,7 @@ removes the price element from its copy of `result-product.php`.
 - Text meets 4.5:1 contrast on every surface it sits on, the count pills
   included.
 - Checked with axe-core (WCAG 2.2 AA and best practices) and a keyboard-only
-  run: `SOLRENGINE_A11Y_URL=http://example.test/ npm run test:a11y`. See
+  run: `BRAINTUM_SEARCH_A11Y_URL=http://example.test/ npm run test:a11y`. See
   `tests/a11y/search-modal.js`.
 
 ## Settings

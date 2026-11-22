@@ -10,16 +10,16 @@
  * without fighting specificity.
  */
 
-.solrengine-instant-search {
+.braintum-search-instant-search {
 	position: relative;
 
-	--solrengine-bg: #fff;
-	--solrengine-border: rgba(0, 0, 0, 0.15);
-	--solrengine-active-bg: rgba(0, 0, 0, 0.06);
-	--solrengine-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+	--braintum-search-bg: #fff;
+	--braintum-search-border: rgba(0, 0, 0, 0.15);
+	--braintum-search-active-bg: rgba(0, 0, 0, 0.06);
+	--braintum-search-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.solrengine-suggestions {
+.braintum-search-suggestions {
 	position: absolute;
 	z-index: 100;
 	top: 100%;
@@ -30,13 +30,13 @@
 	list-style: none;
 	max-height: 60vh;
 	overflow-y: auto;
-	background: var(--solrengine-bg);
-	border: 1px solid var(--solrengine-border);
+	background: var(--braintum-search-bg);
+	border: 1px solid var(--braintum-search-border);
 	border-radius: 3px;
-	box-shadow: var(--solrengine-shadow);
+	box-shadow: var(--braintum-search-shadow);
 }
 
-.solrengine-suggestion {
+.braintum-search-suggestion {
 	margin: 0;
 	padding: 0.6em 0.8em;
 	cursor: pointer;
@@ -48,22 +48,22 @@
 	white-space: nowrap;
 }
 
-.solrengine-suggestion.is-active,
-.solrengine-suggestion:hover {
-	background: var(--solrengine-active-bg);
+.braintum-search-suggestion.is-active,
+.braintum-search-suggestion:hover {
+	background: var(--braintum-search-active-bg);
 }
 
 /* Keyboard highlighting must remain visible in forced-colours mode, where
    background colours are replaced by the user's own palette. */
 @media ( forced-colors: active ) {
 
-	.solrengine-suggestion.is-active {
+	.braintum-search-suggestion.is-active {
 		outline: 2px solid Highlight;
 		outline-offset: -2px;
 	}
 }
 
-.solrengine-instant-search .screen-reader-text {
+.braintum-search-instant-search .screen-reader-text {
 	position: absolute;
 	width: 1px;
 	height: 1px;

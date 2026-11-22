@@ -12,33 +12,33 @@
  * deliberately: it keeps this suite free of WooCommerce and makes the exact
  * field values visible in the test.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Backend;
+namespace BraintumSearch\Tests\Backend;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\FacetDefinition;
-use SolrEngine\Contracts\FieldType;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Integration\WooCommerce\CatalogContext;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Integration\WooCommerce\ShopQuery;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
-use SolrEngine\Search\ResponseParser;
+use BraintumSearch\Contracts\FacetDefinition;
+use BraintumSearch\Contracts\FieldType;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Integration\WooCommerce\CatalogContext;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Integration\WooCommerce\ShopQuery;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
+use BraintumSearch\Search\ResponseParser;
 
 /**
- * @covers \SolrEngine\Integration\WooCommerce\ProductFields
- * @covers \SolrEngine\Search\FilterRegistry
+ * @covers \BraintumSearch\Integration\WooCommerce\ProductFields
+ * @covers \BraintumSearch\Search\FilterRegistry
  */
 final class ProductQueryTest extends TestCase {
 
@@ -71,7 +71,7 @@ final class ProductQueryTest extends TestCase {
 	private const OTHER_SITE = 802;
 
 	public static function setUpBeforeClass(): void {
-		$base = getenv( 'SOLRENGINE_TEST_SOLR_URL' );
+		$base = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_URL' );
 
 		if ( ! is_string( $base ) || '' === $base ) {
 			return;
@@ -79,7 +79,7 @@ final class ProductQueryTest extends TestCase {
 
 		self::$base = rtrim( $base, '/' );
 
-		$collection = getenv( 'SOLRENGINE_TEST_SOLR_COLLECTION' );
+		$collection = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_COLLECTION' );
 
 		self::$collection = is_string( $collection ) && '' !== $collection ? $collection : 'wordpress';
 
@@ -94,7 +94,7 @@ final class ProductQueryTest extends TestCase {
 
 	protected function setUp(): void {
 		if ( '' === self::$base ) {
-			$this->markTestSkipped( 'Set SOLRENGINE_TEST_SOLR_URL to run backend tests.' );
+			$this->markTestSkipped( 'Set BRAINTUM_SEARCH_TEST_SOLR_URL to run backend tests.' );
 		}
 	}
 
@@ -265,7 +265,7 @@ final class ProductQueryTest extends TestCase {
 	 * Facet results a query returns.
 	 *
 	 * @param SearchQuery $query Query to run.
-	 * @return array<string,\SolrEngine\Contracts\FacetResult>
+	 * @return array<string,\BraintumSearch\Contracts\FacetResult>
 	 */
 	private function facets( SearchQuery $query ): array {
 		return $this->execute( $query )->facets();
@@ -278,7 +278,7 @@ final class ProductQueryTest extends TestCase {
 	 * with a different signature is a fatal error.
 	 *
 	 * @param SearchQuery $query Query to run.
-	 * @return \SolrEngine\Contracts\SearchResults
+	 * @return \BraintumSearch\Contracts\SearchResults
 	 */
 	private function execute( SearchQuery $query ) {
 		$registry = $this->facet_registry();

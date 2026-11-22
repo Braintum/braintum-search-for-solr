@@ -2,10 +2,10 @@
 /**
  * One facet a caller may ask for.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A server-declared facet.
@@ -415,7 +415,7 @@ final class FacetDefinition {
 			return false;
 		}
 
-		// Only fields SolrEngine owns. A definition pointing at an arbitrary
+		// Only fields Braintum Search owns. A definition pointing at an arbitrary
 		// field would turn a facet into a way to enumerate another
 		// application's data in a shared collection.
 		if ( 0 !== strpos( $this->field, 'se_' ) ) {

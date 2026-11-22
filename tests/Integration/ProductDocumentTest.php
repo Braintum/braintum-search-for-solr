@@ -11,19 +11,19 @@
  * WordPress test library and load it from tests/bootstrap.php — see
  * docs/development.md.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Integration;
+namespace BraintumSearch\Tests\Integration;
 
-use SolrEngine\Documents\MetaAllowlist;
-use SolrEngine\Documents\PostDocumentBuilder;
-use SolrEngine\Integration\WooCommerce\CatalogContext;
-use SolrEngine\Integration\WooCommerce\ProductDocument;
-use SolrEngine\Integration\WooCommerce\ProductFields;
-use SolrEngine\Integration\WooCommerce\StockLevel;
+use BraintumSearch\Documents\MetaAllowlist;
+use BraintumSearch\Documents\PostDocumentBuilder;
+use BraintumSearch\Integration\WooCommerce\CatalogContext;
+use BraintumSearch\Integration\WooCommerce\ProductDocument;
+use BraintumSearch\Integration\WooCommerce\ProductFields;
+use BraintumSearch\Integration\WooCommerce\StockLevel;
 use WC_Product_Attribute;
 use WC_Product_Simple;
 use WC_Product_Variable;
@@ -31,7 +31,7 @@ use WC_Product_Variation;
 use WP_UnitTestCase;
 
 /**
- * @covers \SolrEngine\Integration\WooCommerce\ProductDocument
+ * @covers \BraintumSearch\Integration\WooCommerce\ProductDocument
  */
 final class ProductDocumentTest extends WP_UnitTestCase {
 

@@ -8,18 +8,18 @@
  * and a query filtered on "en-US" simply do not match — so the normalisation is
  * tested rather than assumed.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Unit;
+namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Language\LanguageTag;
+use BraintumSearch\Language\LanguageTag;
 
 /**
- * @covers \SolrEngine\Language\LanguageTag
+ * @covers \BraintumSearch\Language\LanguageTag
  */
 final class LanguageTagTest extends TestCase {
 

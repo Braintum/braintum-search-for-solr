@@ -2,10 +2,10 @@
 /**
  * Index lifecycle contract.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * Builds a replacement index alongside the live one and switches to it.
@@ -25,7 +25,7 @@ namespace SolrEngine\Contracts;
  *   precondition: Solr refuses to create an alias whose name is taken by a real
  *   collection, so a site whose configured name is a collection cannot have this
  *   strategy until somebody creates an alias on the server.
- * - STYLE_POINTER: the backend cannot, and the caller switches SolrEngine's own
+ * - STYLE_POINTER: the backend cannot, and the caller switches Braintum Search's own
  *   configured index instead. One request may still be answered by the old index
  *   while the next is answered by the new one, which is a far smaller window
  *   than a rebuild in place and is reversible from WordPress.

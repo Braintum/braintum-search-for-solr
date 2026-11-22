@@ -9,7 +9,7 @@
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-edit-check.sh",
             "timeout": 120,
-            "statusMessage": "SolrEngine: checking the edited file"
+            "statusMessage": "Braintum Search: checking the edited file"
           }
         ]
       }

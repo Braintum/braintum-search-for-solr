@@ -1,14 +1,14 @@
 # REST API
 
-Five endpoints under `solrengine/v1`. Four are public and serve content a
+Five endpoints under `braintum-search/v1`. Four are public and serve content a
 visitor can already read; one requires a capability.
 
 ```
-GET /wp-json/solrengine/v1/search      documents, totals and optional facet counts
-GET /wp-json/solrengine/v1/facets      facet counts only, no documents
-GET /wp-json/solrengine/v1/suggest     autocomplete
-GET /wp-json/solrengine/v1/instant     the search popup: results and per-type counts
-GET /wp-json/solrengine/v1/status      health and configuration (manage_options)
+GET /wp-json/braintum-search/v1/search      documents, totals and optional facet counts
+GET /wp-json/braintum-search/v1/facets      facet counts only, no documents
+GET /wp-json/braintum-search/v1/suggest     autocomplete
+GET /wp-json/braintum-search/v1/instant     the search popup: results and per-type counts
+GET /wp-json/braintum-search/v1/status      health and configuration (manage_options)
 ```
 
 ## The rule that defines this API
@@ -129,7 +129,7 @@ not a list anybody reads, and every row costs latency on a request that fires wh
 someone is still typing.
 
 This is the address the theme's search field calls for the suggestion list. It
-runs on a full boot, so `solrengine_suggest_query` and `solrengine_suggestions`
+runs on a full boot, so `braintum_search_suggest_query` and `braintum_search_suggestions`
 fire and `post_type` narrowing works. See [search.md](search.md#where-the-time-goes)
 for where its latency goes.
 
@@ -198,11 +198,11 @@ that can authenticate.
 
 | Code | Status | Means |
 | --- | --- | --- |
-| `solrengine_invalid_filter` | 400 | A filter key is not registered. The response lists the keys that are |
-| `solrengine_invalid_filter_value` | 400 | A filter value is not usable for that filter's type |
-| `solrengine_invalid_facet` | 400 | A facet key is not registered |
-| `solrengine_rate_limited` | 429 | Too many requests. Carries `retry_after` |
-| `solrengine_backend_unavailable` | 503 | Solr could not be reached. Carries `retry_after` |
+| `braintum_search_invalid_filter` | 400 | A filter key is not registered. The response lists the keys that are |
+| `braintum_search_invalid_filter_value` | 400 | A filter value is not usable for that filter's type |
+| `braintum_search_invalid_facet` | 400 | A facet key is not registered |
+| `braintum_search_rate_limited` | 429 | Too many requests. Carries `retry_after` |
+| `braintum_search_backend_unavailable` | 503 | Solr could not be reached. Carries `retry_after` |
 
 An unknown key is refused rather than ignored, and the refusal says what is
 available. Ignoring it would let a client build against a filter that silently

@@ -11,28 +11,28 @@
  * Every case below is something an attacker with nothing but a search box
  * would try.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );
 
-namespace SolrEngine\Tests\Backend;
+namespace BraintumSearch\Tests\Backend;
 
 use PHPUnit\Framework\TestCase;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Documents\DocumentFields;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\SchemaPlanner;
-use SolrEngine\Schema\SchemaStateFactory;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\QueryTranslator;
-use SolrEngine\Search\RelevanceProfile;
-use SolrEngine\Search\ResponseParser;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Documents\DocumentFields;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\SchemaPlanner;
+use BraintumSearch\Schema\SchemaStateFactory;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\QueryTranslator;
+use BraintumSearch\Search\RelevanceProfile;
+use BraintumSearch\Search\ResponseParser;
 
 /**
- * @covers \SolrEngine\Search\QueryTranslator
- * @covers \SolrEngine\Search\ResponseParser
- * @covers \SolrEngine\Search\FilterRegistry
+ * @covers \BraintumSearch\Search\QueryTranslator
+ * @covers \BraintumSearch\Search\ResponseParser
+ * @covers \BraintumSearch\Search\FilterRegistry
  */
 final class QueryInjectionTest extends TestCase {
 
@@ -83,7 +83,7 @@ final class QueryInjectionTest extends TestCase {
 	private const OTHER_SITE_TITLE = 'Article belonging to site two';
 
 	public static function setUpBeforeClass(): void {
-		$base = getenv( 'SOLRENGINE_TEST_SOLR_URL' );
+		$base = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_URL' );
 
 		if ( ! is_string( $base ) || '' === $base ) {
 			return;
@@ -91,7 +91,7 @@ final class QueryInjectionTest extends TestCase {
 
 		self::$base = rtrim( $base, '/' );
 
-		$collection = getenv( 'SOLRENGINE_TEST_SOLR_COLLECTION' );
+		$collection = getenv( 'BRAINTUM_SEARCH_TEST_SOLR_COLLECTION' );
 
 		self::$collection = is_string( $collection ) && '' !== $collection ? $collection : 'wordpress';
 
@@ -106,7 +106,7 @@ final class QueryInjectionTest extends TestCase {
 
 	protected function setUp(): void {
 		if ( '' === self::$base ) {
-			$this->markTestSkipped( 'Set SOLRENGINE_TEST_SOLR_URL to run backend tests.' );
+			$this->markTestSkipped( 'Set BRAINTUM_SEARCH_TEST_SOLR_URL to run backend tests.' );
 		}
 	}
 
@@ -221,7 +221,7 @@ final class QueryInjectionTest extends TestCase {
 	/**
 	 * Titles of every hit.
 	 *
-	 * @param \SolrEngine\Contracts\SearchResults $results Results.
+	 * @param \BraintumSearch\Contracts\SearchResults $results Results.
 	 * @return string[]
 	 */
 	private function titles( $results ): array {
@@ -239,7 +239,7 @@ final class QueryInjectionTest extends TestCase {
 	 *
 	 * @param string $terms   Search text.
 	 * @param int    $site_id Site to search within.
-	 * @return \SolrEngine\Contracts\SearchResults
+	 * @return \BraintumSearch\Contracts\SearchResults
 	 */
 	private function search( string $terms, int $site_id ) {
 		$query      = new SearchQuery( $terms, $site_id );

@@ -2,15 +2,15 @@
 /**
  * Short-lived storage for computed results.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * A place to keep a result for a little while.
  *
- * {@see \SolrEngine\Search\SearchService} caches result sets and suggestion
+ * {@see \BraintumSearch\Search\SearchService} caches result sets and suggestion
  * lists, which is the difference between one Solr query per visitor and one per
  * keystroke on a page several visitors are typing into at once.
  *

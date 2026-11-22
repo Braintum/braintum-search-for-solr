@@ -12,7 +12,7 @@
  * If a class under unit test ever needs a shim with real behaviour — an option,
  * a hook, a query — that is a seam leaking, and the fix belongs in the class.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
 declare( strict_types=1 );

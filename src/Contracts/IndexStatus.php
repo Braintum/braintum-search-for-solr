@@ -2,10 +2,10 @@
 /**
  * Index health snapshot.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Contracts;
+namespace BraintumSearch\Contracts;
 
 /**
  * What the backend reports about the index right now.

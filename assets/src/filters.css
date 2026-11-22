@@ -8,54 +8,54 @@
  * be fought with custom CSS on the rest.
  */
 
-.solrengine-filters__heading {
+.braintum-search-filters__heading {
 	margin: 0 0 0.75em;
 }
 
-.solrengine-filters__facet {
+.braintum-search-filters__facet {
 	border: 0;
 	margin: 0 0 1.25em;
 	padding: 0;
 }
 
-.solrengine-filters__legend {
+.braintum-search-filters__legend {
 	font-weight: 600;
 	margin-bottom: 0.4em;
 	padding: 0;
 }
 
-.solrengine-filters__values {
+.braintum-search-filters__values {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.solrengine-filters__value {
+.braintum-search-filters__value {
 	align-items: baseline;
 	display: flex;
 	gap: 0.5em;
 	margin: 0 0 0.25em;
 }
 
-.solrengine-filters__value label {
+.braintum-search-filters__value label {
 	display: flex;
 	gap: 0.5em;
 	justify-content: space-between;
 	width: 100%;
 }
 
-.solrengine-filters__count {
+.braintum-search-filters__count {
 
 	/* Dimmed rather than hidden: the count is what makes a filter worth
 	   clicking, but it is not the label. */
 	opacity: 0.7;
 }
 
-.solrengine-filters__up {
+.braintum-search-filters__up {
 	margin: 0 0 0.5em;
 }
 
-.solrengine-filters__actions {
+.braintum-search-filters__actions {
 	align-items: center;
 	display: flex;
 	gap: 1em;
@@ -63,7 +63,7 @@
 
 /* Focus visibility is not optional: this panel is operated with the keyboard by
    anyone who does not use a mouse, and the checkboxes are its only controls. */
-.solrengine-filters input:focus-visible {
+.braintum-search-filters input:focus-visible {
 	outline: 2px solid currentcolor;
 	outline-offset: 2px;
 }

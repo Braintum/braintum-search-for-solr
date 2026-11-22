@@ -2,12 +2,12 @@
 /**
  * Contract for putting a request on the wire.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Solr;
+namespace BraintumSearch\Backend\Solr;
 
-use SolrEngine\Contracts\Result;
+use BraintumSearch\Contracts\Result;
 
 /**
  * Carries one HTTP request and brings back the status and body.

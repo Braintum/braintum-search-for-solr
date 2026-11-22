@@ -2,22 +2,22 @@
 /**
  * Relevance tuning.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Contracts\SchemaPlan;
-use SolrEngine\Integration\WooCommerce\WooCommerce;
-use SolrEngine\Language\Languages;
-use SolrEngine\Language\LanguageTag;
-use SolrEngine\Schema\ContractRegistry;
-use SolrEngine\Schema\LanguageFields;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\RelevanceProfile;
-use SolrEngine\Search\RelevanceSettings;
-use SolrEngine\Support\Config;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Contracts\SchemaPlan;
+use BraintumSearch\Integration\WooCommerce\WooCommerce;
+use BraintumSearch\Language\Languages;
+use BraintumSearch\Language\LanguageTag;
+use BraintumSearch\Schema\ContractRegistry;
+use BraintumSearch\Schema\LanguageFields;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\RelevanceProfile;
+use BraintumSearch\Search\RelevanceSettings;
+use BraintumSearch\Support\Config;
 
 /**
  * Where a site owner decides what "most relevant" means.
@@ -45,14 +45,14 @@ final class SearchScreen extends Screen {
 	 *
 	 * @var string
 	 */
-	public const SLUG = 'solrengine-search';
+	public const SLUG = 'braintum-search-search';
 
 	/**
 	 * Form action.
 	 *
 	 * @var string
 	 */
-	public const ACTION = 'solrengine_save_relevance';
+	public const ACTION = 'braintum_search_save_relevance';
 
 	/**
 	 * Configuration.
@@ -127,7 +127,7 @@ final class SearchScreen extends Screen {
 	 * @return string
 	 */
 	public function label(): string {
-		return __( 'Search', 'solrengine' );
+		return __( 'Search', 'braintum-search-for-solr' );
 	}
 
 	/**
@@ -220,7 +220,7 @@ final class SearchScreen extends Screen {
 
 		if ( array() === $wanted ) {
 			// Switching everything off needs no schema change. The patterns stay
-			// in the schema — SolrEngine never removes a field — and documents
+			// in the schema — Braintum Search never removes a field — and documents
 			// simply stop being written into them.
 			$this->config->set( 'index.analysed_languages', array() );
 
@@ -251,7 +251,7 @@ final class SearchScreen extends Screen {
 		$stored  = $this->config->get_array( 'search.relevance', array() );
 		$profile = RelevanceProfile::from_config(
 			$stored,
-			WooCommerce::is_active() ? \SolrEngine\Integration\WooCommerce\ProductFields::relevance_boosts() : array()
+			WooCommerce::is_active() ? \BraintumSearch\Integration\WooCommerce\ProductFields::relevance_boosts() : array()
 		);
 
 		$boosts = $profile->field_boosts();
@@ -259,41 +259,41 @@ final class SearchScreen extends Screen {
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'Search', 'solrengine' ); ?></h1>
+			<h1><?php esc_html_e( 'Search', 'braintum-search-for-solr' ); ?></h1>
 
 			<?php
 			$this->render_notice(
 				array(
-					'saved'            => array( 'success', __( 'Relevance settings saved. They apply to the next search; no reindexing is needed.', 'solrengine' ) ),
-					'partial'          => array( 'warning', __( 'Saved, with corrections:', 'solrengine' ) ),
-					'reset'            => array( 'success', __( 'Relevance settings are back to the shipped defaults.', 'solrengine' ) ),
-					'languages_on'     => array( 'success', __( 'Language analysis is on. Run a full index so existing content is analysed too.', 'solrengine' ) ),
-					'languages_off'    => array( 'success', __( 'Language analysis is off. Searches use the language-neutral fields.', 'solrengine' ) ),
-					'languages_failed' => array( 'error', __( 'Language analysis could not be switched on.', 'solrengine' ) ),
+					'saved'            => array( 'success', __( 'Relevance settings saved. They apply to the next search; no reindexing is needed.', 'braintum-search-for-solr' ) ),
+					'partial'          => array( 'warning', __( 'Saved, with corrections:', 'braintum-search-for-solr' ) ),
+					'reset'            => array( 'success', __( 'Relevance settings are back to the shipped defaults.', 'braintum-search-for-solr' ) ),
+					'languages_on'     => array( 'success', __( 'Language analysis is on. Run a full index so existing content is analysed too.', 'braintum-search-for-solr' ) ),
+					'languages_off'    => array( 'success', __( 'Language analysis is off. Searches use the language-neutral fields.', 'braintum-search-for-solr' ) ),
+					'languages_failed' => array( 'error', __( 'Language analysis could not be switched on.', 'braintum-search-for-solr' ) ),
 				)
 			);
 			?>
 
 			<?php $this->open_form( self::ACTION ); ?>
 
-			<h2><?php esc_html_e( 'Field weighting', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'Field weighting', 'braintum-search-for-solr' ); ?></h2>
 
 			<p>
-				<?php esc_html_e( 'How much a match in each place counts. A title match at 5 outranks a content match at 1, so a page whose title is the search term comes first. Set a field to 0 to stop searching it entirely.', 'solrengine' ); ?>
+				<?php esc_html_e( 'How much a match in each place counts. A title match at 5 outranks a content match at 1, so a page whose title is the search term comes first. Set a field to 0 to stop searching it entirely.', 'braintum-search-for-solr' ); ?>
 			</p>
 
 			<table class="form-table" role="presentation">
 				<?php foreach ( $fields as $field => $label ) : ?>
 					<tr>
 						<th scope="row">
-							<label for="solrengine-boost-<?php echo esc_attr( $field ); ?>">
+							<label for="braintum-search-boost-<?php echo esc_attr( $field ); ?>">
 								<?php echo esc_html( $label ); ?>
 							</label>
 						</th>
 						<td>
 							<input
 								type="number"
-								id="solrengine-boost-<?php echo esc_attr( $field ); ?>"
+								id="braintum-search-boost-<?php echo esc_attr( $field ); ?>"
 								name="field_boosts[<?php echo esc_attr( $field ); ?>]"
 								class="small-text"
 								step="0.1"
@@ -308,39 +308,39 @@ final class SearchScreen extends Screen {
 			</table>
 
 			<p class="description">
-				<?php esc_html_e( 'The weighting this produces:', 'solrengine' ); ?>
+				<?php esc_html_e( 'The weighting this produces:', 'braintum-search-for-solr' ); ?>
 				<br/><code><?php echo esc_html( $profile->query_fields() ); ?></code>
 			</p>
 
-			<h2><?php esc_html_e( 'Matching', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'Matching', 'braintum-search-for-solr' ); ?></h2>
 
 			<table class="form-table" role="presentation">
 				<tr>
 					<th scope="row">
-						<label for="solrengine-mm"><?php esc_html_e( 'Words that must match', 'solrengine' ); ?></label>
+						<label for="braintum-search-mm"><?php esc_html_e( 'Words that must match', 'braintum-search-for-solr' ); ?></label>
 					</th>
 					<td>
 						<input
 							type="text"
-							id="solrengine-mm"
+							id="braintum-search-mm"
 							name="minimum_match"
 							class="regular-text code"
 							value="<?php echo esc_attr( isset( $stored['minimum_match'] ) ? (string) $stored['minimum_match'] : '2<75%' ); ?>"
 						/>
 						<p class="description">
-							<?php esc_html_e( 'The default, 2<75%, means a search of one or two words must match all of them, and a longer search must match three quarters. Lowering it returns more results and less relevant ones.', 'solrengine' ); ?>
+							<?php esc_html_e( 'The default, 2<75%, means a search of one or two words must match all of them, and a longer search must match three quarters. Lowering it returns more results and less relevant ones.', 'braintum-search-for-solr' ); ?>
 						</p>
 					</td>
 				</tr>
 
 				<tr>
 					<th scope="row">
-						<label for="solrengine-tie"><?php esc_html_e( 'Credit for secondary matches', 'solrengine' ); ?></label>
+						<label for="braintum-search-tie"><?php esc_html_e( 'Credit for secondary matches', 'braintum-search-for-solr' ); ?></label>
 					</th>
 					<td>
 						<input
 							type="number"
-							id="solrengine-tie"
+							id="braintum-search-tie"
 							name="tie"
 							class="small-text"
 							step="0.05"
@@ -349,14 +349,14 @@ final class SearchScreen extends Screen {
 							value="<?php echo esc_attr( (string) $profile->tie() ); ?>"
 						/>
 						<p class="description">
-							<?php esc_html_e( 'Between 0 and 1. At 0 only the best-matching field counts towards a result\'s score. At 0.1, matches elsewhere in the same document add a little.', 'solrengine' ); ?>
+							<?php esc_html_e( 'Between 0 and 1. At 0 only the best-matching field counts towards a result\'s score. At 0.1, matches elsewhere in the same document add a little.', 'braintum-search-for-solr' ); ?>
 						</p>
 					</td>
 				</tr>
 
 				<?php if ( null !== $this->languages && $this->languages->is_multilingual() ) : ?>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Languages', 'solrengine' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Languages', 'braintum-search-for-solr' ); ?></th>
 						<td>
 							<label>
 								<input
@@ -365,17 +365,17 @@ final class SearchScreen extends Screen {
 									value="1"
 									<?php checked( $this->config->get_bool( 'search.language_scope', true ) ); ?>
 								/>
-								<?php esc_html_e( 'Only show results in the language the visitor is reading', 'solrengine' ); ?>
+								<?php esc_html_e( 'Only show results in the language the visitor is reading', 'braintum-search-for-solr' ); ?>
 							</label>
 							<p class="description">
-								<?php esc_html_e( 'On by default. A visitor searching from the German site expects German results, and handing them the English translation of the same page as a second hit is worse than not finding it. Switch it off on a site where most pages exist in one language only.', 'solrengine' ); ?>
+								<?php esc_html_e( 'On by default. A visitor searching from the German site expects German results, and handing them the English translation of the same page as a second hit is worse than not finding it. Switch it off on a site where most pages exist in one language only.', 'braintum-search-for-solr' ); ?>
 							</p>
 						</td>
 					</tr>
 				<?php endif; ?>
 
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Newer content', 'solrengine' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Newer content', 'braintum-search-for-solr' ); ?></th>
 					<td>
 						<label>
 							<input
@@ -384,16 +384,16 @@ final class SearchScreen extends Screen {
 								value="1"
 								<?php checked( ! empty( $stored['recency_boost'] ) ); ?>
 							/>
-							<?php esc_html_e( 'Nudge recent content upwards', 'solrengine' ); ?>
+							<?php esc_html_e( 'Nudge recent content upwards', 'braintum-search-for-solr' ); ?>
 						</label>
 						<p class="description">
-							<?php esc_html_e( 'Worth having on a news site and wrong on a documentation site, where the best answer is often the oldest page. It breaks ties rather than overriding relevance.', 'solrengine' ); ?>
+							<?php esc_html_e( 'Worth having on a news site and wrong on a documentation site, where the best answer is often the oldest page. It breaks ties rather than overriding relevance.', 'braintum-search-for-solr' ); ?>
 						</p>
 					</td>
 				</tr>
 			</table>
 
-			<?php submit_button( __( 'Save relevance settings', 'solrengine' ) ); ?>
+			<?php submit_button( __( 'Save relevance settings', 'braintum-search-for-solr' ) ); ?>
 
 			</form>
 
@@ -403,10 +403,10 @@ final class SearchScreen extends Screen {
 
 			<?php $this->render_filters_section(); ?>
 
-			<h2><?php esc_html_e( 'Start again', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'Start again', 'braintum-search-for-solr' ); ?></h2>
 
 			<?php $this->open_form( self::ACTION . '_reset' ); ?>
-			<?php submit_button( __( 'Restore the defaults', 'solrengine' ), 'secondary', 'submit', true ); ?>
+			<?php submit_button( __( 'Restore the defaults', 'braintum-search-for-solr' ), 'secondary', 'submit', true ); ?>
 			</form>
 		</div>
 		<?php
@@ -437,28 +437,28 @@ final class SearchScreen extends Screen {
 		$available = $this->analysable();
 
 		?>
-		<h2><?php esc_html_e( 'Languages', 'solrengine' ); ?></h2>
+		<h2><?php esc_html_e( 'Languages', 'braintum-search-for-solr' ); ?></h2>
 
 		<p>
 			<?php
 			printf(
 				/* translators: %s: name of the plugin providing languages. */
-				esc_html__( 'Languages are read from %s.', 'solrengine' ),
+				esc_html__( 'Languages are read from %s.', 'braintum-search-for-solr' ),
 				esc_html( $provider->label() )
 			);
 			?>
-			<?php esc_html_e( 'Searches are answered in the language the visitor is reading, and content in the other languages is left out of them.', 'solrengine' ); ?>
+			<?php esc_html_e( 'Searches are answered in the language the visitor is reading, and content in the other languages is left out of them.', 'braintum-search-for-solr' ); ?>
 		</p>
 
-		<h3><?php esc_html_e( 'Language-aware analysis', 'solrengine' ); ?></h3>
+		<h3><?php esc_html_e( 'Language-aware analysis', 'braintum-search-for-solr' ); ?></h3>
 
 		<p>
-			<?php esc_html_e( 'Text can be indexed a second time through an analyser that knows the language, so a German search for "Häuser" finds "Haus" and an English search for "running" finds "run". Without it, a search matches only the words as they are written.', 'solrengine' ); ?>
+			<?php esc_html_e( 'Text can be indexed a second time through an analyser that knows the language, so a German search for "Häuser" finds "Haus" and an English search for "running" finds "run". Without it, a search matches only the words as they are written.', 'braintum-search-for-solr' ); ?>
 		</p>
 
 		<?php if ( array() === $available ) : ?>
 			<p>
-				<?php esc_html_e( 'Your Solr does not define an analyser for any of this site\'s languages, and SolrEngine will not create one: an analyser is a much larger commitment than a field, and a wrong one is not recoverable by adding another. Apply the configset SolrEngine ships, which defines two dozen of them, and this list will fill in. Content is indexed and searchable either way.', 'solrengine' ); ?>
+				<?php esc_html_e( 'Your Solr does not define an analyser for any of this site\'s languages, and Braintum Search will not create one: an analyser is a much larger commitment than a field, and a wrong one is not recoverable by adding another. Apply the configset Braintum Search ships, which defines two dozen of them, and this list will fill in. Content is indexed and searchable either way.', 'braintum-search-for-solr' ); ?>
 			</p>
 
 			<?php return; ?>
@@ -482,10 +482,10 @@ final class SearchScreen extends Screen {
 		<?php endforeach; ?>
 
 		<p class="description">
-			<?php esc_html_e( 'Switching one on adds a field to your Solr schema. Existing content is not re-analysed by a schema change, so run a full index afterwards.', 'solrengine' ); ?>
+			<?php esc_html_e( 'Switching one on adds a field to your Solr schema. Existing content is not re-analysed by a schema change, so run a full index afterwards.', 'braintum-search-for-solr' ); ?>
 		</p>
 
-		<?php submit_button( __( 'Save language analysis', 'solrengine' ), 'secondary', 'submit', false ); ?>
+		<?php submit_button( __( 'Save language analysis', 'braintum-search-for-solr' ), 'secondary', 'submit', false ); ?>
 		</form>
 		<?php
 	}
@@ -541,13 +541,13 @@ final class SearchScreen extends Screen {
 	 */
 	private function apply_language_fields( array $subtags ): string {
 		if ( null === $this->backends || null === $this->contracts ) {
-			return __( 'Solr is not reachable.', 'solrengine' );
+			return __( 'Solr is not reachable.', 'braintum-search-for-solr' );
 		}
 
 		$schema = $this->backends->schema();
 
 		if ( null === $schema ) {
-			return __( 'Solr is not reachable.', 'solrengine' );
+			return __( 'Solr is not reachable.', 'braintum-search-for-solr' );
 		}
 
 		// A contract built for the languages being asked for, not the ones
@@ -563,7 +563,7 @@ final class SearchScreen extends Screen {
 		$plan = $planned->value();
 
 		if ( ! $plan instanceof SchemaPlan ) {
-			return __( 'The schema could not be read.', 'solrengine' );
+			return __( 'The schema could not be read.', 'braintum-search-for-solr' );
 		}
 
 		if ( $plan->is_empty() ) {
@@ -591,13 +591,13 @@ final class SearchScreen extends Screen {
 	 */
 	private function render_fallback_section(): void {
 		?>
-		<h2><?php esc_html_e( 'When there are no results', 'solrengine' ); ?></h2>
+		<h2><?php esc_html_e( 'When there are no results', 'braintum-search-for-solr' ); ?></h2>
 
 		<ol style="max-width:48em">
-			<li><?php esc_html_e( 'The search runs with the weighting above.', 'solrengine' ); ?></li>
-			<li><?php esc_html_e( 'If nothing matched, it runs again allowing for misspellings. This happens only on a search that found nothing, because making every search tolerant of typos makes every search less precise and slower.', 'solrengine' ); ?></li>
-			<li><?php esc_html_e( 'If nothing still matched, it runs once more accepting any single word from the search.', 'solrengine' ); ?></li>
-			<li><?php esc_html_e( 'If Solr cannot be reached at all, WordPress answers the search from the database. Visitors see results rather than an error, and the site keeps working.', 'solrengine' ); ?></li>
+			<li><?php esc_html_e( 'The search runs with the weighting above.', 'braintum-search-for-solr' ); ?></li>
+			<li><?php esc_html_e( 'If nothing matched, it runs again allowing for misspellings. This happens only on a search that found nothing, because making every search tolerant of typos makes every search less precise and slower.', 'braintum-search-for-solr' ); ?></li>
+			<li><?php esc_html_e( 'If nothing still matched, it runs once more accepting any single word from the search.', 'braintum-search-for-solr' ); ?></li>
+			<li><?php esc_html_e( 'If Solr cannot be reached at all, WordPress answers the search from the database. Visitors see results rather than an error, and the site keeps working.', 'braintum-search-for-solr' ); ?></li>
 		</ol>
 		<?php
 	}
@@ -615,13 +615,13 @@ final class SearchScreen extends Screen {
 		$facets = $this->facets->available();
 
 		?>
-		<h2><?php esc_html_e( 'Filters', 'solrengine' ); ?></h2>
+		<h2><?php esc_html_e( 'Filters', 'braintum-search-for-solr' ); ?></h2>
 
 		<?php if ( array() === $facets ) : ?>
-			<p><?php esc_html_e( 'No filters are registered yet. Registering a public taxonomy, or adding one in code, makes it available here.', 'solrengine' ); ?></p>
+			<p><?php esc_html_e( 'No filters are registered yet. Registering a public taxonomy, or adding one in code, makes it available here.', 'braintum-search-for-solr' ); ?></p>
 		<?php else : ?>
 			<p>
-				<?php esc_html_e( 'Visitors can narrow search results by the following. Add the "Search filters" block to your search results template, or use the shortcode below in a classic theme.', 'solrengine' ); ?>
+				<?php esc_html_e( 'Visitors can narrow search results by the following. Add the "Search filters" block to your search results template, or use the shortcode below in a classic theme.', 'braintum-search-for-solr' ); ?>
 			</p>
 
 			<ul class="ul-disc">
@@ -633,7 +633,7 @@ final class SearchScreen extends Screen {
 				<?php endforeach; ?>
 			</ul>
 
-			<p><code>[solrengine_filters]</code></p>
+			<p><code>[braintum_search_filters]</code></p>
 		<?php endif; ?>
 		<?php
 	}

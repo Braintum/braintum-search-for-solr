@@ -2,21 +2,21 @@
 /**
  * System health dashboard.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Admin;
+namespace BraintumSearch\Admin;
 
-use SolrEngine\Backend\BackendRegistry;
-use SolrEngine\Contracts\IndexStatus;
-use SolrEngine\Contracts\JobQueue;
-use SolrEngine\Indexing\FullSync;
-use SolrEngine\Indexing\Rebuild;
-use SolrEngine\Indexing\Reconciler;
-use SolrEngine\Indexing\ReindexNotice;
-use SolrEngine\Rest\RateLimiter;
-use SolrEngine\Support\Config;
-use SolrEngine\Support\Container;
+use BraintumSearch\Backend\BackendRegistry;
+use BraintumSearch\Contracts\IndexStatus;
+use BraintumSearch\Contracts\JobQueue;
+use BraintumSearch\Indexing\FullSync;
+use BraintumSearch\Indexing\Rebuild;
+use BraintumSearch\Indexing\Reconciler;
+use BraintumSearch\Indexing\ReindexNotice;
+use BraintumSearch\Rest\RateLimiter;
+use BraintumSearch\Support\Config;
+use BraintumSearch\Support\Container;
 
 /**
  * Tells an administrator whether search is working.
@@ -41,7 +41,7 @@ final class DashboardScreen {
 	 *
 	 * @var string
 	 */
-	public const SLUG = 'solrengine-dashboard';
+	public const SLUG = 'braintum-search-dashboard';
 
 	/**
 	 * Service container.
@@ -69,8 +69,8 @@ final class DashboardScreen {
 	public function add_menu(): void {
 		add_submenu_page(
 			ConnectionScreen::SLUG,
-			__( 'Dashboard', 'solrengine' ),
-			__( 'Dashboard', 'solrengine' ),
+			__( 'Dashboard', 'braintum-search-for-solr' ),
+			__( 'Dashboard', 'braintum-search-for-solr' ),
 			'manage_options',
 			self::SLUG,
 			array( $this, 'render' )
@@ -111,34 +111,34 @@ final class DashboardScreen {
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'SolrEngine', 'solrengine' ); ?></h1>
+			<h1><?php esc_html_e( 'Braintum Search', 'braintum-search-for-solr' ); ?></h1>
 
 			<table class="widefat striped" style="max-width:820px">
 				<tbody>
 					<?php
 					$this->row(
-						__( 'Search', 'solrengine' ),
+						__( 'Search', 'braintum-search-for-solr' ),
 						$config->get_bool( 'search.enabled' )
-							? __( 'Active. WordPress search is answered by SolrEngine.', 'solrengine' )
-							: __( 'Off. WordPress is answering searches itself. Turn this on once indexing has finished.', 'solrengine' ),
+							? __( 'Active. WordPress search is answered by Braintum Search.', 'braintum-search-for-solr' )
+							: __( 'Off. WordPress is answering searches itself. Turn this on once indexing has finished.', 'braintum-search-for-solr' ),
 						$config->get_bool( 'search.enabled' ) ? 'good' : 'idle'
 					);
 
 					$this->row(
-						__( 'Instant search', 'solrengine' ),
+						__( 'Instant search', 'braintum-search-for-solr' ),
 						$config->get_bool( 'search.instant_enabled' )
-							? __( 'Active. Suggestions appear as visitors type.', 'solrengine' )
-							: __( 'Off.', 'solrengine' ),
+							? __( 'Active. Suggestions appear as visitors type.', 'braintum-search-for-solr' )
+							: __( 'Off.', 'braintum-search-for-solr' ),
 						$config->get_bool( 'search.instant_enabled' ) ? 'good' : 'idle'
 					);
 
 					$this->row(
-						__( 'Backend', 'solrengine' ),
+						__( 'Backend', 'braintum-search-for-solr' ),
 						null === $index
-							? __( 'Not reachable. Check the connection settings.', 'solrengine' )
+							? __( 'Not reachable. Check the connection settings.', 'braintum-search-for-solr' )
 							: sprintf(
 								/* translators: %s: backend identifier. */
-								__( 'Connected via %s', 'solrengine' ),
+								__( 'Connected via %s', 'braintum-search-for-solr' ),
 								$backends->selected_id()
 							),
 						null === $index ? 'bad' : 'good'
@@ -150,10 +150,10 @@ final class DashboardScreen {
 						// temporary state, and one nobody should be able to
 						// forget they left it in.
 						$this->row(
-							__( 'Migration', 'solrengine' ),
+							__( 'Migration', 'braintum-search-for-solr' ),
 							sprintf(
 								/* translators: 1: backend being filled, 2: backend answering searches. */
-								__( 'In progress. Indexing into %1$s, searches still answered by %2$s. Finish with "wp solrengine backends finish" once it is full.', 'solrengine' ),
+								__( 'In progress. Indexing into %1$s, searches still answered by %2$s. Finish with "wp braintum-search backends finish" once it is full.', 'braintum-search-for-solr' ),
 								$backends->selected_id(),
 								$backends->search_id()
 							),
@@ -162,19 +162,19 @@ final class DashboardScreen {
 					}
 
 					$this->row(
-						__( 'Documents', 'solrengine' ),
+						__( 'Documents', 'braintum-search-for-solr' ),
 						null === $documents
-							? __( 'Unknown', 'solrengine' )
+							? __( 'Unknown', 'braintum-search-for-solr' )
 							: number_format_i18n( $documents ),
 						null === $documents ? 'idle' : 'good'
 					);
 
 					$this->row(
-						__( 'Schema', 'solrengine' ),
+						__( 'Schema', 'braintum-search-for-solr' ),
 						sprintf(
 							/* translators: %d: schema contract version. */
-							__( 'Contract version %d required', 'solrengine' ),
-							SOLRENGINE_SCHEMA_CONTRACT_VERSION
+							__( 'Contract version %d required', 'braintum-search-for-solr' ),
+							BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION
 						),
 						'idle'
 					);
@@ -191,28 +191,28 @@ final class DashboardScreen {
 
 			<p style="margin-top:1.5em">
 				<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=' . ConnectionScreen::SLUG ) ); ?>">
-					<?php esc_html_e( 'Connection settings', 'solrengine' ); ?>
+					<?php esc_html_e( 'Connection settings', 'braintum-search-for-solr' ); ?>
 				</a>
 				<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=' . ContentScreen::SLUG ) ); ?>">
-					<?php esc_html_e( 'What is indexed', 'solrengine' ); ?>
+					<?php esc_html_e( 'What is indexed', 'braintum-search-for-solr' ); ?>
 				</a>
 				<a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=' . SearchScreen::SLUG ) ); ?>">
-					<?php esc_html_e( 'Relevance', 'solrengine' ); ?>
+					<?php esc_html_e( 'Relevance', 'braintum-search-for-solr' ); ?>
 				</a>
 				<a class="button button-primary" href="<?php echo esc_url( admin_url( 'admin.php?page=' . ToolsScreen::SLUG ) ); ?>">
-					<?php esc_html_e( 'Schema, reindex and history', 'solrengine' ); ?>
+					<?php esc_html_e( 'Schema, reindex and history', 'braintum-search-for-solr' ); ?>
 				</a>
 			</p>
 
-			<h2><?php esc_html_e( 'Indexing', 'solrengine' ); ?></h2>
+			<h2><?php esc_html_e( 'Indexing', 'braintum-search-for-solr' ); ?></h2>
 			<p>
-				<?php esc_html_e( 'Indexing can be started from the Tools screen, or run from the command line, where there is no web-server timeout to fight:', 'solrengine' ); ?>
+				<?php esc_html_e( 'Indexing can be started from the Tools screen, or run from the command line, where there is no web-server timeout to fight:', 'braintum-search-for-solr' ); ?>
 			</p>
-			<pre class="code" style="padding:1em;background:#f6f7f7;max-width:820px"><code>wp solrengine index
-wp solrengine index progress
-wp solrengine index resume
-wp solrengine rebuild start
-wp solrengine history</code></pre>
+			<pre class="code" style="padding:1em;background:#f6f7f7;max-width:820px"><code>wp braintum-search index
+wp braintum-search index progress
+wp braintum-search index resume
+wp braintum-search rebuild start
+wp braintum-search history</code></pre>
 		</div>
 		<?php
 	}
@@ -225,7 +225,7 @@ wp solrengine history</code></pre>
 	 */
 	private function render_queue_row( $queue ): void {
 		if ( ! $queue instanceof JobQueue ) {
-			$this->row( __( 'Queue', 'solrengine' ), __( 'Unavailable', 'solrengine' ), 'bad' );
+			$this->row( __( 'Queue', 'braintum-search-for-solr' ), __( 'Unavailable', 'braintum-search-for-solr' ), 'bad' );
 
 			return;
 		}
@@ -238,8 +238,8 @@ wp solrengine history</code></pre>
 			// empty one, and an administrator would otherwise wait for jobs
 			// that will never start.
 			$this->row(
-				__( 'Queue', 'solrengine' ),
-				__( 'Not running. Indexing jobs will not be processed. If WP-Cron is disabled on this site, run indexing from the command line instead.', 'solrengine' ),
+				__( 'Queue', 'braintum-search-for-solr' ),
+				__( 'Not running. Indexing jobs will not be processed. If WP-Cron is disabled on this site, run indexing from the command line instead.', 'braintum-search-for-solr' ),
 				'bad'
 			);
 
@@ -247,14 +247,14 @@ wp solrengine history</code></pre>
 		}
 
 		$this->row(
-			__( 'Queue', 'solrengine' ),
+			__( 'Queue', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: 1: number of pending jobs, 2: extra note. */
-				__( '%1$s pending. %2$s', 'solrengine' ),
+				__( '%1$s pending. %2$s', 'braintum-search-for-solr' ),
 				number_format_i18n( $queue->pending_count() ),
 				$is_as
-					? __( 'Using Action Scheduler.', 'solrengine' )
-					: __( 'Using WP-Cron, which has weaker guarantees: jobs can run twice and only run when the site is visited. Indexing is safe to repeat, so this costs time rather than correctness.', 'solrengine' )
+					? __( 'Using Action Scheduler.', 'braintum-search-for-solr' )
+					: __( 'Using WP-Cron, which has weaker guarantees: jobs can run twice and only run when the site is visited. Indexing is safe to repeat, so this costs time rather than correctness.', 'braintum-search-for-solr' )
 			),
 			$is_as ? 'good' : 'warn'
 		);
@@ -275,8 +275,8 @@ wp solrengine history</code></pre>
 
 		if ( null === $run ) {
 			$this->row(
-				__( 'Last full index', 'solrengine' ),
-				__( 'Never run. Nothing is in the index yet.', 'solrengine' ),
+				__( 'Last full index', 'braintum-search-for-solr' ),
+				__( 'Never run. Nothing is in the index yet.', 'braintum-search-for-solr' ),
 				'warn'
 			);
 
@@ -284,10 +284,10 @@ wp solrengine history</code></pre>
 		}
 
 		$this->row(
-			__( 'Last full index', 'solrengine' ),
+			__( 'Last full index', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: 1: state, 2: processed count, 3: failure count, 4: human time difference. */
-				__( '%1$s — %2$s processed, %3$s failed, %4$s ago', 'solrengine' ),
+				__( '%1$s — %2$s processed, %3$s failed, %4$s ago', 'braintum-search-for-solr' ),
 				esc_html( (string) $run['state'] ),
 				number_format_i18n( (int) $run['processed'] ),
 				number_format_i18n( (int) $run['failed'] ),
@@ -319,16 +319,16 @@ wp solrengine history</code></pre>
 		}
 
 		$labels = array(
-			'building' => __( 'A replacement index is being built. Searches are still answered by the current one.', 'solrengine' ),
-			'ready'    => __( 'A replacement index is built and checked, and is waiting for you to switch to it.', 'solrengine' ),
-			'switched' => __( 'Searches are answered by the rebuilt index. The previous one is still on your server.', 'solrengine' ),
+			'building' => __( 'A replacement index is being built. Searches are still answered by the current one.', 'braintum-search-for-solr' ),
+			'ready'    => __( 'A replacement index is built and checked, and is waiting for you to switch to it.', 'braintum-search-for-solr' ),
+			'switched' => __( 'Searches are answered by the rebuilt index. The previous one is still on your server.', 'braintum-search-for-solr' ),
 		);
 
 		$this->row(
-			__( 'Rebuild', 'solrengine' ),
+			__( 'Rebuild', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: 1: state description, 2: index name. */
-				__( '%1$s (%2$s)', 'solrengine' ),
+				__( '%1$s (%2$s)', 'braintum-search-for-solr' ),
 				$labels[ (string) $state['state'] ] ?? (string) $state['state'],
 				(string) $state['target']
 			),
@@ -349,10 +349,10 @@ wp solrengine history</code></pre>
 		}
 
 		$this->row(
-			__( 'Outstanding', 'solrengine' ),
+			__( 'Outstanding', 'braintum-search-for-solr' ),
 			sprintf(
 				/* translators: 1: reason a reindex is needed, 2: human time difference. */
-				__( 'Content in the index does not reflect a change made %2$s ago: %1$s. A settings change never rewrites documents that are already indexed.', 'solrengine' ),
+				__( 'Content in the index does not reflect a change made %2$s ago: %1$s. A settings change never rewrites documents that are already indexed.', 'braintum-search-for-solr' ),
 				$notice->reason(),
 				human_time_diff( $notice->since() )
 			),
@@ -378,17 +378,17 @@ wp solrengine history</code></pre>
 		}
 
 		$this->row(
-			__( 'Index accuracy', 'solrengine' ),
+			__( 'Index accuracy', 'braintum-search-for-solr' ),
 			empty( $report['drifted'] )
 				? sprintf(
 					/* translators: 1: indexed count, 2: expected count. */
-					__( 'Matches WordPress: %1$s indexed of %2$s expected.', 'solrengine' ),
+					__( 'Matches WordPress: %1$s indexed of %2$s expected.', 'braintum-search-for-solr' ),
 					number_format_i18n( (int) $report['actual'] ),
 					number_format_i18n( (int) $report['expected'] )
 				)
 				: sprintf(
 					/* translators: 1: indexed count, 2: expected count. */
-					__( 'Out of step: %1$s indexed, %2$s expected. Run a full index to repair it.', 'solrengine' ),
+					__( 'Out of step: %1$s indexed, %2$s expected. Run a full index to repair it.', 'braintum-search-for-solr' ),
 					number_format_i18n( (int) $report['actual'] ),
 					number_format_i18n( (int) $report['expected'] )
 				),
@@ -410,8 +410,8 @@ wp solrengine history</code></pre>
 		// Only shown when it cannot work. Claiming protection that is absent
 		// would be worse than saying nothing.
 		$this->row(
-			__( 'Search API limits', 'solrengine' ),
-			__( 'Not enforced. Rate limiting needs a persistent object cache. Limit requests at your CDN or web server instead.', 'solrengine' ),
+			__( 'Search API limits', 'braintum-search-for-solr' ),
+			__( 'Not enforced. Rate limiting needs a persistent object cache. Limit requests at your CDN or web server instead.', 'braintum-search-for-solr' ),
 			'warn'
 		);
 	}

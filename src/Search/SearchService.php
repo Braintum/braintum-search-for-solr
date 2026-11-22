@@ -2,24 +2,24 @@
 /**
  * Policy around searching.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Search;
+namespace BraintumSearch\Search;
 
-use SolrEngine\Contracts\Breaker;
-use SolrEngine\Contracts\Cache;
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Contracts\SearchBackend;
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Contracts\Suggestions;
-use SolrEngine\Contracts\SuggestQuery;
-use SolrEngine\Contracts\Viewer;
-use SolrEngine\Support\ObjectCache;
-use SolrEngine\Support\OptionBreaker;
-use SolrEngine\Support\WpViewer;
+use BraintumSearch\Contracts\Breaker;
+use BraintumSearch\Contracts\Cache;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Contracts\SearchBackend;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Contracts\Suggestions;
+use BraintumSearch\Contracts\SuggestQuery;
+use BraintumSearch\Contracts\Viewer;
+use BraintumSearch\Support\ObjectCache;
+use BraintumSearch\Support\OptionBreaker;
+use BraintumSearch\Support\WpViewer;
 
 /**
  * Decides whether and how a search runs, and what happens when it cannot.
@@ -44,7 +44,7 @@ final class SearchService {
 	 *
 	 * @var string
 	 */
-	private const CACHE_GROUP = 'solrengine';
+	private const CACHE_GROUP = 'braintum-search';
 
 	/**
 	 * Backend to query.
@@ -156,10 +156,10 @@ final class SearchService {
 		 *
 		 * @param SearchQuery $query The query about to run.
 		 */
-		$query = apply_filters( 'solrengine_search_query', $query );
+		$query = apply_filters( 'braintum_search_query', $query );
 
 		if ( ! $query instanceof SearchQuery ) {
-			return $this->bad_hook( 'bad_filter', 'solrengine_search_query', 'a SearchQuery' );
+			return $this->bad_hook( 'bad_filter', 'braintum_search_query', 'a SearchQuery' );
 		}
 
 		$cached = $this->from_cache( $query );
@@ -194,11 +194,11 @@ final class SearchService {
 		 * @param SearchResults $results The results.
 		 * @param SearchQuery   $query   The query that produced them.
 		 */
-		$results = apply_filters( 'solrengine_search_results', $results, $query );
+		$results = apply_filters( 'braintum_search_results', $results, $query );
 
 		return $results instanceof SearchResults
 			? Result::success( $results )
-			: $this->bad_hook( 'bad_filter', 'solrengine_search_results', 'SearchResults' );
+			: $this->bad_hook( 'bad_filter', 'braintum_search_results', 'SearchResults' );
 	}
 
 	/**
@@ -229,7 +229,7 @@ final class SearchService {
 		/**
 		 * Filters an autocomplete query before it reaches the backend.
 		 *
-		 * The counterpart of `solrengine_search_query`, and it exists for the
+		 * The counterpart of `braintum_search_query`, and it exists for the
 		 * same reason: rules that narrow what a visitor may see have to reach
 		 * every path that reads the index, not only the results page.
 		 *
@@ -237,13 +237,13 @@ final class SearchService {
 		 *
 		 * @param SuggestQuery $query The query about to run.
 		 */
-		$query = apply_filters( 'solrengine_suggest_query', $query );
+		$query = apply_filters( 'braintum_search_suggest_query', $query );
 
 		if ( ! $query instanceof SuggestQuery ) {
-			return $this->bad_hook( 'bad_filter', 'solrengine_suggest_query', 'a SuggestQuery' );
+			return $this->bad_hook( 'bad_filter', 'braintum_search_suggest_query', 'a SuggestQuery' );
 		}
 
-		$key    = 'suggest_' . SOLRENGINE_SCHEMA_CONTRACT_VERSION . '_' . $query->cache_key();
+		$key    = 'suggest_' . BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION . '_' . $query->cache_key();
 		$cached = $this->cache_enabled() ? $this->cache->get( $key ) : null;
 
 		if ( $cached instanceof Suggestions ) {
@@ -278,11 +278,11 @@ final class SearchService {
 		 * @param Suggestions  $suggestions The suggestions.
 		 * @param SuggestQuery $query       The query that produced them.
 		 */
-		$suggestions = apply_filters( 'solrengine_suggestions', $suggestions, $query );
+		$suggestions = apply_filters( 'braintum_search_suggestions', $suggestions, $query );
 
 		return $suggestions instanceof Suggestions
 			? Result::success( $suggestions )
-			: $this->bad_hook( 'bad_filter', 'solrengine_suggestions', 'Suggestions' );
+			: $this->bad_hook( 'bad_filter', 'braintum_search_suggestions', 'Suggestions' );
 	}
 
 	/**
@@ -370,7 +370,7 @@ final class SearchService {
 	 * @return string
 	 */
 	private function cache_key( SearchQuery $query ): string {
-		return 'search_' . SOLRENGINE_SCHEMA_CONTRACT_VERSION . '_' . $query->cache_key();
+		return 'search_' . BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION . '_' . $query->cache_key();
 	}
 
 	/**

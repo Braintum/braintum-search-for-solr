@@ -14,7 +14,7 @@
 
 import './instant-search.css';
 
-const SETTINGS = window.solrEngineInstantSearch || {};
+const SETTINGS = window.braintumSearchInstantSearch || {};
 
 /** Milliseconds to wait after the last keystroke before asking the server. */
 const DEBOUNCE_MS = 150;
@@ -30,17 +30,17 @@ let counter = 0;
  * @param {HTMLInputElement} input The search field.
  */
 function attach( input ) {
-	if ( input.dataset.solrengineAttached ) {
+	if ( input.dataset.braintumSearchAttached ) {
 		return;
 	}
 
-	input.dataset.solrengineAttached = '1';
+	input.dataset.braintumSearchAttached = '1';
 
-	const id = `solrengine-listbox-${ ++counter }`;
+	const id = `braintum-search-listbox-${ ++counter }`;
 	const listbox = document.createElement( 'ul' );
 
 	listbox.id = id;
-	listbox.className = 'solrengine-suggestions';
+	listbox.className = 'braintum-search-suggestions';
 	listbox.setAttribute( 'role', 'listbox' );
 	listbox.hidden = true;
 
@@ -51,7 +51,7 @@ function attach( input ) {
 	status.setAttribute( 'aria-live', 'polite' );
 
 	const wrapper = document.createElement( 'div' );
-	wrapper.className = 'solrengine-instant-search';
+	wrapper.className = 'braintum-search-instant-search';
 
 	input.parentNode.insertBefore( wrapper, input );
 	wrapper.appendChild( input );
@@ -126,7 +126,7 @@ function attach( input ) {
 			const option = document.createElement( 'li' );
 
 			option.id = `${ id }-option-${ index }`;
-			option.className = 'solrengine-suggestion';
+			option.className = 'braintum-search-suggestion';
 			option.setAttribute( 'role', 'option' );
 			option.setAttribute( 'aria-selected', 'false' );
 			// textContent, not innerHTML: a post title is content, and content

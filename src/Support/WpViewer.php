@@ -2,12 +2,12 @@
 /**
  * The signed-in check for a normal WordPress request.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Support;
+namespace BraintumSearch\Support;
 
-use SolrEngine\Contracts\Viewer;
+use BraintumSearch\Contracts\Viewer;
 
 /**
  * Asks WordPress.

@@ -2,14 +2,14 @@
 /**
  * HTTP transport for Solr.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Backend\Solr;
+namespace BraintumSearch\Backend\Solr;
 
-use SolrEngine\Contracts\Logger;
-use SolrEngine\Contracts\Result;
-use SolrEngine\Support\Credentials;
+use BraintumSearch\Contracts\Logger;
+use BraintumSearch\Contracts\Result;
+use BraintumSearch\Support\Credentials;
 
 /**
  * Sends requests to Solr.
@@ -21,7 +21,7 @@ use SolrEngine\Support\Credentials;
  * Senders hold no policy, so there is no second copy of any of the rules below
  * to keep in step.
  *
- * Deliberately small. SolrEngine uses a narrow slice of Solr's HTTP surface —
+ * Deliberately small. Braintum Search uses a narrow slice of Solr's HTTP surface —
  * update, select, schema, ping, system info — all JSON in and JSON out, which
  * is why ADR-001 dropped Solarium rather than carrying a dependency that forces
  * a PHP 8.1 floor and puts Symfony packages in every site's global namespace.
@@ -301,13 +301,13 @@ final class HttpTransport {
 		$body     = (string) ( $received['body'] ?? '' );
 
 		if ( strlen( $body ) > self::MAX_RESPONSE_BYTES ) {
-			return Result::failure( 'response_too_large', 'The server returned more data than SolrEngine will read.' );
+			return Result::failure( 'response_too_large', 'The server returned more data than Braintum Search will read.' );
 		}
 
 		if ( $status >= 300 && $status < 400 ) {
 			return Result::failure(
 				'unexpected_redirect',
-				'The server redirected the request. SolrEngine does not follow redirects, because that would leave the address you configured.'
+				'The server redirected the request. Braintum Search does not follow redirects, because that would leave the address you configured.'
 			);
 		}
 
@@ -429,7 +429,7 @@ final class HttpTransport {
 			$site = (string) get_option( 'siteurl', '' );
 		}
 
-		return 'SolrEngine/' . SOLRENGINE_VERSION . ( '' === $site ? '' : '; ' . $site );
+		return 'BraintumSearch/' . BRAINTUM_SEARCH_VERSION . ( '' === $site ? '' : '; ' . $site );
 	}
 
 	/**
@@ -466,7 +466,7 @@ final class HttpTransport {
 	 * queries are two "fq=" pairs. PHP's http_build_query() instead produces
 	 * "fq[0]=" and "fq[1]=", which Solr does not recognise as fq at all.
 	 *
-	 * That is not a cosmetic difference. The filters SolrEngine adds include
+	 * That is not a cosmetic difference. The filters Braintum Search adds include
 	 * the site scope and the public-visibility restriction, so encoding them
 	 * the wrong way means they are silently ignored — the query runs, returns
 	 * results, and quietly has no security filtering on it. Caught by testing

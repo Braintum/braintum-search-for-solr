@@ -1,6 +1,6 @@
 # Multilingual sites
 
-SolrEngine reads languages from the plugin you already use. It does not have a
+Braintum Search reads languages from the plugin you already use. It does not have a
 language model of its own, and that is deliberate: WordPress has a locale and
 nothing more, everything above it is a plugin, and a search plugin inventing a
 third answer would be wrong on every site that already had one.
@@ -23,9 +23,9 @@ Both integrations go through the plugin's own public API — `pll_get_post_langu
 Those are implementation details that move between major versions, and reaching
 for them is how an integration acquires a dependency on a release nobody runs.
 
-To support a plugin SolrEngine does not know about, implement
-`SolrEngine\Contracts\LanguageProvider` and return it from the
-`solrengine_language_provider` filter.
+To support a plugin Braintum Search does not know about, implement
+`BraintumSearch\Contracts\LanguageProvider` and return it from the
+`braintum_search_language_provider` filter.
 
 ## What gets indexed
 
@@ -47,7 +47,7 @@ A visitor searching from the German site gets German results. The English
 translation of the same page is not offered as a second hit, because it is the
 same page and they cannot read it.
 
-Turn that off under **SolrEngine → Search** if most of your pages exist in one
+Turn that off under **Braintum Search → Search** if most of your pages exist in one
 language only — a documentation site where the English page is often the only
 one there is.
 
@@ -68,16 +68,16 @@ language means a German search for *Häuser* finds *Haus*, an English search for
 uses rather than the ones everyone else does. None of that can be done by the
 language-neutral analyser, which has to be right for every site at once.
 
-Switch a language on under **SolrEngine → Search**. Each one adds a dynamic
+Switch a language on under **Braintum Search → Search**. Each one adds a dynamic
 field to your Solr schema and then indexes the title, excerpt and content a
 second time through that analyser.
 
 Three things to know.
 
-**SolrEngine will not create the analyser.** A field type is a much larger
+**Braintum Search will not create the analyser.** A field type is a much larger
 commitment than a field and a wrong one is not recoverable by adding another, so
 only languages your Solr already defines a `text_<language>` for are offered.
-The configset SolrEngine ships defines twenty-four of them; Solr's own
+The configset Braintum Search ships defines twenty-four of them; Solr's own
 `_default` defines one.
 
 **A language with no analyser is not broken.** Its content is indexed and

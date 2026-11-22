@@ -5,7 +5,7 @@ One Solr, many sites, configured once.
 ## Switching sites on
 
 **Nothing happens on a site until a network administrator switches it on**, under
-Network Admin → Settings → SolrEngine. A site that is off indexes nothing,
+Network Admin → Settings → Braintum Search. A site that is off indexes nothing,
 searches through WordPress exactly as it did before, and says so in a notice
 rather than looking broken.
 
@@ -15,7 +15,7 @@ hundred full indexes against one Solr cluster. Switch sites on in batches, and
 index each batch before starting the next.
 
 **It applies only to a network activation.** A site administrator who activated
-SolrEngine on their own site has already opted in by doing that, and it works
+Braintum Search on their own site has already opted in by doing that, and it works
 immediately — the network screen exists only for a plugin activated for the whole
 network, so requiring a second consent from it would leave them with an inert
 plugin and nowhere to go.
@@ -23,10 +23,10 @@ plugin and nowhere to go.
 From the command line:
 
 ```bash
-wp solrengine network status
-wp solrengine network enable 2 3 4
-wp solrengine network enable --all
-wp solrengine network disable 7
+wp braintum-search network status
+wp braintum-search network enable 2 3 4
+wp braintum-search network enable --all
+wp braintum-search network disable 7
 ```
 
 ## Network settings
@@ -69,14 +69,14 @@ Under one collection per site you can give the network a naming pattern such as
 then disabled and shows the derived name. Leave the pattern empty to let each
 site name its own, which is what a network of a dozen unlike sites usually wants.
 
-**SolrEngine does not create collections for a network.** Create them on your
+**Braintum Search does not create collections for a network.** Create them on your
 Solr first — the same rule as for a single site.
 
 ## Indexing and migrating a network
 
 ```bash
-wp solrengine network index --pause=30
-wp solrengine network schema
+wp braintum-search network index --pause=30
+wp braintum-search network schema
 ```
 
 Both walk the enabled sites **one at a time, in a separate process per site**.

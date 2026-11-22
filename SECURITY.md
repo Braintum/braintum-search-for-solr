@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please report security issues privately, through GitHub's
-[private vulnerability reporting](https://github.com/Braintum/solrengine/security/advisories/new).
+[private vulnerability reporting](https://github.com/Braintum/braintum-search-for-solr/security/advisories/new).
 Do not open a public issue, pull request or support-forum topic for a
 suspected vulnerability.
 

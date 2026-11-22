@@ -2,14 +2,14 @@
 /**
  * Schema contract definitions.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Schema;
+namespace BraintumSearch\Schema;
 
-use SolrEngine\Contracts\CopyFieldRule;
-use SolrEngine\Contracts\SchemaContract;
-use SolrEngine\Contracts\SchemaField;
+use BraintumSearch\Contracts\CopyFieldRule;
+use BraintumSearch\Contracts\SchemaContract;
+use BraintumSearch\Contracts\SchemaField;
 
 /**
  * Builds the schema contract for a given version.
@@ -18,7 +18,7 @@ use SolrEngine\Contracts\SchemaField;
  * drive schema comparison, the Schema API plan, the exported XML and the
  * shipped configset without any of them drifting from the others.
  *
- * Every name is prefixed "se_" so SolrEngine can share a collection with
+ * Every name is prefixed "se_" so Braintum Search can share a collection with
  * another application safely, and so its own fields are identifiable as a set.
  * Every dynamic pattern carries a trailing wildcard, because Solr accepts only
  * leading or trailing asterisks and these patterns are copyField sources. See
@@ -31,7 +31,7 @@ final class ContractRegistry {
 	/**
 	 * Field types the contract relies on.
 	 *
-	 * All are present in Solr's default configset. SolrEngine will not create
+	 * All are present in Solr's default configset. Braintum Search will not create
 	 * field types for itself: an analyser definition is a far larger commitment
 	 * than a field, and getting one wrong on a customer's cluster is not
 	 * recoverable by adding another field. Where a type is missing, the plan
@@ -74,7 +74,7 @@ final class ContractRegistry {
 	 * that disagreed with the schema it was compared against.
 	 *
 	 * They do not change the contract *version*. An analysed field for German is
-	 * one site's configuration, not a new revision of what SolrEngine requires,
+	 * one site's configuration, not a new revision of what Braintum Search requires,
 	 * and bumping the version for it would tell every other site on every other
 	 * server that they are out of date.
 	 *
@@ -127,7 +127,7 @@ final class ContractRegistry {
 	 * @return SchemaContract
 	 */
 	public function current(): SchemaContract {
-		return $this->get( SOLRENGINE_SCHEMA_CONTRACT_VERSION );
+		return $this->get( BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION );
 	}
 
 	/**

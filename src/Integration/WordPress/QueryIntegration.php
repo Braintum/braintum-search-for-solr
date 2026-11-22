@@ -2,20 +2,20 @@
 /**
  * Substitutes Solr results into WordPress's own query.
  *
- * @package SolrEngine
+ * @package BraintumSearch
  */
 
-namespace SolrEngine\Integration\WordPress;
+namespace BraintumSearch\Integration\WordPress;
 
-use SolrEngine\Contracts\SearchQuery;
-use SolrEngine\Language\Languages;
-use SolrEngine\Documents\IndexedTypes;
-use SolrEngine\Contracts\SearchResults;
-use SolrEngine\Search\FacetRegistry;
-use SolrEngine\Search\FacetSelection;
-use SolrEngine\Search\FilterRegistry;
-use SolrEngine\Search\SearchService;
-use SolrEngine\Support\Config;
+use BraintumSearch\Contracts\SearchQuery;
+use BraintumSearch\Language\Languages;
+use BraintumSearch\Documents\IndexedTypes;
+use BraintumSearch\Contracts\SearchResults;
+use BraintumSearch\Search\FacetRegistry;
+use BraintumSearch\Search\FacetSelection;
+use BraintumSearch\Search\FilterRegistry;
+use BraintumSearch\Search\SearchService;
+use BraintumSearch\Support\Config;
 use WP_Query;
 
 /**
@@ -42,7 +42,7 @@ final class QueryIntegration {
 	 *
 	 * @var string
 	 */
-	private const FLAG = 'solrengine_handled';
+	private const FLAG = 'braintum_search_handled';
 
 	/**
 	 * Search service.
@@ -198,7 +198,7 @@ final class QueryIntegration {
 	}
 
 	/**
-	 * Whether SolrEngine should handle a query.
+	 * Whether Braintum Search should handle a query.
 	 *
 	 * @param WP_Query $query Query to assess.
 	 * @return bool
@@ -212,7 +212,7 @@ final class QueryIntegration {
 			&& $this->search->is_available();
 
 		/**
-		 * Filters whether SolrEngine handles a particular query.
+		 * Filters whether Braintum Search handles a particular query.
 		 *
 		 * The escape hatch for a site where another plugin also filters
 		 * posts_pre_query, or where one search form should stay on WordPress.
@@ -222,7 +222,7 @@ final class QueryIntegration {
 		 * @param bool     $eligible Whether to handle it.
 		 * @param WP_Query $query    The query.
 		 */
-		return (bool) apply_filters( 'solrengine_should_handle_query', $eligible, $query );
+		return (bool) apply_filters( 'braintum_search_should_handle_query', $eligible, $query );
 	}
 
 	/**
@@ -331,7 +331,7 @@ final class QueryIntegration {
 	/**
 	 * Post types a query asked for, restricted to those actually indexed.
 	 *
-	 * A query asking for a post type SolrEngine does not index would otherwise
+	 * A query asking for a post type Braintum Search does not index would otherwise
 	 * silently return nothing, which looks like a broken search rather than an
 	 * unindexed type.
 	 *

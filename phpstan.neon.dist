@@ -5,7 +5,7 @@ parameters:
     level: 5
 
     paths:
-        - solrengine.php
+        - braintum-search-for-solr.php
         - uninstall.php
         - src
 
