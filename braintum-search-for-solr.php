@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Braintum Search for Apache Solr
- * Plugin URI:        https://www.braintum.com/plugins/braintum-search-for-solr/
+ * Plugin URI:        https://github.com/Braintum/braintum-search-for-solr
  * Description:       Apache Solr powered search for WordPress. Faster, more relevant results, with WordPress search as an automatic fallback.
  * Version:           1.0.0
  * Requires at least: 6.9

@@ -3,7 +3,7 @@
 	"description": "Apache Solr powered search for WordPress.",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
-	"homepage": "https://www.braintum.com/plugins/braintum-search-for-solr/",
+	"homepage": "https://github.com/Braintum/braintum-search-for-solr",
 	"authors": [
 		{
 			"name": "Braintum",
