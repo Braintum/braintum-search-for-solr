@@ -95,7 +95,7 @@
 
 	<!-- Minimum supported versions. See ADR-011. -->
 	<config name="minimum_wp_version" value="6.9"/>
-	<config name="testVersion" value="7.4-"/>
+	<config name="testVersion" value="8.3-"/>
 	<rule ref="PHPCompatibilityWP"/>
 
 	<!--

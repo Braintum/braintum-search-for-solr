@@ -4,7 +4,7 @@ WordPress plugin that answers search from Apache Solr and falls back to WordPres
 
 ## Rules
 
-- Stay compatible with PHP 7.4. `braintum-search-for-solr.php` is the exception: it must parse on older PHP, so no type declarations, short closures, or namespaced code there.
+- Stay compatible with PHP 8.3. `braintum-search-for-solr.php` is the exception: it must parse on older PHP, so no type declarations, short closures, or namespaced code there.
 - Layers are WordPress surfaces, then integration, then domain, then backend adapters. Domain code must unit-test with no WordPress loaded. If a unit test needs `get_option()`, the seam has leaked.
 - Backend calls return a `Result`. Do not throw across the integration boundary. Search fallback is returning `null` from `posts_pre_query`.
 - Do not add a hook that exposes a raw backend request or lets a caller inject query syntax.

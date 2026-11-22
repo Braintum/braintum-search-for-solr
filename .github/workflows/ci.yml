@@ -90,7 +90,7 @@ jobs:
       fail-fast: false
       matrix:
         # The floor and the ceiling of the supported range, per ADR-011.
-        php: ['7.4', '8.1', '8.3', '8.4']
+        php: ['8.3', '8.4']
     steps:
       - uses: actions/checkout@v4
 
@@ -117,7 +117,7 @@ jobs:
       matrix:
         include:
           # Oldest supported combination.
-          - php: '7.4'
+          - php: '8.3'
             wordpress: '6.9'
           # Current.
           - php: '8.3'

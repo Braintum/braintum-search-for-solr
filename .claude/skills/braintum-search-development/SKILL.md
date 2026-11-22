@@ -66,9 +66,9 @@ Reviewers reject plugins for these. Check each one that the change touches.
   `readme.txt` — open as publishing task P01, a blocker. A new asset adds to it.
 - **GPL-compatible** everything, including fonts, icons and npm packages that
   end up in `assets/build`.
-- **PHP 7.4.** No `match`, no constructor promotion, no union types, no `?->`,
-  no `str_contains` without a polyfill. `braintum-search-for-solr.php` must parse on older
-  PHP still: no type declarations, short closures or namespaces there.
+- **PHP 8.3.** The floor; PHPCompatibility checks it. `braintum-search-for-solr.php`
+  must parse on older PHP still, so it can show the "PHP too old" notice instead
+  of a fatal error: no type declarations, short closures or namespaces there.
 
 ## Public API
 

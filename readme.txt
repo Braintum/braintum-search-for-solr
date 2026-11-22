@@ -3,7 +3,7 @@ Contributors: braintum
 Tags: search, solr, relevance, faceted search, woocommerce
 Requires at least: 6.9
 Tested up to: 7.1
-Requires PHP: 7.4
+Requires PHP: 8.3
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -33,7 +33,7 @@ filesystem.
 
 = Requirements =
 
-* PHP 7.4 or newer
+* PHP 8.3 or newer
 * WordPress 6.9 or newer
 * An Apache Solr server you can reach from your WordPress host, version 9.10 or
   newer. Solr 10 is recommended.
@@ -298,7 +298,8 @@ the same list.
 * Renamed from SolrEngine to Braintum Search for Apache Solr. Hooks, options,
   constants, CSS classes, the REST namespace and the WP-CLI command now use the
   `braintum_search` / `braintum-search` prefix.
-* Requires WordPress 6.9, the minimum of the bundled Action Scheduler 4.2.
+* Requires PHP 8.3 and WordPress 6.9 (the minimum of the bundled Action
+  Scheduler 4.2).
 * New: a search popup. Clicking the theme's search field or button opens a panel
   that shows results as visitors type, with thumbnails, product prices, the
   matched words highlighted, and a tab for each content type with its count.

@@ -12,6 +12,6 @@ define( 'BRAINTUM_SEARCH_VERSION', '0.1.0' );
 define( 'BRAINTUM_SEARCH_PLUGIN_FILE', __DIR__ . '/../braintum-search-for-solr.php' );
 define( 'BRAINTUM_SEARCH_PLUGIN_DIR', __DIR__ . '/../' );
 define( 'BRAINTUM_SEARCH_PLUGIN_URL', 'https://example.test/wp-content/plugins/braintum-search-for-solr/' );
-define( 'BRAINTUM_SEARCH_MIN_PHP', '7.4' );
+define( 'BRAINTUM_SEARCH_MIN_PHP', '8.3' );
 define( 'BRAINTUM_SEARCH_MIN_WP', '6.9' );
 define( 'BRAINTUM_SEARCH_SCHEMA_CONTRACT_VERSION', 1 );

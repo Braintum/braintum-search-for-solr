@@ -10,8 +10,8 @@ namespace BraintumSearch\Contracts;
 /**
  * Maps a logical type onto Braintum Search's field naming convention.
  *
- * A class of constants rather than an enum, because the supported PHP floor is
- * 7.4 (ADR-011).
+ * A class of constants rather than an enum, because it predates the PHP 8.3
+ * floor (ADR-011).
  *
  * The prefix is what makes arbitrary metadata indexable without a schema
  * change: "price" declared as a float becomes "se_f_meta_price", which the

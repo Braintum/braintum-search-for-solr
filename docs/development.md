@@ -4,7 +4,7 @@
 
 | Tool | Version |
 | --- | --- |
-| PHP | 7.4 minimum. Develop on 8.1 or newer, but keep the code 7.4-compatible |
+| PHP | 8.3 minimum |
 | Composer | 2.x |
 | MySQL or MariaDB | Only for integration tests |
 | Docker | Only for Solr-backed tests |
@@ -37,7 +37,7 @@ a seam has leaked and the fix belongs in the code, not the test.
 ### Why `composer.json` pins a platform
 
 ```json
-"config": { "platform": { "php": "7.4.33" } }
+"config": { "platform": { "php": "8.3.0" } }
 ```
 
 It tells Composer to resolve every dependency as though it were running on the
@@ -46,7 +46,7 @@ running.
 
 Without it, `composer update` on a PHP 8 machine — which is every machine — picks
 dev dependencies that require PHP 8, writes them into `composer.lock`, and the
-lock then cannot be installed on 7.4 at all. CI's 7.4 job fails with "your lock
+lock then cannot be installed on the floor at all. CI's floor job fails with "your lock
 file does not contain a compatible set of packages", which reads like a broken
 matrix and is really a lock file resolved against the wrong floor. That happened,
 and the packages were `doctrine/instantiator` and `myclabs/deep-copy`, both pulled

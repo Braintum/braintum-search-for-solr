@@ -38,7 +38,7 @@ if ( ! defined( 'BRAINTUM_SEARCH_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'BRAINTUM_SEARCH_MIN_PHP' ) ) {
-	define( 'BRAINTUM_SEARCH_MIN_PHP', '7.4' );
+	define( 'BRAINTUM_SEARCH_MIN_PHP', '8.3' );
 }
 
 if ( ! defined( 'BRAINTUM_SEARCH_MIN_WP' ) ) {

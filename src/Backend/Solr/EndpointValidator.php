@@ -118,7 +118,7 @@ final class EndpointValidator {
 
 		// parse_url(), not wp_parse_url(): the wrapper lives in http.php, which a
 		// reduced boot such as SHORTINIT does not load, and it only ever patched
-		// a PHP bug fixed long before this plugin's 7.4 floor.
+		// a PHP bug fixed long before this plugin's 8.3 floor.
 		$parts = parse_url( $url ); // phpcs:ignore WordPress.WP.AlternativeFunctions.parse_url_parse_url
 
 		if ( ! is_array( $parts ) || empty( $parts['host'] ) ) {

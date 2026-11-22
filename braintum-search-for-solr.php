@@ -5,7 +5,7 @@
  * Description:       Apache Solr powered search for WordPress. Faster, more relevant results, with WordPress search as an automatic fallback.
  * Version:           1.0.0
  * Requires at least: 6.9
- * Requires PHP:      7.4
+ * Requires PHP:      8.3
  * Author:            Braintum
  * Author URI:        https://www.braintum.com/
  * License:           GPLv2 or later

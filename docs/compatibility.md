@@ -9,7 +9,7 @@ the numbers below are what CI actually runs.
 
 | | Minimum | Recommended |
 | --- | --- | --- |
-| PHP | 7.4 | 8.3 |
+| PHP | 8.3 | 8.4 |
 | WordPress | 6.9 | Current stable |
 | Apache Solr | 9.10 | 10.x |
 | WooCommerce | Current stable, or the previous minor | Current stable |
@@ -51,19 +51,19 @@ is indexed and searchable; only stemming is missing. See
 
 ## PHP
 
-CI runs the unit suite on **7.4, 8.1, 8.3 and 8.4**, and the integration suite on
-7.4 with WordPress 6.9 (the oldest supported combination) and on 8.3 with current
+CI runs the unit suite on **8.3 and 8.4**, and the integration suite on 8.3
+with WordPress 6.9 (the oldest supported combination) and on 8.3 with current
 and trunk. The trunk job is allowed to fail so a WordPress beta cannot block a
 release.
 
-The floor stays at 7.4 until WooCommerce raises its own, which is the constraint
-that actually matters: a store cannot upgrade PHP for a search plugin. That costs
-constructor property promotion, enums, readonly properties, match expressions and
-named arguments — accepted deliberately, and the reason `FieldType` is a class of
-constants rather than an enum.
+The floor is 8.3, raised from 7.4 before the first WordPress.org release (see
+ADR-011). WooCommerce still installs on 7.4, so a store on PHP older than 8.3
+has to upgrade PHP before it can use Braintum Search. Code written under the
+7.4 floor keeps its shape — `FieldType` is still a class of constants rather
+than an enum — and is not rewritten just to use newer syntax.
 
-Code is written 8.x-clean. PHPCompatibility checks the 7.4 floor in CI, so a
-newer syntax cannot reach a release by being merged on a newer machine.
+PHPCompatibility checks the 8.3 floor in CI, so a newer syntax cannot reach a
+release by being merged on a newer machine.
 
 ## WordPress
 
