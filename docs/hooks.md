@@ -305,7 +305,7 @@ stylesheet's default. A theme can also set
 
 ### `braintum_search_should_handle_query`
 
-Filter · since 0.4.0 · `src/Integration/WordPress/QueryIntegration.php:225`
+Filter · since 0.4.0 · `src/Integration/WordPress/QueryIntegration.php:235`
 
 Filters whether Braintum Search handles a particular query.
 

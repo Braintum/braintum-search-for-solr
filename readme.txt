@@ -275,15 +275,23 @@ visitors, and moves searches over only once the new index is full. Run
 
 To your Solr server: your indexed content, and what visitors search for. Nowhere
 else — no analytics, no telemetry, no licence checks. Search queries are not
-logged, not even in the debug log. The full list, including what is never
-indexed, is in the privacy document:
-https://github.com/Braintum/braintum-search-for-solr/blob/master/docs/privacy.md
+logged, not even in the debug log.
+
+Indexed: titles, excerpts and content of published posts; permalinks, dates,
+author display names, terms, and on a shop, SKUs, prices and stock status.
+
+Never indexed: drafts, private posts, the body of a password-protected post,
+comments, user accounts and email addresses, order and payment data, and any
+custom field you have not added under Braintum Search → Content.
+
+Uninstalling removes the plugin's settings, its two tables and its queued jobs.
+It leaves your documents on your Solr server, which is yours to clear.
 
 = How do I report a security issue? =
 
-Privately, please, through GitHub's private vulnerability reporting:
-https://github.com/Braintum/braintum-search-for-solr/security/advisories/new. Not in the
-support forum or a public issue.
+Privately, please, through GitHub's private vulnerability reporting, from the
+Security tab at https://github.com/Braintum/braintum-search-for-solr/security. Not
+in the support forum or a public issue.
 
 = Something is missing from search. How do I find out why? =
 
@@ -319,6 +327,13 @@ the same list.
   filter's cache, and indexing jobs still queued in WP-Cron or Action Scheduler.
   Deactivating stops queued jobs and marks an unfinished full index as stalled,
   so it can be resumed.
+* Security: public search — the REST routes, the popup, the results page and
+  the filter panel — answers only from post types visitors can view. A request
+  naming only other types is refused, or on the results page left to WordPress,
+  and is never answered from the whole index.
+* Security: the Solr address check now covers IPv6. AAAA records are checked as
+  well as A records, and IPv6 link-local, unique-local and IPv4-mapped addresses
+  are judged like their IPv4 counterparts.
 * Autocomplete and the popup answer through the REST API only. The `instant.php`
   fast path from development builds, and its `solrengine_instant_fast_path`
   filter, are removed.

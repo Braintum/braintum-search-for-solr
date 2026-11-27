@@ -461,7 +461,9 @@ final class SearchFilters {
 			}
 		}
 
-		if ( array() === $wanted ) {
+		if ( array() === $wanted || array() === IndexedTypes::searchable( $this->config ) ) {
+			// Nothing to count, or nothing a visitor may search: an
+			// unrestricted query would count the whole index.
 			return array();
 		}
 
@@ -528,11 +530,8 @@ final class SearchFilters {
 		// sit beside; otherwise "hoo" would list hoodies with no counts.
 		$query = ( new SearchQuery( $this->terms(), $this->site_id ) )->with_completion();
 
-		$post_types = IndexedTypes::all( $this->config );
-
-		if ( array() !== $post_types ) {
-			$query = $query->with_post_types( $post_types );
-		}
+		// Never empty here: counts() asks for none when nothing is searchable.
+		$query = $query->with_post_types( IndexedTypes::searchable( $this->config ) );
 
 		foreach ( FacetUrls::selected() as $key => $values ) {
 			if ( ! $this->filters->has( $key ) ) {

@@ -687,7 +687,7 @@ final class Bootstrap {
 				// sized for its card grid instead.
 				return new InstantResults(
 					$c->get( 'search.service' ),
-					IndexedTypes::all( $c->get( 'config' ) )
+					IndexedTypes::searchable( $c->get( 'config' ) )
 				);
 			}
 		);

@@ -17,12 +17,14 @@ declare( strict_types=1 );
 namespace BraintumSearch\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use BraintumSearch\Backend\Solr\DnsResolver;
 use BraintumSearch\Backend\Solr\Endpoint;
 use BraintumSearch\Backend\Solr\EndpointValidator;
 
 /**
  * @covers \BraintumSearch\Backend\Solr\EndpointValidator
  * @covers \BraintumSearch\Backend\Solr\Endpoint
+ * @covers \BraintumSearch\Backend\Solr\DnsResolver
  */
 final class EndpointValidatorTest extends TestCase {
 
@@ -324,5 +326,124 @@ final class EndpointValidatorTest extends TestCase {
 			->validate( 'https://solr.example.com:8983/solr', 'wp', false );
 
 		$this->assertSame( 'private_address', $result->code() );
+	}
+
+	// -- IPv6 ----------------------------------------------------------------
+
+	/**
+	 * @dataProvider blocked_v6_addresses
+	 */
+	public function test_ipv6_forms_of_unreachable_addresses_are_blocked( string $address ): void {
+		$result = $this->validator( array( $address ) )
+			->validate( 'https://solr.example.com:8983/solr', 'wp', true );
+
+		$this->assertSame( 'blocked_address', $result->code(), 'Accepted ' . $address );
+	}
+
+	/**
+	 * @return array<string,array{0:string}>
+	 */
+	public function blocked_v6_addresses(): array {
+		return array(
+			'metadata, IPv4-mapped'     => array( '::ffff:169.254.169.254' ),
+			'metadata, IPv4-compatible' => array( '::169.254.169.254' ),
+			'metadata, NAT64'           => array( '64:ff9b::a9fe:a9fe' ),
+			'metadata, 6to4'            => array( '2002:a9fe:a9fe::1' ),
+			'metadata, long spelling'   => array( 'FD00:EC2:0:0:0:0:0:254' ),
+			'link-local'                => array( 'fe80::1' ),
+			'link-local, upper end'     => array( 'febf::1' ),
+			'unspecified'               => array( '::' ),
+			'multicast'                 => array( 'ff02::1' ),
+			'mapped multicast'          => array( '::ffff:224.0.0.1' ),
+		);
+	}
+
+	/**
+	 * @dataProvider private_v6_addresses
+	 */
+	public function test_private_ipv6_addresses_need_acknowledgement( string $address ): void {
+		$validator = $this->validator( array( $address ) );
+
+		$this->assertSame(
+			'private_address',
+			$validator->validate( 'https://solr.example.com:8983/solr', 'wp', false )->code(),
+			'Accepted ' . $address . ' without acknowledgement'
+		);
+		$this->assertTrue(
+			$validator->validate( 'https://solr.example.com:8983/solr', 'wp', true )->is_ok(),
+			'Rejected ' . $address . ' after acknowledgement'
+		);
+	}
+
+	/**
+	 * @return array<string,array{0:string}>
+	 */
+	public function private_v6_addresses(): array {
+		return array(
+			'loopback'         => array( '::1' ),
+			'unique local'     => array( 'fd12:3456::1' ),
+			'unique local, fc' => array( 'fc00::1' ),
+			'mapped RFC 1918'  => array( '::ffff:10.0.0.1' ),
+			'mapped loopback'  => array( '::ffff:127.0.0.1' ),
+		);
+	}
+
+	public function test_a_public_ipv6_address_is_accepted(): void {
+		$this->assertTrue(
+			$this->validator( array( '2001:db8::10' ) )
+				->validate( 'https://solr.example.com:8983/solr', 'wp' )
+				->is_ok()
+		);
+	}
+
+	public function test_a_private_aaaa_record_beside_a_public_a_record_is_rejected(): void {
+		// The case the IPv4-only resolver missed: the A record passes, and cURL
+		// connects over IPv6 to the address nobody checked.
+		$result = $this->validator( array( '203.0.113.10', 'fd00::5' ) )
+			->validate( 'https://solr.example.com:8983/solr', 'wp', false );
+
+		$this->assertSame( 'private_address', $result->code() );
+	}
+
+	public function test_a_mapped_loopback_literal_is_local_enough_for_plain_http(): void {
+		$this->assertTrue(
+			$this->validator()
+				->validate( 'http://[::ffff:127.0.0.1]:8983/solr', 'wp', true )
+				->is_ok()
+		);
+	}
+
+	// -- The default resolver ------------------------------------------------
+
+	public function test_the_default_resolver_asks_for_ipv4_and_ipv6(): void {
+		$resolver = new DnsResolver(
+			static function (): array {
+				return array( '203.0.113.10' );
+			},
+			static function (): array {
+				return array( 'fd00::5' );
+			}
+		);
+
+		$this->assertSame( array( '203.0.113.10', 'fd00::5' ), $resolver( 'solr.example.com' ) );
+
+		// And the validator built on it refuses the host.
+		$result = ( new EndpointValidator( array(), $resolver ) )
+			->validate( 'https://solr.example.com:8983/solr', 'wp', false );
+
+		$this->assertSame( 'private_address', $result->code() );
+	}
+
+	public function test_the_default_resolver_survives_a_failed_lookup(): void {
+		$resolver = new DnsResolver(
+			static function () {
+				return false;
+			},
+			static function (): array {
+				return array( '2001:db8::10', 'not an address', '2001:db8::10' );
+			}
+		);
+
+		$this->assertSame( array( '2001:db8::10' ), $resolver( 'v6-only.example.com' ) );
 	}
 }

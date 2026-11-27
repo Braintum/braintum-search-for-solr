@@ -50,4 +50,55 @@ final class IndexedTypes {
 
 		return array_values( array_unique( array_filter( $types ) ) );
 	}
+
+	/**
+	 * The indexed post types a visitor may search.
+	 *
+	 * Every public surface — the results page, the search popup, the filter
+	 * panel and the REST routes — answers from this list, not from all().
+	 * Indexing is the administrator's decision and can include a type a
+	 * filter added with `public => false`; serving it is a different decision,
+	 * and an anonymous visitor gets only what WordPress would show them at a
+	 * URL of its own.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param Config $config Configuration.
+	 * @return string[]
+	 */
+	public static function searchable( Config $config ): array {
+		return array_values(
+			array_filter(
+				self::all( $config ),
+				static function ( string $type ): bool {
+					return is_post_type_viewable( $type );
+				}
+			)
+		);
+	}
+
+	/**
+	 * The searchable post types a request may be narrowed to.
+	 *
+	 * An empty result means the request named nothing it may search, and the
+	 * caller must refuse it or answer from WordPress. It never means "no
+	 * restriction": treating it that way is how a REST request naming a
+	 * non-public type was once answered from every type in the index.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param Config   $config    Configuration.
+	 * @param string[] $requested Requested types; empty for every searchable type.
+	 * @return string[]
+	 */
+	public static function narrow( Config $config, array $requested ): array {
+		$searchable = self::searchable( $config );
+		$requested  = array_values( array_filter( array_map( 'strval', $requested ) ) );
+
+		if ( array() === $requested ) {
+			return $searchable;
+		}
+
+		return array_values( array_intersect( $requested, $searchable ) );
+	}
 }

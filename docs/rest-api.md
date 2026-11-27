@@ -34,7 +34,7 @@ ignored.
 | `page` | integer | `1` | |
 | `per_page` | integer | `10` | Maximum 50 |
 | `sort` | string | `relevance` | One of the enum below |
-| `post_type` | string[] | `[]` | Restrict to these types |
+| `post_type` | string[] | `[]` | Restrict to these types. Empty means every searchable type (see below) |
 | `filters` | object | `{}` | `{ "category": [12, 14] }`. Keys must be registered |
 | `facets` | string[] | `[]` | Facet keys to count |
 | `facet_parent` | object | `{}` | `{ "category": "1/12" }` — the node whose children to count |
@@ -107,6 +107,16 @@ already been told about the second by a 400.
 `has_children` appears only where it is true, so its absence means "leaf" without
 a client needing to know which facet types nest.
 
+### Which post types are searchable
+
+Every route answers only from post types that are both indexed and viewable by
+a visitor (`is_post_type_viewable()`). A type indexed because a filter added it
+with `public => false` is never served here. In `post_type`, a type outside that
+list is dropped; if nothing is left the request is refused with
+`braintum_search_invalid_post_type`. It is never answered from every type. The
+same list (`IndexedTypes::searchable()`) decides the results page, the search
+popup's tabs and the filter panel.
+
 ## `GET /facets`
 
 The same parameters as `/search` minus `page`, `per_page`, `sort` and
@@ -122,7 +132,7 @@ That is the request a visitor repeats most, once per tick of a checkbox.
 | --- | --- | --- | --- |
 | `q` | string | `''` | Maximum 128 characters. Fewer than 2 returns an empty list without asking Solr |
 | `limit` | integer | `8` | Maximum 20 |
-| `post_type` | string[] | `[]` | |
+| `post_type` | string[] | `[]` | As for `/search` |
 
 The limit is deliberately lower than `/search`: a list longer than a screenful is
 not a list anybody reads, and every row costs latency on a request that fires while
@@ -142,7 +152,7 @@ results from one type.
 | Parameter | Type | Default | Notes |
 | --- | --- | --- | --- |
 | `q` | string | `''` | Maximum 200 characters. Fewer than 2 returns an empty body without asking Solr |
-| `post_type` | string | `''` | One indexed post type, or empty for all. An unknown type reads as all |
+| `post_type` | string | `''` | One searchable post type, or empty for all. An unknown type reads as all searchable types |
 | `page` | integer | `1` | A type tab's page. Ignored on All. Below 1 reads as 1, and paging stops at the 1,000th result |
 
 ```json
@@ -201,6 +211,7 @@ that can authenticate.
 | `braintum_search_invalid_filter` | 400 | A filter key is not registered. The response lists the keys that are |
 | `braintum_search_invalid_filter_value` | 400 | A filter value is not usable for that filter's type |
 | `braintum_search_invalid_facet` | 400 | A facet key is not registered |
+| `braintum_search_invalid_post_type` | 400 | `post_type` named no searchable type. The response lists the ones that are. Since 1.0.0 |
 | `braintum_search_rate_limited` | 429 | Too many requests. Carries `retry_after` |
 | `braintum_search_backend_unavailable` | 503 | Solr could not be reached. Carries `retry_after` |
 

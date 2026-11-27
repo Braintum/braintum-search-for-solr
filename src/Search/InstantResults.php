@@ -183,6 +183,12 @@ final class InstantResults {
 			return Result::success( $this->empty_payload( $text, $tab, $page ) );
 		}
 
+		if ( array() === $this->post_types ) {
+			// No type the popup may show. Asking anyway would send a query
+			// with no type restriction, which answers from the whole index.
+			return Result::success( $this->empty_payload( $text, $tab, $page ) );
+		}
+
 		return '' === $tab
 			? $this->overview( $text, $site_id )
 			: $this->tab_page( $text, $tab, $page, $site_id );
