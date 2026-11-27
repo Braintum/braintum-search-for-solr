@@ -162,6 +162,16 @@ final class InstantResultsTest extends TestCase {
 		$this->assertSame( '{}', json_encode( $result->value()['counts'] ) );
 	}
 
+	public function test_no_searchable_type_answers_empty_without_asking_the_backend(): void {
+		// With no type list the query would carry no type restriction, and
+		// answer from every type in the index.
+		$result = $this->instant( $this->results( array() ), array() )->answer( 'hoodie', '', 1 );
+
+		$this->assertFalse( $result->is_failure() );
+		$this->assertSame( 0, $this->backend->calls );
+		$this->assertSame( array(), $result->value()['results'] );
+	}
+
 	public function test_minimum_length_matches_autocomplete(): void {
 		$this->instant( $this->results( array() ) )->answer( str_repeat( 'x', SuggestQuery::MIN_LENGTH ), '', 1 );
 

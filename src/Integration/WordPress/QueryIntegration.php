@@ -161,7 +161,17 @@ final class QueryIntegration {
 			return $posts;
 		}
 
-		$result = $this->search->search( $this->to_search_query( $query ) );
+		$search = $this->to_search_query( $query );
+
+		if ( null === $search ) {
+			// Nothing this query asked for is a type Braintum Search serves, so
+			// WordPress answers it, with its own visibility rules. Running the
+			// search without a type restriction instead would answer from
+			// every type in the index.
+			return null;
+		}
+
+		$result = $this->search->search( $search );
 
 		if ( $result->is_failure() ) {
 			// The fallback. WordPress runs its own query and the visitor is
@@ -229,9 +239,16 @@ final class QueryIntegration {
 	 * Build a search query from WordPress query variables.
 	 *
 	 * @param WP_Query $query The query.
-	 * @return SearchQuery
+	 * @return SearchQuery|null Null when the query asks for no type Braintum
+	 *                          Search may serve.
 	 */
-	private function to_search_query( WP_Query $query ): SearchQuery {
+	private function to_search_query( WP_Query $query ): ?SearchQuery {
+		$post_types = $this->requested_post_types( $query );
+
+		if ( array() === $post_types ) {
+			return null;
+		}
+
 		$per_page = (int) $query->get( 'posts_per_page' );
 
 		if ( $per_page <= 0 ) {
@@ -260,11 +277,7 @@ final class QueryIntegration {
 			$search = $search->with_language( $language );
 		}
 
-		$post_types = $this->requested_post_types( $query );
-
-		if ( array() !== $post_types ) {
-			$search = $search->with_post_types( $post_types );
-		}
+		$search = $search->with_post_types( $post_types );
 
 		return $this->with_selected_filters( $search )->with_pagination( $page, $per_page );
 	}
@@ -329,26 +342,23 @@ final class QueryIntegration {
 	}
 
 	/**
-	 * Post types a query asked for, restricted to those actually indexed.
+	 * Post types a query asked for, restricted to those Braintum Search serves.
 	 *
-	 * A query asking for a post type Braintum Search does not index would otherwise
-	 * silently return nothing, which looks like a broken search rather than an
-	 * unindexed type.
+	 * Empty when it asked for none of them. The caller then leaves the query to
+	 * WordPress: answering from Solr would either return nothing, which looks
+	 * like a broken search, or, without a type restriction, everything.
 	 *
 	 * @param WP_Query $query The query.
 	 * @return string[]
 	 */
 	private function requested_post_types( WP_Query $query ): array {
-		$indexed   = IndexedTypes::all( $this->config );
 		$requested = $query->get( 'post_type' );
 
 		if ( '' === $requested || 'any' === $requested ) {
-			return $indexed;
+			$requested = array();
 		}
 
-		$requested = array_map( 'strval', (array) $requested );
-
-		return array_values( array_intersect( $requested, $indexed ) );
+		return IndexedTypes::narrow( $this->config, (array) $requested );
 	}
 
 	/**

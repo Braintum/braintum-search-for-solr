@@ -27,8 +27,8 @@ use BraintumSearch\Contracts\Result;
  *
  * What this does not fully close: DNS rebinding. The address checked here can
  * differ from the address connected to later. The resolved addresses are
- * recorded on the Endpoint so the transport can compare them at request time,
- * which narrows the window without eliminating it. The attacker also already
+ * recorded on the Endpoint for a request-time comparison, which the transport
+ * does not make yet. The attacker also already
  * needs manage_options, which is close to full control of the site. The
  * security documentation states both facts rather than implying completeness.
  *
@@ -88,13 +88,10 @@ final class EndpointValidator {
 	public function __construct( array $allowed_ports = array(), ?callable $resolver = null ) {
 		$this->allowed_ports = array() === $allowed_ports ? self::DEFAULT_PORTS : $allowed_ports;
 
-		$this->resolver = null !== $resolver
-			? $resolver
-			: static function ( string $host ): array {
-				$addresses = gethostbynamel( $host );
-
-				return is_array( $addresses ) ? $addresses : array();
-			};
+		// IPv4 and IPv6 both. cURL will connect over either, so a check that
+		// only asked for A records would pass a host whose AAAA record is
+		// private and then let the connection go there anyway.
+		$this->resolver = $resolver ?? new DnsResolver();
 	}
 
 	/**
@@ -293,12 +290,24 @@ final class EndpointValidator {
 	 * @return string One of "blocked", "private" or "public".
 	 */
 	private function classify( string $address ): string {
-		if ( in_array( strtolower( $address ), self::ALWAYS_BLOCKED, true ) ) {
+		if ( false === filter_var( $address, FILTER_VALIDATE_IP ) ) {
 			return 'blocked';
 		}
 
-		if ( false === filter_var( $address, FILTER_VALIDATE_IP ) ) {
+		// One spelling per address, so "FD00:EC2:0:0:0:0:0:254" cannot slip
+		// past a list that holds "fd00:ec2::254".
+		$address = $this->canonical( $address );
+
+		if ( in_array( $address, self::ALWAYS_BLOCKED, true ) ) {
 			return 'blocked';
+		}
+
+		if ( $this->is_ipv6( $address ) ) {
+			$verdict = $this->classify_v6( $address );
+
+			if ( null !== $verdict ) {
+				return $verdict;
+			}
 		}
 
 		// Link-local covers the whole metadata range and is never a Solr server.
@@ -348,17 +357,157 @@ final class EndpointValidator {
 	}
 
 	/**
+	 * The IPv6 decisions that do not depend on PHP's range flags.
+	 *
+	 * Explicit rather than left to FILTER_FLAG_NO_PRIV_RANGE and
+	 * FILTER_FLAG_NO_RES_RANGE, whose IPv6 coverage has changed between PHP
+	 * releases. An address carrying an IPv4 address inside it is judged by that
+	 * IPv4 address: ::ffff:169.254.169.254 is the metadata service, however it
+	 * is written.
+	 *
+	 * @param string $address Canonical IPv6 address.
+	 * @return string|null A verdict, or null to fall through to the shared rules.
+	 */
+	private function classify_v6( string $address ): ?string {
+		if ( '::1' === $address ) {
+			return 'private';
+		}
+
+		if ( '::' === $address ) {
+			return 'blocked';
+		}
+
+		$embedded = $this->embedded_v4( $address );
+
+		if ( null !== $embedded ) {
+			return $this->classify( $embedded );
+		}
+
+		// Link-local, fe80::/10. The IPv6 counterpart of 169.254.0.0/16.
+		if ( $this->in_v6_range( $address, 'fe80::', 10 ) ) {
+			return 'blocked';
+		}
+
+		// Unique local, fc00::/7. The IPv6 counterpart of RFC 1918.
+		if ( $this->in_v6_range( $address, 'fc00::', 7 ) ) {
+			return 'private';
+		}
+
+		return null;
+	}
+
+	/**
+	 * The IPv4 address an IPv6 address carries, if it carries one.
+	 *
+	 * IPv4-mapped (::ffff:0:0/96), IPv4-compatible (::/96), NAT64
+	 * (64:ff9b::/96) and 6to4 (2002::/16). Each of them reaches the IPv4
+	 * address inside it, so each is only as safe as that address.
+	 *
+	 * @param string $address Canonical IPv6 address.
+	 * @return string|null
+	 */
+	private function embedded_v4( string $address ): ?string {
+		$binary = inet_pton( $address );
+
+		if ( false === $binary || 16 !== strlen( $binary ) ) {
+			return null;
+		}
+
+		if ( $this->in_v6_range( $address, '::ffff:0:0', 96 )
+			|| $this->in_v6_range( $address, '::', 96 )
+			|| $this->in_v6_range( $address, '64:ff9b::', 96 ) ) {
+			$v4 = inet_ntop( substr( $binary, 12, 4 ) );
+		} elseif ( $this->in_v6_range( $address, '2002::', 16 ) ) {
+			$v4 = inet_ntop( substr( $binary, 2, 4 ) );
+		} else {
+			return null;
+		}
+
+		return false === $v4 ? null : $v4;
+	}
+
+	/**
+	 * Whether an address is IPv6.
+	 *
+	 * @param string $address IP address.
+	 * @return bool
+	 */
+	private function is_ipv6( string $address ): bool {
+		return false !== filter_var( $address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6 );
+	}
+
+	/**
+	 * The canonical spelling of an address.
+	 *
+	 * @param string $address IP address.
+	 * @return string
+	 */
+	private function canonical( string $address ): string {
+		$binary = inet_pton( $address );
+		$text   = false === $binary ? false : inet_ntop( $binary );
+
+		return false === $text ? strtolower( $address ) : $text;
+	}
+
+	/**
 	 * Whether an address is a loopback address.
 	 *
 	 * @param string $address IP address.
 	 * @return bool
 	 */
 	private function is_loopback_address( string $address ): bool {
+		if ( false === filter_var( $address, FILTER_VALIDATE_IP ) ) {
+			return false;
+		}
+
+		$address = $this->canonical( $address );
+
 		if ( '::1' === $address ) {
 			return true;
 		}
 
+		if ( $this->is_ipv6( $address ) && $this->in_v6_range( $address, '::ffff:0:0', 96 ) ) {
+			$address = (string) $this->embedded_v4( $address );
+		}
+
 		return $this->in_v4_range( $address, '127.0.0.0', 8 );
+	}
+
+	/**
+	 * Whether an IPv6 address falls inside a CIDR range.
+	 *
+	 * @param string $address IP address.
+	 * @param string $subnet  Range base address.
+	 * @param int    $bits    Prefix length.
+	 * @return bool
+	 */
+	private function in_v6_range( string $address, string $subnet, int $bits ): bool {
+		if ( ! $this->is_ipv6( $address ) ) {
+			return false;
+		}
+
+		$ip   = inet_pton( $address );
+		$base = inet_pton( $subnet );
+
+		if ( false === $ip || false === $base || 16 !== strlen( $ip ) || 16 !== strlen( $base ) ) {
+			return false;
+		}
+
+		$whole = intdiv( $bits, 8 );
+
+		if ( substr( $ip, 0, $whole ) !== substr( $base, 0, $whole ) ) {
+			return false;
+		}
+
+		$rest = $bits % 8;
+
+		if ( 0 === $rest ) {
+			return true;
+		}
+
+		$mask = ( 0xff << ( 8 - $rest ) ) & 0xff;
+
+		return ( ord( $ip[ $whole ] ) & $mask ) === ( ord( $base[ $whole ] ) & $mask );
 	}
 
 	/**

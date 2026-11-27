@@ -161,7 +161,7 @@ final class SearchModal {
 
 		$markup .= $this->card_template( '' );
 
-		foreach ( IndexedTypes::all( $this->config ) as $post_type ) {
+		foreach ( IndexedTypes::searchable( $this->config ) as $post_type ) {
 			if ( 1 !== preg_match( '/^[a-z0-9_-]+$/', $post_type ) ) {
 				continue;
 			}
@@ -380,7 +380,7 @@ final class SearchModal {
 	private function post_types(): array {
 		$out = array();
 
-		foreach ( IndexedTypes::all( $this->config ) as $post_type ) {
+		foreach ( IndexedTypes::searchable( $this->config ) as $post_type ) {
 			$object = get_post_type_object( $post_type );
 
 			if ( null === $object ) {

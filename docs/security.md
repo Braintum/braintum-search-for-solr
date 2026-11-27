@@ -29,9 +29,11 @@ weaken the protection for every other plugin on the site.
 | Credentials in the URL | Rejected outright |
 | Query strings and fragments | Rejected; this is a base URL |
 | Cloud metadata addresses | Always blocked, whatever the settings say |
-| Link-local (169.254.0.0/16) | Always blocked |
+| Link-local (169.254.0.0/16, fe80::/10) | Always blocked |
 | Multicast, broadcast, reserved | Always blocked |
-| Loopback and private ranges | Permitted only with an explicit acknowledgement |
+| Loopback and private ranges (including ::1 and fc00::/7) | Permitted only with an explicit acknowledgement |
+| IPv6 forms of an IPv4 address (::ffff:0:0/96, ::/96, 64:ff9b::/96, 2002::/16) | Judged as the IPv4 address they carry |
+| DNS | A and AAAA records both checked. Any unsafe answer rejects the host |
 | Ports | Allowlist: 80, 443, 8443, 8983. Widened only through a filter, in code |
 | Plain HTTP to a remote host | Rejected |
 | Redirects | Never followed. A 3xx is an error |
@@ -40,11 +42,17 @@ weaken the protection for every other plugin on the site.
 
 Every rule has a test in `tests/Unit/EndpointValidatorTest.php`.
 
+**Why both record types.** cURL connects over IPv6 when a host has an AAAA record.
+Until 1.0.0 the default resolver was `gethostbynamel()`, which returns IPv4 only,
+so a host with a public A record and a private AAAA record passed the check and
+was then reachable over IPv6. `DnsResolver` asks for both.
+
 **What this does not cover: DNS rebinding.** The address validated can differ
 from the address connected to later. The resolved addresses are recorded on the
-`Endpoint` so the transport can compare them at request time, which narrows the
-window rather than closing it. Note also that the attacker must already hold
-`manage_options`, which is close to full control of the site.
+`Endpoint`, but the transport does not yet compare them at request time, so the
+check holds for the answer DNS gave when the address was saved. Note also that
+the attacker must already hold `manage_options`, which is close to full control
+of the site.
 
 ## Credentials
 

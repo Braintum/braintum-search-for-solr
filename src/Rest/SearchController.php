@@ -254,12 +254,13 @@ final class SearchController {
 			(int) $request->get_param( 'limit' )
 		);
 
-		$post_types = $this->allowed_post_types( (array) $request->get_param( 'post_type' ) );
+		$post_types = $this->post_types( $request );
 
-		if ( array() !== $post_types ) {
-			$query = $query->with_post_types( $post_types );
+		if ( $post_types instanceof WP_Error ) {
+			return $post_types;
 		}
 
+		$query  = $query->with_post_types( $post_types );
 		$result = $this->search()->suggest( $query );
 
 		if ( $result->is_failure() ) {
@@ -437,11 +438,13 @@ final class SearchController {
 
 		$query = new SearchQuery( (string) $request->get_param( 'q' ), $this->site_id );
 
-		$post_types = $this->allowed_post_types( (array) $request->get_param( 'post_type' ) );
+		$post_types = $this->post_types( $request );
 
-		if ( array() !== $post_types ) {
-			$query = $query->with_post_types( $post_types );
+		if ( $post_types instanceof WP_Error ) {
+			return $post_types;
 		}
+
+		$query = $query->with_post_types( $post_types );
 
 		$filters = $this->validate_filters( (array) $request->get_param( 'filters' ) );
 
@@ -641,11 +644,13 @@ final class SearchController {
 
 		$query = new SearchQuery( (string) $request->get_param( 'q' ), $this->site_id );
 
-		$post_types = $this->allowed_post_types( (array) $request->get_param( 'post_type' ) );
+		$post_types = $this->post_types( $request );
 
-		if ( array() !== $post_types ) {
-			$query = $query->with_post_types( $post_types );
+		if ( $post_types instanceof WP_Error ) {
+			return $post_types;
 		}
+
+		$query = $query->with_post_types( $post_types );
 
 		$filters = $this->validate_filters( (array) $request->get_param( 'filters' ) );
 
@@ -706,19 +711,31 @@ final class SearchController {
 	}
 
 	/**
-	 * Restrict requested post types to those actually indexed.
+	 * The post types a request may search, or the error refusing it.
 	 *
-	 * @param array<int,string> $requested Requested types.
-	 * @return string[]
+	 * Narrowed to the indexed types a visitor may see, and refused when
+	 * nothing is left. Never widened: an empty list once read as "no
+	 * restriction", so a request naming only a non-public type was answered
+	 * from every type in the index.
+	 *
+	 * @param WP_REST_Request $request The request.
+	 * @return string[]|WP_Error
 	 */
-	private function allowed_post_types( array $requested ): array {
-		$indexed = IndexedTypes::all( $this->config );
+	private function post_types( WP_REST_Request $request ) {
+		$allowed = IndexedTypes::narrow( $this->config, (array) $request->get_param( 'post_type' ) );
 
-		if ( array() === $requested ) {
-			return $indexed;
+		if ( array() !== $allowed ) {
+			return $allowed;
 		}
 
-		return array_values( array_intersect( array_map( 'strval', $requested ), $indexed ) );
+		return new WP_Error(
+			'braintum_search_invalid_post_type',
+			__( 'None of the requested content types can be searched on this site.', 'braintum-search-for-solr' ),
+			array(
+				'status'    => 400,
+				'available' => IndexedTypes::searchable( $this->config ),
+			)
+		);
 	}
 
 	/**
